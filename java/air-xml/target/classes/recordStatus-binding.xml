@@ -1,0 +1,18 @@
+<binding>
+	<mapping class="creative.fire.xmlparse.jibx.MCU_XML_API" name="MCU_XML_API">
+		<value name="Version" field="version" />
+		<structure name="Request" field="request"
+			type="creative.fire.xmlparse.jibx.Request">
+			<structure name="Set_Recording_Status_Request" field="set_Recording_Status_Request"
+				type="creative.fire.xmlparse.jibx.Set_Recording_Status_Request">
+				<value name="RequestID" field="requestID" />
+				<structure name="RecordingStatus" field="recordingStatus"
+					type="creative.fire.xmlparse.jibx.RecordingStatus">
+					<value name="ConfId" field="confId" />
+					<value name="Status" field="status" />
+					<value name="Param" field="param" />
+				</structure>
+			</structure>
+		</structure>
+	</mapping>
+</binding>

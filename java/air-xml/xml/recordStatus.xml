@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MCU_XML_API>
+	<Version>iCM 7.7</Version>
+	<Request>
+		<Set_Recording_Status_Request>
+			<RequestID>1252</RequestID>
+			<RecordingStatus>
+				<ConfId>701111</ConfId>
+				<Status>ERC_INTERNAL_ERROR</Status>
+				<Param>22</Param>
+			</RecordingStatus>
+		</Set_Recording_Status_Request>
+	</Request>
+</MCU_XML_API>

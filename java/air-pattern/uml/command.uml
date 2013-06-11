@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_qb8akM37EdqwVrslYOdUDA" name="command">
+  <packagedElement xmi:type="uml:Package" xmi:id="_3-sV8ZuwEeC88NpDtBBG2Q" name="creative">
+    <packagedElement xmi:type="uml:Package" xmi:id="_3-1f4JuwEeC88NpDtBBG2Q" name="fire">
+      <packagedElement xmi:type="uml:Package" xmi:id="_3-1f4ZuwEeC88NpDtBBG2Q" name="pattern">
+        <packagedElement xmi:type="uml:Package" xmi:id="_3-1f4puwEeC88NpDtBBG2Q" name="command">
+          <packagedElement xmi:type="uml:Association" xmi:id="_4DwcJJuwEeC88NpDtBBG2Q" memberEnd="_4BhngJuwEeC88NpDtBBG2Q _4DwcJZuwEeC88NpDtBBG2Q">
+            <ownedEnd xmi:id="_4DwcJZuwEeC88NpDtBBG2Q" name="ConcreteCommand" type="_3-1f45uwEeC88NpDtBBG2Q" association="_4DwcJJuwEeC88NpDtBBG2Q"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Association" xmi:id="_4DwcJpuwEeC88NpDtBBG2Q" memberEnd="_4DmrI5uwEeC88NpDtBBG2Q _4DwcJ5uwEeC88NpDtBBG2Q">
+            <ownedEnd xmi:id="_4DwcJ5uwEeC88NpDtBBG2Q" name="Invoker" type="_4AoPoZuwEeC88NpDtBBG2Q" association="_4DwcJpuwEeC88NpDtBBG2Q"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_3-1f45uwEeC88NpDtBBG2Q" name="ConcreteCommand" clientDependency="_4BOFgJuwEeC88NpDtBBG2Q">
+            <ownedAttribute xmi:id="_4BhngJuwEeC88NpDtBBG2Q" name="receiver" visibility="private" type="_4AxZkZuwEeC88NpDtBBG2Q" association="_4DwcJJuwEeC88NpDtBBG2Q">
+              <ownedComment xmi:id="_4BqxcJuwEeC88NpDtBBG2Q">
+                <body>/** 
+ * @directed
+ * @clientRole receiver
+ */
+</body>
+              </ownedComment>
+            </ownedAttribute>
+            <interfaceRealization xmi:id="_4BOFgJuwEeC88NpDtBBG2Q" name="Command" supplier="_4AxZkJuwEeC88NpDtBBG2Q" client="_3-1f45uwEeC88NpDtBBG2Q" contract="_4AxZkJuwEeC88NpDtBBG2Q"/>
+            <ownedOperation xmi:id="_4B0icJuwEeC88NpDtBBG2Q" name="execute" visibility="public"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_4AoPoJuwEeC88NpDtBBG2Q" name="Client">
+            <ownedOperation xmi:id="_4DmrIZuwEeC88NpDtBBG2Q" name="main" visibility="public" isStatic="true">
+              <ownedParameter xmi:id="_4DmrIpuwEeC88NpDtBBG2Q" name="args">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_4AoPoZuwEeC88NpDtBBG2Q" name="Invoker">
+            <ownedAttribute xmi:id="_4DmrI5uwEeC88NpDtBBG2Q" name="command" visibility="private" type="_4AxZkJuwEeC88NpDtBBG2Q" association="_4DwcJpuwEeC88NpDtBBG2Q">
+              <ownedComment xmi:id="_4DwcIJuwEeC88NpDtBBG2Q">
+                <body>/** 
+ * @link aggregation
+ * @directed
+ */
+</body>
+              </ownedComment>
+            </ownedAttribute>
+            <ownedOperation xmi:id="_4DwcIZuwEeC88NpDtBBG2Q" name="action" visibility="public"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_4AxZkJuwEeC88NpDtBBG2Q" name="Command">
+            <ownedOperation xmi:id="_4DwcIpuwEeC88NpDtBBG2Q" name="execute" visibility="public"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_4AxZkZuwEeC88NpDtBBG2Q" name="Receiver">
+            <ownedOperation xmi:id="_4DwcI5uwEeC88NpDtBBG2Q" name="action" visibility="public"/>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

@@ -1,0 +1,86 @@
+----build self certificate----
+keytool -genkey -dname "CN=mars_ca, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias ca -keyalg RSA -keystore ca--ca.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias ca -keystore ca--ca.keystore -storepass 111111 -rfc -file ca--ca.cer
+Certificate stored in file <ca--ca.cer>
+
+keytool -genkey -dname "CN=mars_icm, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias icm -keyalg RSA -keystore iview.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias icm -keystore iview.keystore -storepass 111111 -rfc -file icm--icm.cer
+Certificate stored in file <icm--icm.cer>
+
+keytool -genkey -dname "CN=mars_ucgw, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias ucgw -keyalg RSA -keystore ucgw.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias ucgw -keystore ucgw.keystore -storepass 111111 -rfc -file ucgw--ucgw.cer
+Certificate stored in file <ucgw--ucgw.cer>
+
+keytool -list -keystore ca--ca.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+ca, May 23, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 0C:88:43:00:58:30:2A:6F:AD:39:DB:F0:C3:E4:8E:2F
+
+keytool -list -keystore iview.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+icm, May 23, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): BC:44:9C:8F:F0:50:91:6B:48:3F:1B:95:90:4F:7C:F6
+
+keytool -list -keystore ucgw.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+ucgw, May 23, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): E6:AC:DB:4C:9E:39:DE:CF:5D:B9:43:E8:D1:65:BE:24
+
+
+----ca sign certificate----
+keytool -export -alias ca_signed -keystore iview.keystore -storepass 111111 -rfc -file ca--icm.signed.cer
+Certificate stored in file <ca--icm.signed.cer>
+
+keytool -export -alias ca_signed -keystore ucgw.keystore -storepass 111111 -rfc -file ca--ucgw.signed.cer
+Certificate stored in file <ca--ucgw.signed.cer>
+
+It is signed by the CA
+It is signed by the CA
+keytool -list -keystore ca--ca.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+ca, May 23, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 0C:88:43:00:58:30:2A:6F:AD:39:DB:F0:C3:E4:8E:2F
+
+keytool -list -keystore iview.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+ca, May 23, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 0C:88:43:00:58:30:2A:6F:AD:39:DB:F0:C3:E4:8E:2F
+ca_signed, May 23, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): AF:72:7B:B3:78:79:DF:6B:9D:06:B6:45:A8:16:5E:5E
+
+keytool -list -keystore ucgw.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+ca, May 23, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 0C:88:43:00:58:30:2A:6F:AD:39:DB:F0:C3:E4:8E:2F
+ca_signed, May 23, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 4D:0E:B9:DE:03:D8:8A:B2:BB:2F:52:6B:06:21:D5:21

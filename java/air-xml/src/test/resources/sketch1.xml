@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sketch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="Sketcher.xsd">
+    <circle diameter="40" angle="0.0">
+        <color R="255" G="0" B="0"/>
+        <position x="10" y="10"/>
+        <bounds  x="10" y="10"
+                 width="42" height="42"/>
+    </circle>
+    <line angle="0.0">
+        <color R="0" G="0" B="255"/>
+        <position x="10" y="10"/>
+        <bounds  x="10" y="10"
+                 width="22" height="32"/>
+        <endpoint x="30" y="40"/>
+    </line>
+    <rectangle width="30.0" height="20.0" angle="0.0">
+        <color R="255" G="0" B="0"/>
+        <position x="30" y="40"/>
+        <bounds   x="30" y="40"
+                  width="32" height="22"/>
+    </rectangle>
+</sketch>

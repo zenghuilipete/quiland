@@ -1,0 +1,110 @@
+keytool -genkey -dname "CN=mars_icm, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias icm -keyalg RSA -keystore iview.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias icm -keystore iview.keystore -storepass 111111 -rfc -file icm--icm.cer
+Certificate stored in file <icm--icm.cer>
+
+keytool -genkey -dname "CN=mars_UCGW, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias ucgw -keyalg RSA -keystore ucgw.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias ucgw -keystore ucgw.keystore -storepass 111111 -rfc -file ucgw--ucgw.cer
+Certificate stored in file <ucgw--ucgw.cer>
+
+keytool -genkey -dname "CN=mars_ca, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias root -keyalg RSA -keystore ca--ca.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias root -keystore ca--ca.keystore -storepass 111111 -rfc -file ca--ca.cer
+Certificate stored in file <ca--ca.cer>
+
+keytool -list -keystore ca--ca.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+root, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 89:5A:57:84:63:DB:3A:4D:1A:D1:1E:2F:4B:14:9A:D0
+
+keytool -list -keystore iview.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+icm, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): E5:7A:9B:85:50:1C:4F:8F:64:A0:3C:7B:57:CC:AE:0D
+
+keytool -list -keystore ucgw.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+ucgw, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 08:1E:60:0A:7C:B8:EB:42:43:18:4E:25:DF:73:28:66
+
+keytool -export -alias ca_signed -keystore ca--ca_sign.keystore -storepass 111111 -rfc -file ca--icm.signed.cer
+Certificate stored in file <ca--icm.signed.cer>
+
+keytool -export -alias ca_signed -keystore ca--ca_sign.keystore -storepass 111111 -rfc -file ca--ucgw.signed.cer
+Certificate stored in file <ca--ucgw.signed.cer>
+
+It is signed by the CA
+It is signed by the CA
+keytool -importcert -noprompt -alias root -file ca--ca.cer -keystore iview.keystore -storepass 111111
+Certificate was added to keystore
+
+keytool -importcert -noprompt -trustcacerts -alias ca_signed -file ca--icm.signed.cer -keystore iview.keystore -storepass 111111 -keypass 111111
+Certificate was added to keystore
+
+keytool -importcert -noprompt -trustcacerts -alias opposite -file ca--ucgw.signed.cer -keystore iview.keystore -storepass 111111 -keypass 111111
+Certificate was added to keystore
+
+keytool -importcert -noprompt -alias root -file ca--ca.cer -keystore ucgw.keystore -storepass 111111
+Certificate was added to keystore
+
+keytool -importcert -noprompt -trustcacerts -alias ca_signed -file ca--ucgw.signed.cer -keystore ucgw.keystore -storepass 111111 -keypass 111111
+Certificate was added to keystore
+
+keytool -importcert -noprompt -trustcacerts -alias opposite -file ca--icm.signed.cer -keystore ucgw.keystore -storepass 111111 -keypass 111111
+Certificate was added to keystore
+
+keytool -list -keystore ca--ca.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+root, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 89:5A:57:84:63:DB:3A:4D:1A:D1:1E:2F:4B:14:9A:D0
+
+keytool -list -keystore iview.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 4 entries
+
+ca_signed, May 24, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 60:BF:7B:92:F0:E0:16:BA:3F:1E:99:D5:A8:47:89:50
+root, May 24, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 89:5A:57:84:63:DB:3A:4D:1A:D1:1E:2F:4B:14:9A:D0
+opposite, May 24, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 2F:35:99:18:07:61:99:82:B1:06:F8:C2:31:08:0E:74
+icm, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): E5:7A:9B:85:50:1C:4F:8F:64:A0:3C:7B:57:CC:AE:0D
+
+keytool -list -keystore ucgw.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 4 entries
+
+ca_signed, May 24, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 2F:35:99:18:07:61:99:82:B1:06:F8:C2:31:08:0E:74
+root, May 24, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 89:5A:57:84:63:DB:3A:4D:1A:D1:1E:2F:4B:14:9A:D0
+opposite, May 24, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 60:BF:7B:92:F0:E0:16:BA:3F:1E:99:D5:A8:47:89:50
+ucgw, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 08:1E:60:0A:7C:B8:EB:42:43:18:4E:25:DF:73:28:66
+

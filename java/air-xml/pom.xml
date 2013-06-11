@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>creative.air</groupId>
+	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>air-xml</artifactId>
+	<packaging>jar</packaging>
+	<name>Air XML Project</name>
+	<properties>
+		<jaxb.version>2.1.9</jaxb.version>
+		<jackson.version>1.9.9</jackson.version>
+		<junit.version>4.10</junit.version>
+		<log4j.version>1.2.16</log4j.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- jaxb -->
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb</artifactId>
+			<version>${jaxb.version}</version>
+		</dependency>
+		<!-- Jackson -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-run</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-extras</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.jibx</groupId>
+					<artifactId>maven-jibx-plugin</artifactId>
+					<version>1.2.3</version>
+					<configuration>
+						<directory>src/main/resources</directory>
+						<includes>
+							<include>*-binding.xml</include>
+						</includes>
+						<verbose>true</verbose>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>bind</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+						<encoding>utf-8</encoding>
+					</configuration>
+				</plugin>
+			</plugins>
+
+		</pluginManagement>
+	</build>
+</project>

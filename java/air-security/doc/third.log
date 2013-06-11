@@ -1,0 +1,95 @@
+keytool -genkey -dname "CN=mars_icm, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias icm -keyalg RSA -keystore iview.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias icm -keystore iview.keystore -storepass 111111 -rfc -file icm--icm.cer
+Certificate stored in file <icm--icm.cer>
+
+keytool -genkey -dname "CN=mars_UCGW, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias ucgw -keyalg RSA -keystore ucgw.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias ucgw -keystore ucgw.keystore -storepass 111111 -rfc -file ucgw--ucgw.cer
+Certificate stored in file <ucgw--ucgw.cer>
+
+keytool -genkey -dname "CN=mars_ca, OU=rv, O=rcd, L=ZB, ST=bj, C=China" -alias root -keyalg RSA -keystore ca--ca.keystore -keypass 111111 -storepass 111111 -validity 60
+keytool -export -alias root -keystore ca--ca.keystore -storepass 111111 -rfc -file ca--ca.cer
+Certificate stored in file <ca--ca.cer>
+
+keytool -list -keystore ca--ca.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+root, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 24:48:A3:4D:9F:EE:39:DE:8C:E7:51:60:7E:94:7A:76
+
+keytool -list -keystore iview.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+icm, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 78:5C:AA:1B:27:9D:FB:3E:BE:1A:BD:6E:C5:A5:25:BD
+
+keytool -list -keystore ucgw.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+ucgw, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 7B:88:44:27:88:66:2D:6B:64:E3:D5:34:4A:03:DA:8F
+
+keytool -export -alias ca_signed -keystore ca--ca_sign.keystore -storepass 111111 -rfc -file ca--icm.signed.cer
+Certificate stored in file <ca--icm.signed.cer>
+
+keytool -export -alias ca_signed -keystore ca--ca_sign.keystore -storepass 111111 -rfc -file ca--ucgw.signed.cer
+Certificate stored in file <ca--ucgw.signed.cer>
+
+It is signed by the CA
+It is signed by the CA
+keytool -importcert -noprompt -alias root -file ca--ca.cer -keystore iview.keystore -storepass 111111
+Certificate was added to keystore
+
+keytool -importcert -noprompt -trustcacerts -alias icm -file ca--icm.signed.cer -keystore iview.keystore -storepass 111111 -keypass 111111
+Certificate reply was installed in keystore
+
+keytool -importcert -noprompt -alias root -file ca--ca.cer -keystore ucgw.keystore -storepass 111111
+Certificate was added to keystore
+
+keytool -importcert -noprompt -trustcacerts -alias ucgw -file ca--ucgw.signed.cer -keystore ucgw.keystore -storepass 111111 -keypass 111111
+Certificate reply was installed in keystore
+
+keytool -list -keystore ca--ca.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+root, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 24:48:A3:4D:9F:EE:39:DE:8C:E7:51:60:7E:94:7A:76
+
+keytool -list -keystore iview.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+root, May 24, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 24:48:A3:4D:9F:EE:39:DE:8C:E7:51:60:7E:94:7A:76
+icm, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 18:D9:40:BD:65:6C:4D:B9:F3:87:2B:09:63:CD:F0:7A
+
+keytool -list -keystore ucgw.keystore -storepass 111111
+
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+root, May 24, 2011, trustedCertEntry,
+Certificate fingerprint (MD5): 24:48:A3:4D:9F:EE:39:DE:8C:E7:51:60:7E:94:7A:76
+ucgw, May 24, 2011, PrivateKeyEntry, 
+Certificate fingerprint (MD5): 2A:3D:3F:A6:E3:2F:36:B9:71:CD:AB:1D:9F:19:8A:49
