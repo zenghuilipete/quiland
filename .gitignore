@@ -1,7 +1,7 @@
 .project
 .metadata
 bin/
-target/
+
 tmp/
 *.tmp
 *.bak
