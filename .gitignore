@@ -1,6 +1,7 @@
 .project
 .metadata
 bin/
+target/
 tmp/
 *.tmp
 *.bak
@@ -10,6 +11,5 @@ tmp/
 Thumbs.db
 Desktop.ini
 .DS_Store
-
 *.zip
 *.*~

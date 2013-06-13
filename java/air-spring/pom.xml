@@ -5,7 +5,7 @@
 	<groupId>creative.air</groupId>
 	<artifactId>air-spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>Air SPRING Project</name>
 
 	<properties>
@@ -13,8 +13,25 @@
 		<spring.version>3.2.3.RELEASE</spring.version>
 		<slf4j.version>1.4.3</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
+
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<compiler.source.version>1.6</compiler.source.version>
+		<compiler.target.version>1.6</compiler.target.version>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${compiler.source.version}</source>
+					<target>${compiler.target.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<dependencies>
 		<!-- spring -->
 		<dependency>
@@ -72,7 +89,7 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-		
+
 		<!-- aop -->
 		<dependency>
 			<groupId>org.javassist</groupId>
