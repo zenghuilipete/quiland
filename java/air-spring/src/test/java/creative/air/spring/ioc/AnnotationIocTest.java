@@ -16,10 +16,10 @@ import creative.air.spring.ArchServer;
 public class AnnotationIocTest {
 	@Autowired
 	@Qualifier("arch")
-	private ArchServer	arch;
+	private ArchServer archServer;
 
 	@Test
-	public void shouldWireWithAutowire() {
-		assertNotNull(arch.playing());
+	public void testPlaying() {
+		assertNotNull(archServer.playing());
 	}
 }

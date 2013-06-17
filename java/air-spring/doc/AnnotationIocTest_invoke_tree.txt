@@ -4,12 +4,13 @@ NativeConstructorAccessorImpl.newInstance(Object[]) line: 39
 DelegatingConstructorAccessorImpl.newInstance(Object[]) line: 27	
 Constructor<T>.newInstance(Object...) line: 513	
 BeanUtils.instantiateClass(Constructor<T>, Object...) line: 148	
-CglibSubclassingInstantiationStrategy(SimpleInstantiationStrategy).instantiate(RootBeanDefinition, String, BeanFactory) line: 87	
+CglibSubclassingInstantiationStrategy(SimpleInstantiationStrategy).instantiate(RootBeanDefinition, String, BeanFactory) line: 87 org.springframework.beans.factory.support.CglibSubclassingInstantiationStrategy
 DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).instantiateBean(String, RootBeanDefinition) line: 1000	
 DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).createBeanInstance(String, RootBeanDefinition, Object[]) line: 953	
 DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).doCreateBean(String, RootBeanDefinition, Object[]) line: 487	
 DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).createBean(String, RootBeanDefinition, Object[]) line: 458	
 AbstractBeanFactory$1.getObject() line: 295	
+
 DefaultListableBeanFactory(DefaultSingletonBeanRegistry).getSingleton(String, ObjectFactory) line: 223	
 DefaultListableBeanFactory(AbstractBeanFactory).doGetBean(String, Class<T>, Object[], boolean) line: 292	
 DefaultListableBeanFactory(AbstractBeanFactory).getBean(String) line: 194	
@@ -18,12 +19,13 @@ DefaultListableBeanFactory.doResolveDependency(DependencyDescriptor, Class<?>, S
 DefaultListableBeanFactory.resolveDependency(DependencyDescriptor, String, Set<String>, TypeConverter) line: 768	
 AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(Object, String, PropertyValues) line: 486	
 InjectionMetadata.inject(Object, String, PropertyValues) line: 87	
-AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(PropertyValues, PropertyDescriptor[], Object, String) line: 285	
+AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(PropertyValues, PropertyDescriptor[], Object, String) line: 285	org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
 DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).populateBean(String, RootBeanDefinition, BeanWrapper) line: 1116	
-DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).autowireBeanProperties(Object, int, boolean) line: 376	
-DependencyInjectionTestExecutionListener.injectDependencies(TestContext) line: 110	
-DependencyInjectionTestExecutionListener.prepareTestInstance(TestContext) line: 75	
-TestContextManager.prepareTestInstance(Object) line: 312	
+DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).autowireBeanProperties(Object, int, boolean) line: 376 org.springframework.beans.factory.support.DefaultListableBeanFactory	
+DependencyInjectionTestExecutionListener.injectDependencies(TestContext) line: 110	org.springframework.test.context.support.DependencyInjectionTestExecutionListener
+DependencyInjectionTestExecutionListener.prepareTestInstance(TestContext) line: 75
+TestContextManager.prepareTestInstance(Object) line: 312 org.springframework.test.context.TestContextManager
+
 SpringJUnit4ClassRunner.createTest() line: 211	
 SpringJUnit4ClassRunner$1.runReflectiveCall() line: 288	
 SpringJUnit4ClassRunner$1(ReflectiveCallable).run() line: 15	
@@ -36,12 +38,13 @@ SpringJUnit4ClassRunner(ParentRunner<T>).runChildren(RunNotifier) line: 229
 ParentRunner<T>.access$000(ParentRunner, RunNotifier) line: 50	
 ParentRunner$2.evaluate() line: 222	
 RunBeforeTestClassCallbacks.evaluate() line: 61	
-RunAfterTestClassCallbacks.evaluate() line: 71	
-SpringJUnit4ClassRunner(ParentRunner<T>).run(RunNotifier) line: 300	
-SpringJUnit4ClassRunner.run(RunNotifier) line: 174	
+RunAfterTestClassCallbacks.evaluate() line: 71	org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks
+SpringJUnit4ClassRunner(ParentRunner<T>).run(RunNotifier) line: 300	org.junit.runners.ParentRunner<T>
+SpringJUnit4ClassRunner.run(RunNotifier) line: 174
+
 JUnit4TestClassReference(JUnit4TestReference).run(TestExecution) line: 50	
 TestExecution.run(ITestReference[]) line: 38	
 RemoteTestRunner.runTests(String[], String, TestExecution) line: 467	
 RemoteTestRunner.runTests(TestExecution) line: 683	
 RemoteTestRunner.run() line: 390	
-RemoteTestRunner.main(String[]) line: 197	
+RemoteTestRunner.main(String[]) line: 197
