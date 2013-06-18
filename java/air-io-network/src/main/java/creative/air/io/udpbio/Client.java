@@ -6,7 +6,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import creative.air.io.IO;
+import org.feuyeux.air.io.network.IO;
+
 
 public class Client {
 	private static DatagramSocket serverSocket;

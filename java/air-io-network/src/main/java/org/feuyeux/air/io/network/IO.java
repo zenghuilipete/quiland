@@ -1,4 +1,4 @@
-package creative.air.io;
+package org.feuyeux.air.io.network;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

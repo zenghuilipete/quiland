@@ -2,7 +2,8 @@ package creative.air.io.tcpbio.multithread;
 
 import java.util.concurrent.CountDownLatch;
 
-import creative.air.io.IO;
+import org.feuyeux.air.io.network.IO;
+
 
 public class ClientTest {
 	public static void main(String[] args) {

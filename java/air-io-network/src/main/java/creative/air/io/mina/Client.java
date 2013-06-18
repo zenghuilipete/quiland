@@ -12,8 +12,8 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
 import org.apache.mina.transport.socket.nio.SocketConnector;
+import org.feuyeux.air.io.network.IO;
 
-import creative.air.io.IO;
 
 public class Client {
 

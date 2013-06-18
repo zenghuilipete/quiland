@@ -11,7 +11,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import creative.air.io.IO;
+import org.feuyeux.air.io.network.IO;
+
 
 public class BIOClient {
 	public static void main(String[] args) {

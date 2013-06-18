@@ -8,7 +8,8 @@ package creative.air.io.tcpbio.multithread;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import creative.air.io.IO;
+import org.feuyeux.air.io.network.IO;
+
 
 public class Client {
 	private Socket socket = null;

@@ -7,7 +7,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import creative.air.io.IO;
+import org.feuyeux.air.io.network.IO;
+
 
 public class OneConnectionOneThreadServer {
 	public static void main(String[] args) throws Exception {
@@ -20,8 +21,7 @@ public class OneConnectionOneThreadServer {
 				System.out.println("the remote port connected: " + socket.getPort());
 				try {
 					Runnable r = new SocketServerThread(socket);
-
-					System.out.format("we can use %s to run %s", ConnectionPool.class.toString(), r.toString());
+					System.out.format("%s run", r.toString());
 				} catch (Exception e) {
 					socket.close();
 				}
