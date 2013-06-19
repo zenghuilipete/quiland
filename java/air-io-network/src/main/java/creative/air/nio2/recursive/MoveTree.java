@@ -14,7 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.EnumSet;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 /**
@@ -82,8 +82,8 @@ public class MoveTree implements FileVisitor<Path> {
 	}
 
 	public static void main(String[] args) throws IOException {
-		MoveTree walk = new MoveTree(IO.FROM, IO.TO);
+		MoveTree walk = new MoveTree(AirIO.FROM, AirIO.TO);
 		EnumSet<FileVisitOption> opts = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
-		Files.walkFileTree(IO.FROM, opts, Integer.MAX_VALUE, walk);
+		Files.walkFileTree(AirIO.FROM, opts, Integer.MAX_VALUE, walk);
 	}
 }

@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.util.EnumSet;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 /**
@@ -36,6 +36,6 @@ class ListTree extends SimpleFileVisitor<Path> {
 	public static void main(String[] args) throws IOException {
 		ListTree walk = new ListTree();
 		EnumSet<FileVisitOption> opts = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
-		Files.walkFileTree(IO.FROM, opts, Integer.MAX_VALUE, walk);
+		Files.walkFileTree(AirIO.FROM, opts, Integer.MAX_VALUE, walk);
 	}
 }

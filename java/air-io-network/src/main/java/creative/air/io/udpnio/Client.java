@@ -11,7 +11,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.Charset;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class Client {
@@ -19,13 +19,13 @@ public class Client {
 		DatagramChannel receiveChannel = DatagramChannel.open();
 		receiveChannel.configureBlocking(false);
 		DatagramSocket socket = receiveChannel.socket();
-		socket.bind(new InetSocketAddress(IO.NIO_UDP_PORT_0));
+		socket.bind(new InetSocketAddress(AirIO.NIO_UDP_PORT_0));
 		Selector selector = Selector.open();
 		receiveChannel.register(selector, SelectionKey.OP_READ);
 
 		DatagramChannel sendChannel = DatagramChannel.open();
 		sendChannel.configureBlocking(false);
-		SocketAddress target = new InetSocketAddress("127.0.0.1", IO.NIO_UDP_PORT_1);
+		SocketAddress target = new InetSocketAddress("127.0.0.1", AirIO.NIO_UDP_PORT_1);
 		sendChannel.connect(target);
 
 		BufferedReader systemIn = new BufferedReader(new InputStreamReader(System.in));

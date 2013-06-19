@@ -10,7 +10,7 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class Server {
@@ -32,8 +32,8 @@ public class Server {
 			}
 
 		};
-		acceptor.bind(new InetSocketAddress(IO.MINA_PORT), handler);
-		System.out.println("Server listen on port: " + IO.MINA_PORT);
+		acceptor.bind(new InetSocketAddress(AirIO.MINA_PORT), handler);
+		System.out.println("Server listen on port: " + AirIO.MINA_PORT);
 	}
 
 }

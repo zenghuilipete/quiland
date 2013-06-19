@@ -9,14 +9,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class Server {
 	private ServerSocket serverSocket;
 
 	public Server() throws IOException {
-		serverSocket = new ServerSocket(IO.BIO_TCP_PORT);
+		serverSocket = new ServerSocket(AirIO.BIO_TCP_PORT);
 		System.out.println("TCP Server Started.");
 	}
 

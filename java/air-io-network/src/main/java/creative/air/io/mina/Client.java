@@ -12,7 +12,7 @@ import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
 import org.apache.mina.transport.socket.nio.SocketConnector;
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class Client {
@@ -21,7 +21,7 @@ public class Client {
 		SocketConnector ioConnector = new SocketConnector(Runtime.getRuntime().availableProcessors() + 1, Executors.newCachedThreadPool());
 		ioConnector.getDefaultConfig().getSessionConfig().setTcpNoDelay(true);
 		ioConnector.getFilterChain().addLast("stringserialize", new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
-		InetSocketAddress socketAddress = new InetSocketAddress("127.0.0.1", IO.MINA_PORT);
+		InetSocketAddress socketAddress = new InetSocketAddress("127.0.0.1", AirIO.MINA_PORT);
 		IoHandler handler = new IoHandlerAdapter() {
 			@Override
 			public void messageReceived(IoSession session, Object message) throws Exception {

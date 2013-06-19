@@ -8,7 +8,7 @@ package creative.air.io.tcpbio.multithread;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class Client {
@@ -23,7 +23,7 @@ public class Client {
 	public void work() {
 		System.out.println("Client" + clientId + ":start");
 		try {
-			socket = new Socket(IO.SERVER_IP, IO.BIO_TCP_PORT);
+			socket = new Socket(AirIO.SERVER_IP, AirIO.BIO_TCP_PORT);
 			new Connect("Client" + clientId + "reader", socket).start();
 
 			while (true) {

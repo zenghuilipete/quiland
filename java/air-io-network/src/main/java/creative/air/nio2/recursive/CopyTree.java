@@ -14,7 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.EnumSet;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 /**
@@ -25,7 +25,7 @@ public class CopyTree implements FileVisitor<Path> {
 	public static void main(String[] args) throws IOException {
 		CopyTree walk = new CopyTree();
 		EnumSet<FileVisitOption> opts = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
-		Files.walkFileTree(IO.FROM, opts, Integer.MAX_VALUE, walk);
+		Files.walkFileTree(AirIO.FROM, opts, Integer.MAX_VALUE, walk);
 	}
 
 	public CopyTree() {
@@ -43,7 +43,7 @@ public class CopyTree implements FileVisitor<Path> {
 	@Override
 	public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
 		if (exc == null) {
-			Path newdir = IO.TO.resolve(IO.FROM.relativize(dir));
+			Path newdir = AirIO.TO.resolve(AirIO.FROM.relativize(dir));
 			try {
 				FileTime time = Files.getLastModifiedTime(dir);
 				Files.setLastModifiedTime(newdir, time);
@@ -60,7 +60,7 @@ public class CopyTree implements FileVisitor<Path> {
 	@Override
 	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 		System.out.println("Copy directory: " + dir);
-		Path newdir = IO.TO.resolve(IO.FROM.relativize(dir));
+		Path newdir = AirIO.TO.resolve(AirIO.FROM.relativize(dir));
 		try {
 			Files.copy(dir, newdir, REPLACE_EXISTING, COPY_ATTRIBUTES);
 		} catch (IOException e) {
@@ -74,7 +74,7 @@ public class CopyTree implements FileVisitor<Path> {
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 		System.out.println("Copy file: " + file);
-		copySubTree(file, IO.TO.resolve(IO.FROM.relativize(file)));
+		copySubTree(file, AirIO.TO.resolve(AirIO.FROM.relativize(file)));
 		return FileVisitResult.CONTINUE;
 	}
 

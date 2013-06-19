@@ -4,13 +4,13 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class Server {
 	private static DatagramSocket client;
 	public static void main(String[] args) throws Exception {
-		DatagramSocket server = new DatagramSocket(IO.BIO_UDP_PORT_1);
+		DatagramSocket server = new DatagramSocket(AirIO.BIO_UDP_PORT_1);
 		client = new DatagramSocket();
 		InetAddress serverAddress = InetAddress.getByName("localhost");
 		byte[] buffer = new byte[65507];
@@ -26,7 +26,7 @@ public class Server {
 				packet.setLength(buffer.length);
 				String response = "Server response：" + line;
 				byte[] datas = response.getBytes("UTF-8");
-				DatagramPacket responsePacket = new DatagramPacket(datas, datas.length, serverAddress, IO.BIO_UDP_PORT_0);
+				DatagramPacket responsePacket = new DatagramPacket(datas, datas.length, serverAddress, AirIO.BIO_UDP_PORT_0);
 				client.send(responsePacket);
 				Thread.sleep(100);
 			}

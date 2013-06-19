@@ -2,14 +2,14 @@ package creative.air.io.tcpbio.multithread;
 
 import java.util.concurrent.CountDownLatch;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class ClientTest {
 	public static void main(String[] args) {
 		final CountDownLatch latch = new CountDownLatch(1);
 
-		for (int i = 0; i < IO.COUNT; i++) {
+		for (int i = 0; i < AirIO.COUNT; i++) {
 			final Client client = new Client(i);
 			Thread t = new Thread("Client" + i) {
 				@Override

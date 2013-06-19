@@ -9,20 +9,20 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.Charset;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class Server {
 	public static void main(String[] args) throws Exception {
 		DatagramChannel sendChannel = DatagramChannel.open();
 		sendChannel.configureBlocking(false);
-		SocketAddress target = new InetSocketAddress("127.0.0.1", IO.NIO_UDP_PORT_0);
+		SocketAddress target = new InetSocketAddress("127.0.0.1", AirIO.NIO_UDP_PORT_0);
 		sendChannel.connect(target);
 
 		DatagramChannel receiveChannel = DatagramChannel.open();
 		DatagramSocket serverSocket = receiveChannel.socket();
-		serverSocket.bind(new InetSocketAddress(IO.NIO_UDP_PORT_1));
-		System.out.println("Data receive listen on port: " + IO.NIO_UDP_PORT_1);
+		serverSocket.bind(new InetSocketAddress(AirIO.NIO_UDP_PORT_1));
+		System.out.println("Data receive listen on port: " + AirIO.NIO_UDP_PORT_1);
 		receiveChannel.configureBlocking(false);
 		Selector selector = Selector.open();
 		receiveChannel.register(selector, SelectionKey.OP_READ);

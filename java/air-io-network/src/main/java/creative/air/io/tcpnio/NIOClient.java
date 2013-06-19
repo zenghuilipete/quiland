@@ -10,14 +10,14 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class NIOClient {
 	public static void main(String[] args) throws Exception {
 		SocketChannel channel = SocketChannel.open();
 		channel.configureBlocking(false);
-		SocketAddress target = new InetSocketAddress(IO.SERVER_IP, IO.NIO_TCP_PORT);
+		SocketAddress target = new InetSocketAddress(AirIO.SERVER_IP, AirIO.NIO_TCP_PORT);
 		channel.connect(target);
 		Selector selector = Selector.open();
 		channel.register(selector, SelectionKey.OP_CONNECT);

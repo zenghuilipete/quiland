@@ -9,7 +9,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
-import org.feuyeux.air.io.network.IO;
+import org.feuyeux.air.io.network.AirIO;
 
 
 public class NIOServer {
@@ -18,8 +18,8 @@ public class NIOServer {
 		Selector selector = Selector.open();
 		ServerSocketChannel ssc = ServerSocketChannel.open();
 		ServerSocket serverSocket = ssc.socket();
-		serverSocket.bind(new InetSocketAddress(IO.NIO_TCP_PORT));
-		System.out.println("Server listen on port: " + IO.NIO_TCP_PORT);
+		serverSocket.bind(new InetSocketAddress(AirIO.NIO_TCP_PORT));
+		System.out.println("Server listen on port: " + AirIO.NIO_TCP_PORT);
 		ssc.configureBlocking(false);
 		ssc.register(selector, SelectionKey.OP_ACCEPT);
 
