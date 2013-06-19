@@ -1,4 +1,4 @@
-package creative.fire.aop.bytecode;
+package creative.fire.aop.bytecode.javassist;
 
 import javassist.ClassPool;
 import javassist.CtClass;

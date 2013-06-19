@@ -13,7 +13,6 @@ public class Task implements ITask {
 		}
 		return System.currentTimeMillis();
 	}
-
 	public static void main(String[] args) throws InterruptedException {
 		Task t = new Task();
 		t.go();

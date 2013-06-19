@@ -1,0 +1,54 @@
+byte-oriented I/O
+	InputStream
+		ByteArrayInputStream
+		ObjectInputStream
+		PipedInputStream
+		FileInputStream 
+		SocketInputStream
+		SequenceInputStream
+		FilterInputStream
+			BufferedInputStream
+			DataInputStream
+			InflaterInputStream
+			GZIPInputStream
+			ZipInputStream
+			PushbackInputStream
+
+	OutputStream
+		ByteArrayOutputStream
+		FileOutputStream 
+		SocketOutputStream
+		ObjectOutputStream
+		PipedOutputStream
+		FilterOutputStream
+			BufferedOutputStream	
+			DataOutputStream
+			PrintStream
+			DeflaterOutputStream
+			GZIPOutputStream
+			ZipOutputStream
+
+character-based I/O
+1char=16bit unicode
+	Reader
+		InputStreamReader
+		FileReader
+		BufferedReader
+		LineNumberReader
+		CharArrayReader
+		PipedReader
+		StringReader
+		FilterReader
+			PushbackReader
+
+	Writer
+		BufferedWriter
+		CharArrayWriter
+		FilterWriter
+		PipedWriter
+		PrintWriter
+		OutputStreamWriter
+		FileWriter
+		StringWriter
+
+Block IO

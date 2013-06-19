@@ -84,10 +84,17 @@
 			<version>${log4j.version}</version>
 			<!--<scope>runtime</scope> -->
 		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- aop -->
@@ -96,11 +103,23 @@
 			<artifactId>javassist</artifactId>
 			<version>3.16.1-GA</version>
 		</dependency>
+<<<<<<< HEAD
 		
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 			<version>3.0</version>
+=======
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.0</version>		
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-util</artifactId>
+			<version>4.0</version>
+>>>>>>> ioo
 		</dependency>
 	</dependencies>
 </project>
