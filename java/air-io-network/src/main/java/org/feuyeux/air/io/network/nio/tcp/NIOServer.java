@@ -1,5 +1,6 @@
-package creative.air.io.tcpnio;
+package org.feuyeux.air.io.network.nio.tcp;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.ByteBuffer;
@@ -9,20 +10,28 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
+import org.apache.log4j.Logger;
 import org.feuyeux.air.io.network.AirIO;
 
-
 public class NIOServer {
+	private final static Logger logger = Logger.getLogger(NIOServer.class);
+	final Selector selector;
+	final ServerSocket serverSocket;
+	final int port;
 
-	public static void main(String[] args) throws Exception {
-		Selector selector = Selector.open();
+	public NIOServer(int port) throws IOException {
+		super();
+		this.port = port;
+		selector = Selector.open();
 		ServerSocketChannel ssc = ServerSocketChannel.open();
-		ServerSocket serverSocket = ssc.socket();
-		serverSocket.bind(new InetSocketAddress(AirIO.NIO_TCP_PORT));
-		System.out.println("Server listen on port: " + AirIO.NIO_TCP_PORT);
 		ssc.configureBlocking(false);
 		ssc.register(selector, SelectionKey.OP_ACCEPT);
+		this.serverSocket = ssc.socket();
+		serverSocket.bind(new InetSocketAddress(this.port));
+		initialize();
+	}
 
+	private void initialize() throws IOException {
 		while (true) {
 			final long timeout = 1000; // milliseconds
 			int nKeys = selector.select(timeout);
@@ -34,7 +43,7 @@ public class NIOServer {
 						if (socketChannel == null) {
 							continue;
 						}
-						System.out.println("the remote port connected: " + socketChannel.socket().getPort());
+						logger.info("the remote port connected: " + socketChannel.socket().getPort());
 
 						boolean blocking = false;
 						socketChannel.configureBlocking(blocking); //blocking default value is true
@@ -67,11 +76,11 @@ public class NIOServer {
 							}
 						}
 						if (readBytes > 0) {
-							System.out.println("Message from client: " + message);
+							logger.info("Message from client: " + message);
 							if ("quit".equalsIgnoreCase(message.trim())) {
 								channel.close();
 								selector.close();
-								System.out.println("Server has been shutdown!");
+								logger.info("Server has been shutdown!");
 								System.exit(0);
 							}
 							String outMessage = "Server response: " + message;
@@ -82,5 +91,9 @@ public class NIOServer {
 				selector.selectedKeys().clear();
 			}
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		new NIOServer(AirIO.NIO_TCP_PORT);
 	}
 }

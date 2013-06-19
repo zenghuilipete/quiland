@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 
 public interface AirIO {
 	final String SERVER_IP = "127.0.0.1";//"192.168.225.166";
-	final int BIO_TCP_PORT = 9109;
+	final int BIO_TCP_PORT = 19191;
 	final int NIO_TCP_PORT = 9119;
 	final int BIO_UDP_PORT_0 = 9129;
 	final int BIO_UDP_PORT_1 = 9219;

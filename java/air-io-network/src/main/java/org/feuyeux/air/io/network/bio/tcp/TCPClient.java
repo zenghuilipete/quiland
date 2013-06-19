@@ -26,19 +26,49 @@ public class TCPClient {
 		writer = new PrintWriter(socket.getOutputStream(), true);
 	}
 
-	public String send(String message) throws IOException {
+	public String sendMessage(String message) throws IOException {
+		if (message.isEmpty())
+			return "";
+		String result = null;
 		try {
 			writer.println(message);
-			return reader.readLine();
+			writer.flush();
+			return result = reader.readLine();
 		} catch (Exception e) {
 			logger.error(e);
 			return "";
 		} finally {
-			logger.info("Client quit!");
-			writer.println(AirIO.QUIT);
-			writer.close();
-			reader.close();
-			socket.close();
+			if (result == null)
+				close();
 		}
+	}
+
+	public void readIn() throws IOException {
+		boolean flag = true;
+		BufferedReader systemIn = new BufferedReader(new InputStreamReader(System.in));
+		while (flag) {
+			String command = systemIn.readLine();
+			if (command == null || AirIO.QUIT.equalsIgnoreCase(command.trim())) {
+				flag = false;
+				close();
+				continue;
+			}
+			String result = sendMessage(command);
+			if (!result.isEmpty())
+				logger.info(result);
+		}
+	}
+
+	public void close() throws IOException {
+		logger.info("Client quit!");
+		writer.println(AirIO.QUIT);
+		writer.close();
+		reader.close();
+		socket.close();
+	}
+
+	public static void main(String[] args) throws Exception {
+		TCPClient client = new TCPClient(AirIO.SERVER_IP, AirIO.BIO_TCP_PORT);
+		client.readIn();
 	}
 }

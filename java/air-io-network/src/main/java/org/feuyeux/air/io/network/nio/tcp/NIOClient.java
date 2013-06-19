@@ -1,6 +1,7 @@
-package creative.air.io.tcpnio;
+package org.feuyeux.air.io.network.nio.tcp;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -10,17 +11,30 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
+import org.apache.log4j.Logger;
 import org.feuyeux.air.io.network.AirIO;
 
-
 public class NIOClient {
-	public static void main(String[] args) throws Exception {
-		SocketChannel channel = SocketChannel.open();
+	private final static Logger logger = Logger.getLogger(NIOClient.class);
+	final Selector selector;
+	final SocketChannel channel;
+	final String host;
+	final int port;
+	boolean blocking = false;
+
+	public NIOClient(String host, int port) throws IOException {
+		super();
+		this.host = host;
+		this.port = port;
+		channel = SocketChannel.open();
 		channel.configureBlocking(false);
-		SocketAddress target = new InetSocketAddress(AirIO.SERVER_IP, AirIO.NIO_TCP_PORT);
+		SocketAddress target = new InetSocketAddress(this.host, this.port);
 		channel.connect(target);
-		Selector selector = Selector.open();
+		selector = Selector.open();
 		channel.register(selector, SelectionKey.OP_CONNECT);
+	}
+
+	public void readIn() throws IOException {
 		BufferedReader systemIn = new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
 			if (channel.isConnected()) {
@@ -29,7 +43,7 @@ public class NIOClient {
 					systemIn.close();
 					channel.close();
 					selector.close();
-					System.out.println("Client quit!");
+					logger.info("Client quit!");
 					System.exit(0);
 				} else {
 					channel.write(Charset.forName("UTF-8").encode(command));
@@ -42,10 +56,7 @@ public class NIOClient {
 				for (SelectionKey key : selector.selectedKeys()) {
 					if (key.isConnectable()) {
 						SocketChannel socketChannel = (SocketChannel) key.channel();
-
-						boolean blocking = false;
-						socketChannel.configureBlocking(blocking); // blocking default value is
-																	// true
+						socketChannel.configureBlocking(blocking); //default true
 						socketChannel.register(selector, SelectionKey.OP_READ);
 						socketChannel.finishConnect();
 					} else if (key.isReadable()) {
@@ -62,7 +73,7 @@ public class NIOClient {
 								buffer.flip();
 							}
 							if (readBytes > 0) {
-								System.out.println(Charset.forName("UTF-8").decode(buffer).toString());
+								logger.info(Charset.forName("UTF-8").decode(buffer).toString());
 								buffer = null;
 							}
 						} finally {
@@ -75,5 +86,10 @@ public class NIOClient {
 				selector.selectedKeys().clear();
 			}
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		NIOClient client = new NIOClient(AirIO.SERVER_IP, AirIO.NIO_TCP_PORT);
+		client.readIn();
 	}
 }

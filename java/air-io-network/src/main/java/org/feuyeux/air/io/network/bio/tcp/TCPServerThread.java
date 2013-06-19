@@ -11,7 +11,7 @@ import org.feuyeux.air.io.network.AirIO;
 
 public class TCPServerThread implements Runnable {
 	private final static Logger logger = Logger.getLogger(TCPServerThread.class);
-	
+
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -35,11 +35,11 @@ public class TCPServerThread implements Runnable {
 					in.close();
 					out.close();
 					logger.info("Socket Server Thread has been shutdown!");
+					Thread.sleep(100);
 					System.exit(0);
 				} else {
 					logger.info("Message from client: " + line);
 					out.println("Server response： " + line);
-					Thread.sleep(100);
 				}
 			}
 		} catch (Exception e) {

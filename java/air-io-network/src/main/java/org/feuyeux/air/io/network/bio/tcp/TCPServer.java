@@ -21,10 +21,10 @@ public class TCPServer {
 		this.port = port;
 		this.serverSocket = new ServerSocket(this.port);
 		e = Executors.newFixedThreadPool(AirIO.FixThreadNumber);
-		start();
+		initialize();
 	}
 
-	private void start() throws IOException {
+	private void initialize() throws IOException {
 		try {
 			while (true) {
 				Socket socket = serverSocket.accept();
@@ -36,8 +36,14 @@ public class TCPServer {
 					socket.close();
 				}
 			}
+		} catch (IOException e) {
+			logger.error(e);
 		} finally {
 			serverSocket.close();
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		new TCPServer(AirIO.BIO_TCP_PORT);
 	}
 }
