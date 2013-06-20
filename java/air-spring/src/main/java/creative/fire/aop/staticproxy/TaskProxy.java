@@ -4,17 +4,18 @@ import creative.fire.aop.ITask;
 import creative.fire.aop.Task;
 
 public class TaskProxy implements ITask {
-	private Task	task;
+	private Task task;
 
 	public TaskProxy(Task task) {
 		this.task = task;
 	}
 
 	@Override
-	public void go() {
+	public long go() {
 		System.out.println("before");
-		task.go();
+		long r = task.go();
 		System.out.println("after");
+		return r;
 	}
 
 	public static void main(String[] args) {

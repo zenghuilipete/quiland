@@ -45,9 +45,12 @@ public class Process {
 
 		//  replace the body of the interceptor method with generated
 		//  code block and add it to class
-		newMethod.setBody(body.toString());
+		String methodBody = body.toString();
+		System.out.println(methodBody);
+		newMethod.setBody(methodBody);
 		ctClass.addMethod(newMethod);
 		Task t = (Task) ctClass.toClass().newInstance();
-		t.go();
+		long r = t.go();
+		System.out.println("result=" + r);
 	}
 }

@@ -16,13 +16,6 @@ import creative.air.spring.VMDevice;
 public class AnnotationIocTest {
 	@Autowired
 	@Qualifier("arch")
-<<<<<<< HEAD
-	private ArchServer archServer;
-
-	@Test
-	public void testPlaying() {
-		assertNotNull(archServer.playing());
-=======
 	private VMDevice	device1;
 
 	@Autowired
@@ -33,6 +26,5 @@ public class AnnotationIocTest {
 	public void shouldWireWithAutowire() {
 		assertNotNull(device1.playing());
 		assertNotNull(device2.playing());
->>>>>>> ioo
 	}
 }
