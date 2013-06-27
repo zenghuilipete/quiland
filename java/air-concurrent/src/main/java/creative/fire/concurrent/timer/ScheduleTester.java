@@ -19,6 +19,7 @@ public class ScheduleTester {
 
 		// Schedule the event, and run for 1 hour (60 * 60 seconds)
 		scheduler.schedule(new Runnable() {
+			@Override
 			public void run() {
 				timeHandle.cancel(false);
 			}
@@ -38,6 +39,7 @@ class TimePrinter implements Runnable {
 		this.out = out;
 	}
 
+	@Override
 	public void run() {
 		out.printf("Current time: %tr%n", new Date());
 	}

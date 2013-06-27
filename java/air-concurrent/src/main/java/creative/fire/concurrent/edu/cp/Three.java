@@ -1,6 +1,6 @@
 package creative.fire.concurrent.edu.cp;
 
-import java.util.concurrent.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Three {
 	private LinkedBlockingQueue<Object> queue = new LinkedBlockingQueue<Object>(10);
@@ -20,12 +20,14 @@ public class Three {
 	}
 
 	class Producer extends Thread {
+		@Override
 		public void run() {
 			while (true) {
 				// synchronized(this){
 				try {
-					if (queue.size() == MAX)
+					if (queue.size() == MAX) {
 						System.out.println("warning: it's full!");
+					}
 					Object o = new Object();
 					queue.put(o);
 					System.out.println("Producer: " + o);
@@ -38,12 +40,14 @@ public class Three {
 	}
 
 	class Consumer extends Thread {
+		@Override
 		public void run() {
 			while (true) {
 				// synchronized(this){
 				try {
-					if (queue.size() == 0)
+					if (queue.size() == 0) {
 						System.out.println("warning: it's empty!");
+					}
 					Object o = queue.take();
 					System.out.println("Consumer: " + o);
 				} catch (InterruptedException e) {

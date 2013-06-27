@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<name>Air Concurrent Project</name>
 	<properties>
-		<junit.version>4.10</junit.version>
+		<junit.version>4.11</junit.version>
 	</properties>
 
 	<dependencies>

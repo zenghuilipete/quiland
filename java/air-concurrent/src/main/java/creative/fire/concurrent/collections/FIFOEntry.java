@@ -16,10 +16,12 @@ class FIFOEntry<E extends Comparable<? super E>> implements Comparable<FIFOEntry
 		return entry;
 	}
 
+	@Override
 	public int compareTo(FIFOEntry<E> other) {
 		int res = entry.compareTo(other.entry);
-		if (res == 0 && other.entry != this.entry)
-			res = (seqNum < other.seqNum ? -1 : 1);
+		if (res == 0 && other.entry != this.entry) {
+			res = seqNum < other.seqNum ? -1 : 1;
+		}
 		return res;
 	}
 }

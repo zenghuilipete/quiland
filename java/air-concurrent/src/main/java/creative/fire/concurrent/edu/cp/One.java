@@ -20,9 +20,10 @@ public class One {
 	}
 
 	class Producer extends Thread {
+		@Override
 		public void run() {
 			while (true) {
-				synchronized (myList) {	
+				synchronized (myList) {
 					try {
 						while (myList.size() == MAX) {
 							System.out.println("warning: it's full!");
@@ -42,6 +43,7 @@ public class One {
 	}
 
 	class Consumer extends Thread {
+		@Override
 		public void run() {
 			while (true) {
 				synchronized (myList) {

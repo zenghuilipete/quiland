@@ -28,6 +28,7 @@ public class Test1 {
 	}
 
 	class Inc implements Runnable {
+		@Override
 		public void run() {
 			for (int i = 0; i < 100; i++) {
 				inc();
@@ -36,6 +37,7 @@ public class Test1 {
 	}
 
 	class Dec implements Runnable {
+		@Override
 		public void run() {
 			for (int i = 0; i < 100; i++) {
 				dec();

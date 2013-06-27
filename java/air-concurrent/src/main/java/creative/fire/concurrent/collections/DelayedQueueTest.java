@@ -46,29 +46,33 @@ public class DelayedQueueTest {
 			return this.item;
 		}
 
+		@Override
 		public long getDelay(TimeUnit unit) {
 			long d = unit.convert(time - now(), TimeUnit.NANOSECONDS);
 			return d;
 		}
 
+		@Override
 		public int compareTo(Delayed other) {
-			if (other == this) // compare zero ONLY if same object
+			if (other == this) {
 				return 0;
+			}
 			if (other instanceof DelayItem) {
 				@SuppressWarnings("rawtypes")
 				DelayItem x = (DelayItem) other;
 				long diff = time - x.time;
-				if (diff < 0)
+				if (diff < 0) {
 					return -1;
-				else if (diff > 0)
+				} else if (diff > 0) {
 					return 1;
-				else if (sequenceNumber < x.sequenceNumber)
+				} else if (sequenceNumber < x.sequenceNumber) {
 					return -1;
-				else
+				} else {
 					return 1;
+				}
 			}
-			long d = (getDelay(TimeUnit.NANOSECONDS) - other.getDelay(TimeUnit.NANOSECONDS));
-			return (d == 0) ? 0 : ((d < 0) ? -1 : 1);
+			long d = getDelay(TimeUnit.NANOSECONDS) - other.getDelay(TimeUnit.NANOSECONDS);
+			return d == 0 ? 0 : d < 0 ? -1 : 1;
 		}
 	}
 
@@ -82,6 +86,7 @@ public class DelayedQueueTest {
 		public Cache() {
 
 			Runnable daemonTask = new Runnable() {
+				@Override
 				public void run() {
 					daemonCheck();
 				}
@@ -118,8 +123,9 @@ public class DelayedQueueTest {
 		// 添加缓存对象
 		public void put(K key, V value, long time, TimeUnit unit) {
 			V oldValue = cacheObjMap.put(key, value);
-			if (oldValue != null)
+			if (oldValue != null) {
 				q.remove(key);
+			}
 
 			long nanoTime = TimeUnit.NANOSECONDS.convert(time, unit);
 			q.put(new DelayItem<Pair<K, V>>(new Pair<K, V>(key, value), nanoTime));

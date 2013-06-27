@@ -6,8 +6,9 @@ package creative.fire.concurrent.edu.cp;
  */
 
 import java.util.LinkedList;
-
-import java.util.concurrent.locks.*;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Two {
 	private LinkedList<Object> myList = new LinkedList<Object>();
@@ -30,6 +31,7 @@ public class Two {
 	}
 
 	class Producer extends Thread {
+		@Override
 		public void run() {
 			while (true) {
 				lock.lock();
@@ -53,6 +55,7 @@ public class Two {
 	}
 
 	class Consumer extends Thread {
+		@Override
 		public void run() {
 			while (true) {
 				lock.lock();

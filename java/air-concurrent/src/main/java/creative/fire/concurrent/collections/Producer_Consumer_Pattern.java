@@ -22,6 +22,7 @@ class Producer implements Runnable {
 		queue = q;
 	}
 
+	@Override
 	public void run() {
 		try {
 			while (true) {
@@ -44,6 +45,7 @@ class Consumer implements Runnable {
 		queue = q;
 	}
 
+	@Override
 	public void run() {
 		try {
 			while (true) {

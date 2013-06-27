@@ -9,6 +9,7 @@ Synchronized用于线程间的数据共享，而ThreadLocal则用于线程间的
 
 public class TestThreadLocal extends Thread {
 	private static ThreadLocal<String> id = new ThreadLocal<String>() {
+		@Override
 		protected synchronized String initialValue() {
 			return null;
 		}
@@ -30,8 +31,9 @@ public class TestThreadLocal extends Thread {
 
 	public static String nextId() {
 		try {
-			if (id.get() != null)
+			if (id.get() != null) {
 				return id.get();
+			}
 			id.set(System.nanoTime() + "");
 			return id.get();
 		} catch (Exception e) {
@@ -40,9 +42,10 @@ public class TestThreadLocal extends Thread {
 		return null;
 	}
 
+	@Override
 	public void run() {
 		for (int i = 0; i < 3; i++) {
-			System.out.println("thread_" + this.getName() + "[" + Thread.currentThread().getName() + ": " + nextId() + "]");
+			System.out.println("thread_" + getName() + "[" + Thread.currentThread().getName() + ": " + nextId() + "]");
 		}
 	}
 

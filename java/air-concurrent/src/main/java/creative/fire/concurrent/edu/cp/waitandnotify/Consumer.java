@@ -12,6 +12,7 @@ public class Consumer extends Thread {
 		this.list = list;
 	}
 
+	@Override
 	public void run() {
 		while (true) {
 			synchronized (list) {

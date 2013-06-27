@@ -7,6 +7,11 @@ package creative.air.datastructure.array;
  */
 public class UnderflowException extends RuntimeException {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8621599123196226973L;
+
+	/**
 	 * Construct this exception object.
 	 * 
 	 * @param message

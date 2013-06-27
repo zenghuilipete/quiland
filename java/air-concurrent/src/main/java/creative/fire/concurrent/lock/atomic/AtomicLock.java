@@ -1,11 +1,12 @@
 package creative.fire.concurrent.lock.atomic;
+
 import java.util.concurrent.atomic.AtomicLongArray;
 
-public class AtomicLock implements Runnable{
+public class AtomicLock implements Runnable {
 	private final long d[];
 	private final AtomicLongArray a;
-    	private int a_size;
-    
+	private int a_size;
+
 	public AtomicLock(int size) {
 		a_size = size;
 		d = new long[size];
@@ -22,10 +23,10 @@ public class AtomicLock implements Runnable{
 		//System.out.println(Thread.currentThread()+" Get:" + ret);
 		return ret;
 	}
-  
+
 	public void set2(int idx, long val) {
 		//System.out.println(Thread.currentThread()+" Set:" + val);
-		a.addAndGet(idx, val);  
+		a.addAndGet(idx, val);
 	}
 
 	public long get2(int idx) {
@@ -33,18 +34,17 @@ public class AtomicLock implements Runnable{
 		//System.out.println(Thread.currentThread()+" Get:" + ret);
 		return ret;
 	}
-	
-	public void run()
-	{
-		for (int i=0; i<a_size; i++)
-		{    
+
+	@Override
+	public void run() {
+		for (int i = 0; i < a_size; i++) {
 			//The slower operations
 			//set1(i, i);
 			//get1(i);
-			
+
 			//The quicker operations
 			set2(i, i);
 			get2(i);
 		}
-	}	
+	}
 }
