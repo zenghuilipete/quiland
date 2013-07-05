@@ -15,7 +15,7 @@ public class Client {
 			readLine(socket);
 		} catch (UnknownHostException e) {
 		} catch (IOException e) {
-		} catch (InterruptedException e) {			
+		} catch (InterruptedException e) {
 		}
 	}
 

@@ -14,7 +14,6 @@ import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactor
 import org.apache.mina.transport.socket.nio.SocketConnector;
 import org.feuyeux.air.io.network.AirIO;
 
-
 public class Client {
 
 	public static void main(String[] args) throws Exception {

@@ -10,7 +10,6 @@ import java.util.EnumSet;
 
 import org.feuyeux.air.io.network.AirIO;
 
-
 /**
 *
 * @author feuyeux@gmail.com 2012-06-06

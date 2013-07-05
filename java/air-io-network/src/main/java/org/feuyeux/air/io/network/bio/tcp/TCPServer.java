@@ -19,7 +19,7 @@ public class TCPServer {
 	public TCPServer(int port) throws IOException {
 		super();
 		this.port = port;
-		this.serverSocket = new ServerSocket(this.port);
+		serverSocket = new ServerSocket(this.port);
 		e = Executors.newFixedThreadPool(AirIO.FixThreadNumber);
 		initialize();
 	}

@@ -6,9 +6,9 @@ import java.net.InetAddress;
 
 import org.feuyeux.air.io.network.AirIO;
 
-
 public class Server {
 	private static DatagramSocket client;
+
 	public static void main(String[] args) throws Exception {
 		DatagramSocket server = new DatagramSocket(AirIO.BIO_UDP_PORT_1);
 		client = new DatagramSocket();

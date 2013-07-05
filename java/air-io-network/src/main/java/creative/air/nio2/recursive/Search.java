@@ -46,7 +46,7 @@ public class Search implements FileVisitor<Path> {
 
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-		search((Path) file);
+		search(file);
 		if (!found) {
 			return FileVisitResult.CONTINUE;
 		} else {

@@ -8,19 +8,19 @@ public class SendingNotification extends Thread {
 	private Socket socket;
 
 	public SendingNotification(String confId_sdId, Socket socket) {
-		this.id = confId_sdId;
+		id = confId_sdId;
 		this.socket = socket;
 	}
 
 	@Override
 	public void run() {
 		Helper.getInstance().add(id);
-		
+
 		OutputStream outputStream = null;
 		byte[] buffer = new byte[1024];
 		try {
 			outputStream = socket.getOutputStream();
-			buffer = (id+"\n").getBytes();
+			buffer = (id + "\n").getBytes();
 			outputStream.write(buffer);
 			outputStream.flush();
 		} catch (Exception e) {

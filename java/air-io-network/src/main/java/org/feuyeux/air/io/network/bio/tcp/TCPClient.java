@@ -21,14 +21,15 @@ public class TCPClient {
 		super();
 		this.host = host;
 		this.port = port;
-		this.socket = new Socket(this.host, this.port);
+		socket = new Socket(this.host, this.port);
 		reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		writer = new PrintWriter(socket.getOutputStream(), true);
 	}
 
 	public String sendMessage(String message) throws IOException {
-		if (message.isEmpty())
+		if (message.isEmpty()) {
 			return "";
+		}
 		String result = null;
 		try {
 			writer.println(message);
@@ -38,8 +39,9 @@ public class TCPClient {
 			logger.error(e);
 			return "";
 		} finally {
-			if (result == null)
+			if (result == null) {
 				close();
+			}
 		}
 	}
 
@@ -54,8 +56,9 @@ public class TCPClient {
 				continue;
 			}
 			String result = sendMessage(command);
-			if (!result.isEmpty())
+			if (!result.isEmpty()) {
 				logger.info(result);
+			}
 		}
 	}
 

@@ -16,6 +16,7 @@ public class Helper {
 	private Schedule addTask(final String id) {
 		final Schedule schedule = new Schedule();
 		schedule.schedule(new Runnable() {
+			@Override
 			public void run() {
 				doNext(id);
 				schedule.shutdown();
@@ -38,9 +39,9 @@ public class Helper {
 
 	public void remove(final String id) {
 		Schedule schedule = cache.remove(id);
-		if (schedule == null)
+		if (schedule == null) {
 			System.out.println("no schedule exist.");
-		else {
+		} else {
 			schedule.shutdown();
 			System.out.println("Remove to cache successfully");
 		}

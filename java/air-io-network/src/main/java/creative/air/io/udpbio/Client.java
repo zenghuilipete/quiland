@@ -8,9 +8,9 @@ import java.net.InetAddress;
 
 import org.feuyeux.air.io.network.AirIO;
 
-
 public class Client {
 	private static DatagramSocket serverSocket;
+
 	public static void main(String[] args) throws Exception {
 		serverSocket = new DatagramSocket(AirIO.BIO_UDP_PORT_0);
 		byte[] buffer = new byte[65507];

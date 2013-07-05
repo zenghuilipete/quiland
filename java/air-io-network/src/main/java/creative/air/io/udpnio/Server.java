@@ -11,7 +11,6 @@ import java.nio.charset.Charset;
 
 import org.feuyeux.air.io.network.AirIO;
 
-
 public class Server {
 	public static void main(String[] args) throws Exception {
 		DatagramChannel sendChannel = DatagramChannel.open();

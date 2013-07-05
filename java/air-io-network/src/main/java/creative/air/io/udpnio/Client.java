@@ -13,7 +13,6 @@ import java.nio.charset.Charset;
 
 import org.feuyeux.air.io.network.AirIO;
 
-
 public class Client {
 	public static void main(String[] args) throws Exception {
 		DatagramChannel receiveChannel = DatagramChannel.open();

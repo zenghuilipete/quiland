@@ -26,7 +26,7 @@ public class NIOServer {
 		ServerSocketChannel ssc = ServerSocketChannel.open();
 		ssc.configureBlocking(false);
 		ssc.register(selector, SelectionKey.OP_ACCEPT);
-		this.serverSocket = ssc.socket();
+		serverSocket = ssc.socket();
 		serverSocket.bind(new InetSocketAddress(this.port));
 		initialize();
 	}

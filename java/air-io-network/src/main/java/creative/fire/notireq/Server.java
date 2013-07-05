@@ -8,7 +8,7 @@ public class Server {
 		final String id = "100";
 		ServerSocket serverSocket = new ServerSocket(IO.BIO_TCP_PORT);
 		System.out.println("Server is listening on port: " + IO.BIO_TCP_PORT);
-		
+
 		Socket socket = null;
 		try {
 			socket = serverSocket.accept();
@@ -18,8 +18,8 @@ public class Server {
 
 		SendingNotification sender = new SendingNotification(id, socket);
 		sender.start();
-		
-		ReceivingRequest receiver=new ReceivingRequest(socket);
+
+		ReceivingRequest receiver = new ReceivingRequest(socket);
 		receiver.start();
 	}
 }

@@ -17,4 +17,6 @@ public interface AirIO {
 	final Path TO = Paths.get("C:/1_copy");
 	final String QUIT = "quit";
 	final int FixThreadNumber = 5;
+	final String CHAR_SET = "UTF-8";
+	final int BYTES_SIZE = 1024;
 }
