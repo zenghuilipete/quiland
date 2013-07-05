@@ -1,17 +1,14 @@
 package creative.fire.pattern.command;
 
 public class Client {
-	public static void main(String[] args) {
-		Receiver receiver = new Receiver();
-		Command command = new ConcreteCommand(receiver);
-		Invoker invoker = new Invoker(command);
+    private Invoker invoker;
 
-		invoker.action();
-	}
+    public Client() {
+        Command command = new ConcreteCommand(new Receiver());
+        invoker = new Invoker(command);
+    }
 
-	/** @link dependency */
-	/* #Receiver lnkReceiver; */
-
-	/** @link dependency */
-	/* #Invoker lnkInvoker; */
+    public void action() {
+        invoker.action();
+    }
 }
