@@ -13,3 +13,5 @@ Desktop.ini
 .DS_Store
 *.zip
 *.*~
+.idea/
+*.iml
