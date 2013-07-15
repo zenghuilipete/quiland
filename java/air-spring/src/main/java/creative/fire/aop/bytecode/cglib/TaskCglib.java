@@ -28,7 +28,7 @@ public class TaskCglib implements MethodInterceptor {
 
 	public static void main(String[] args) {
 		TaskCglib cglib = new TaskCglib();
-		Task task = (Task) cglib.getInstance(new Task());
+		Task task = (Task) cglib.getInstance(new Task()); //sub-class
 		task.go();
 	}
 }

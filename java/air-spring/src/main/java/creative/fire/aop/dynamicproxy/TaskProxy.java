@@ -10,7 +10,7 @@ import creative.fire.aop.Task;
 public class TaskProxy {
 	public static void main(String[] args) throws Exception {
 		TaskHandler handler = new TaskHandler();
-		ITask taskProxy = (ITask) handler.bind(new Task());
+		ITask taskProxy = (ITask) handler.bind(new Task());//interface proxy-class
 		taskProxy.go();
 	}
 }
