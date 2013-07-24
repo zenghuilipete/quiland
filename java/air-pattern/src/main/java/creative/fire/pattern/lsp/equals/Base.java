@@ -17,14 +17,16 @@ public class Base {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
+		}
 
-		if ((obj == null) || (obj.getClass() != this.getClass()))
+		if (obj == null || obj.getClass() != this.getClass()) {
 			return false;
+		}
 
 		Base other = (Base) obj;
-		return this.x == other.x && this.y == other.y;
+		return x == other.x && y == other.y;
 	}
 
 	@Override

@@ -17,14 +17,16 @@ public final class FinalBase {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
+		}
 
-		if ((obj == null) || !(obj instanceof FinalBase))
+		if (obj == null || !(obj instanceof FinalBase)) {
 			return false;
+		}
 
 		FinalBase other = (FinalBase) obj;
-		return this.x == other.x && this.y == other.y;
+		return x == other.x && y == other.y;
 
 	}
 

@@ -4,7 +4,7 @@ public class DotCallback implements CallbackObserver {
 
 	@Override
 	public void notify(ExecuteObservable executor) {
-		System.out.println("...\t" +executor.getInfo());
-		
+		System.out.println("...\t" + executor.getInfo());
+
 	}
 }

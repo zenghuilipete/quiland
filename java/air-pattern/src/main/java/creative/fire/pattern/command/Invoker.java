@@ -1,8 +1,9 @@
 package creative.fire.pattern.command;
 
 public class Invoker {
-    private Command command;
-    public Invoker(Command command) {
+	private Command command;
+
+	public Invoker(Command command) {
 		this.command = command;
 	}
 

@@ -8,8 +8,8 @@ package creative.fire.pattern.command;
  * To change this template use File | Settings | File Templates.
  */
 public class Main {
-    public static void main(String[] args) {
-        Client c=new Client();
-        c.action();
-    }
+	public static void main(String[] args) {
+		Client c = new Client();
+		c.action();
+	}
 }
