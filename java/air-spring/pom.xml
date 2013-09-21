@@ -9,14 +9,14 @@
 	<name>Air SPRING Project</name>
 
 	<properties>
+        <spring.version>3.2.4.RELEASE</spring.version>
 		<junit.version>4.11</junit.version>
-		<spring.version>3.2.3.RELEASE</spring.version>
 		<slf4j.version>1.4.3</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
-		<compiler.source.version>1.6</compiler.source.version>
-		<compiler.target.version>1.6</compiler.target.version>
+		<compiler.source.version>1.7</compiler.source.version>
+		<compiler.target.version>1.7</compiler.target.version>
 	</properties>
 
 	<build>
@@ -51,19 +51,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
+			<artifactId>spring-aspects</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-Web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
+	
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>

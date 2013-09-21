@@ -1,0 +1,63 @@
+AirClient$$EnhancerByCGLIB$$f5f9edc4(AirClient).<init>() line: 16	
+AirClient$$EnhancerByCGLIB$$f5f9edc4.<init>() line: not available	
+NativeConstructorAccessorImpl.newInstance0(Constructor, Object[]) line: not available [native method]	
+NativeConstructorAccessorImpl.newInstance(Object[]) line: 57	
+DelegatingConstructorAccessorImpl.newInstance(Object[]) line: 45	
+Constructor<T>.newInstance(Object...) line: 526	
+ReflectUtils.newInstance(Constructor, Object[]) line: 228	
+ReflectUtils.newInstance(Class, Class[], Object[]) line: 220	
+ReflectUtils.newInstance(Class) line: 216	
+Enhancer.createUsingReflection(Class) line: 643	
+Enhancer.firstInstance(Class) line: 538	
+Enhancer(AbstractClassGenerator).create(Object) line: 225	
+Enhancer.createHelper() line: 377	
+Enhancer.create() line: 285	
+CglibAopProxy.getProxy(ClassLoader) line: 205	
+ProxyFactory.getProxy(ClassLoader) line: 111	
+	return createAopProxy().getProxy(classLoader);
+AnnotationAwareAspectJAutoProxyCreator(AbstractAutoProxyCreator).createProxy(Class<?>, String, Object[], TargetSource) line: 477	
+AnnotationAwareAspectJAutoProxyCreator(AbstractAutoProxyCreator).wrapIfNecessary(Object, String, Object) line: 362	
+AnnotationAwareAspectJAutoProxyCreator(AbstractAutoProxyCreator).postProcessAfterInitialization(Object, String) line: 322	
+DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).applyBeanPostProcessorsAfterInitialization(Object, String) line: 409	
+DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).initializeBean(String, Object, RootBeanDefinition) line: 1488	
+DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).doCreateBean(String, RootBeanDefinition, Object[]) line: 521	
+DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).createBean(String, RootBeanDefinition, Object[]) line: 458	
+AbstractBeanFactory$1.getObject() line: 295	
+DefaultListableBeanFactory(DefaultSingletonBeanRegistry).getSingleton(String, ObjectFactory) line: 223	
+DefaultListableBeanFactory(AbstractBeanFactory).doGetBean(String, Class<T>, Object[], boolean) line: 292	
+DefaultListableBeanFactory(AbstractBeanFactory).getBean(String) line: 194	
+DefaultListableBeanFactory.preInstantiateSingletons() line: 628	
+GenericApplicationContext(AbstractApplicationContext).finishBeanFactoryInitialization(ConfigurableListableBeanFactory) line: 932	
+GenericApplicationContext(AbstractApplicationContext).refresh() line: 479	
+
+GenericXmlContextLoader(AbstractGenericContextLoader).loadContext(MergedContextConfiguration) line: 120	
+GenericXmlContextLoader(AbstractGenericContextLoader).loadContext(MergedContextConfiguration) line: 60	
+AbstractDelegatingSmartContextLoader.delegateLoading(SmartContextLoader, MergedContextConfiguration) line: 100	
+DelegatingSmartContextLoader(AbstractDelegatingSmartContextLoader).loadContext(MergedContextConfiguration) line: 248	
+CacheAwareContextLoaderDelegate.loadContextInternal(MergedContextConfiguration) line: 64	
+CacheAwareContextLoaderDelegate.loadContext(MergedContextConfiguration) line: 91	
+TestContext.getApplicationContext() line: 122	
+DependencyInjectionTestExecutionListener.injectDependencies(TestContext) line: 109	
+DependencyInjectionTestExecutionListener.prepareTestInstance(TestContext) line: 75	
+TestContextManager.prepareTestInstance(Object) line: 312	
+SpringJUnit4ClassRunner.createTest() line: 211	
+SpringJUnit4ClassRunner$1.runReflectiveCall() line: 288	
+SpringJUnit4ClassRunner$1(ReflectiveCallable).run() line: 12	
+SpringJUnit4ClassRunner.methodBlock(FrameworkMethod) line: 284	
+SpringJUnit4ClassRunner.runChild(FrameworkMethod, RunNotifier) line: 231	
+SpringJUnit4ClassRunner.runChild(Object, RunNotifier) line: 88	
+ParentRunner$3.run() line: 238	
+ParentRunner$1.schedule(Runnable) line: 63	
+SpringJUnit4ClassRunner(ParentRunner<T>).runChildren(RunNotifier) line: 236	
+ParentRunner<T>.access$000(ParentRunner, RunNotifier) line: 53	
+ParentRunner$2.evaluate() line: 229	
+RunBeforeTestClassCallbacks.evaluate() line: 61	
+RunAfterTestClassCallbacks.evaluate() line: 71	
+SpringJUnit4ClassRunner(ParentRunner<T>).run(RunNotifier) line: 309	
+SpringJUnit4ClassRunner.run(RunNotifier) line: 174	
+JUnit4TestClassReference(JUnit4TestReference).run(TestExecution) line: 50	
+TestExecution.run(ITestReference[]) line: 38	
+RemoteTestRunner.runTests(String[], String, TestExecution) line: 467	
+RemoteTestRunner.runTests(TestExecution) line: 683	
+RemoteTestRunner.run() line: 390	
+RemoteTestRunner.main(String[]) line: 197	

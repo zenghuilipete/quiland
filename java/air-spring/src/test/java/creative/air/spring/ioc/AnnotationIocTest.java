@@ -1,5 +1,6 @@
 package creative.air.spring.ioc;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
@@ -9,22 +10,24 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import creative.air.spring.VMDevice;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class AnnotationIocTest {
-	@Autowired
-	@Qualifier("arch")
-	private VMDevice	device1;
+    @Autowired
+    private VMDevice arch;
 
-	@Autowired
-	@Qualifier("ci")
-	private VMDevice	device2;
+    @Autowired
+    @Qualifier("ci")
+    private VMDevice device2;
 
-	@Test
-	public void shouldWireWithAutowire() {
-		assertNotNull(device1.playing());
-		assertNotNull(device2.playing());
-	}
+    @Autowired
+    @Qualifier("client")
+    private AirClient device0;
+
+    @Test
+    public void shouldWireWithAutowired() {
+        assertNotNull(arch.playing());
+        assertNotNull(device2.playing());
+        assertNull(device0.getServerHost());
+    }
 }
