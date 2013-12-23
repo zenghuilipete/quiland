@@ -26,57 +26,57 @@
 ## jmap(Memory Map)##
 打印堆快照
 
-	jmap -J-d64 -heap 3219
-	Attaching to process ID 3219, please wait...
+	jmap -J-d64 -heap 6632
+	Attaching to process ID 6632, please wait...
 	Debugger attached successfully.
 	Server compiler detected.
-	JVM version is 24.45-b08
+	JVM version is 23.25-b01
 	
 	using thread-local object allocation.
-	Parallel GC with 2 thread(s)
+	Parallel GC with 4 thread(s)
 	
 	Heap Configuration:
 	   MinHeapFreeRatio = 40
 	   MaxHeapFreeRatio = 70
-	   MaxHeapSize      = 2063597568 (1968.0MB)
+	   MaxHeapSize      = 1073741824 (1024.0MB)
 	   NewSize          = 1310720 (1.25MB)
 	   MaxNewSize       = 17592186044415 MB
 	   OldSize          = 5439488 (5.1875MB)
 	   NewRatio         = 2
 	   SurvivorRatio    = 8
 	   PermSize         = 21757952 (20.75MB)
-	   MaxPermSize      = 85983232 (82.0MB)
+	   MaxPermSize      = 268435456 (256.0MB)
 	   G1HeapRegionSize = 0 (0.0MB)
 	
 	Heap Usage:
 	PS Young Generation
 	Eden Space:
-	   capacity = 62914560 (60.0MB)
-	   used     = 8781384 (8.374580383300781MB)
-	   free     = 54133176 (51.62541961669922MB)
-	   13.957633972167969% used
+	   capacity = 268500992 (256.0625MB)
+	   used     = 78674424 (75.02977752685547MB)
+	   free     = 189826568 (181.03272247314453MB)
+	   29.301353195745364% used
 	From Space:
-	   capacity = 5242880 (5.0MB)
-	   used     = 5211960 (4.970512390136719MB)
-	   free     = 30920 (0.02948760986328125MB)
-	   99.41024780273438% used
+	   capacity = 44695552 (42.625MB)
+	   used     = 44681512 (42.611610412597656MB)
+	   free     = 14040 (0.01338958740234375MB)
+	   99.96858747823497% used
 	To Space:
-	   capacity = 17825792 (17.0MB)
+	   capacity = 44695552 (42.625MB)
 	   used     = 0 (0.0MB)
-	   free     = 17825792 (17.0MB)
+	   free     = 44695552 (42.625MB)
 	   0.0% used
 	PS Old Generation
-	   capacity = 85983232 (82.0MB)
-	   used     = 34157928 (32.575538635253906MB)
-	   free     = 51825304 (49.424461364746094MB)
-	   39.726266628358424% used
+	   capacity = 715849728 (682.6875MB)
+	   used     = 62830000 (59.91935729980469MB)
+	   free     = 653019728 (622.7681427001953MB)
+	   8.776981752237251% used
 	PS Perm Generation
-	   capacity = 22020096 (21.0MB)
-	   used     = 21904784 (20.890029907226562MB)
-	   free     = 115312 (0.1099700927734375MB)
-	   99.47633289155506% used
+	   capacity = 82706432 (78.875MB)
+	   used     = 82619432 (78.79203033447266MB)
+	   free     = 87000 (0.08296966552734375MB)
+	   99.89480866494156% used
 	
-	11945 interned Strings occupying 1659968 bytes.
+	37117 interned Strings occupying 3662800 bytes.
 
 打印活动的class实例直方图
 
@@ -117,8 +117,42 @@ http://docs.oracle.com/javase/7/docs/technotes/tools/share/jstatd.html
 ## jinfo ##
 打印虚拟机参数值
 
-	jinfo -J-d64 -flag MaxPermSize 3219
-	-XX:MaxPermSize=85983232
+	jinfo -J-d64 -flags 6632
+	Attaching to process ID 6632, please wait...
+	Debugger attached successfully.
+	Server compiler detected.
+	JVM version is 23.25-b01
+	
+	-Dosgi.requiredJavaVersion=1.5 -Xms1024m -Xmx1024m -XX:MaxPermSize=256m
+
+堆初始值
+
+	jinfo -J-d64 -flag InitialHeapSize 6632
+	-XX:InitialHeapSize=1073741824
+堆最大值
+
+	jinfo -J-d64 -flag MaxHeapSize 6632
+	-XX:MaxHeapSize=1073741824
+
+新生代初始值
+
+	jinfo -J-d64 -flag NewSize 6632
+	-XX:NewSize=1310720
+
+新生代最大值
+
+	jinfo -J-d64 -flag MaxNewSize 6632
+	-XX:MaxNewSize=18446744073709486080
+
+永久代初始值
+
+	jinfo -J-d64 -flag PermSize 6632
+	-XX:PermSize=21757952
+
+永久代最大值
+
+	jinfo -J-d64 -flag MaxPermSize 6632
+	-XX:MaxPermSize=268435456
 	
 打印系统环境变量
 
@@ -137,5 +171,3 @@ http://docs.oracle.com/javase/7/docs/technotes/tools/share/jstatd.html
 	java.version = 1.7.0_45
 	java.ext.dirs = /usr/local/aquarius/jdk1.7.0_45/jre/lib/ext:/usr/java/packages/lib/ext
 	common.loader = "${catalina.base}/lib","${catalina.base}/lib/*.jar","${catalina.home}/lib","${catalina.home}/lib/*.jar"
-
-
