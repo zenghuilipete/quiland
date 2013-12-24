@@ -1,12 +1,36 @@
 #### Download ####
 - **[mysql](http://dev.mysql.com/downloads/mysql/ "mysql download")**
 - **[workbench](http://dev.mysql.com/downloads/tools/workbench/ "workbench download")**
+
 #### linux-installation-debian ####
 http://dev.mysql.com/doc/refman/5.6/en/linux-installation-debian.html
-
+#####下载#####
 [mysql-5.6.15-debian6.0-x86_64.deb](http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.15-debian6.0-x86_64.deb)
-####Benchmarking####
 
+#####安装#####
+	sudo apt-get install libaio-dev
+	sudo dpkg -i mysql-5.6.15-debian6.0-x86_64.deb
+
+#####配置#####
+http://dev.mysql.com/doc/refman/5.6/en/binary-installation.html
+
+	sudo groupadd mysql
+	sudo useradd -r -g mysql mysql
+	cd /opt/mysql/server-5.6/
+	sudo mkdir data
+	sudo chown mysql:mysql data
+	sudo mkdir log
+	sudo chown mysql:mysql log
+
+#####配置#####
+	sudo scripts/mysql_install_db --user=mysql --no-defaults
+	sudo cp support-files/my-default.cnf /etc/mysql/my.cnf
+	sudo cp support-files/mysql.server /etc/init.d/mysql.server
+	sudo cp support-files/mysql-log-rotate /etc/logrotate.d/mysql.server
+	sudo service mysql.server start
+	mysqladmin -u root password 'root'
+
+####Benchmarking####
 #####What to Measure#####
 
 - Throughput
