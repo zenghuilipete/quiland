@@ -99,7 +99,6 @@ sudo nano /etc/mysql/my.cnf
 	key_buffer              = 16M
 	
 	sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-	!includedir /etc/mysql/conf.d/
 
 #####启动#####
 	sudo service mysql.server start
