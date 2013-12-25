@@ -53,7 +53,7 @@
 	sudo cp support-files/mysql.server /etc/init.d/mysql.server
 	sudo cp support-files/mysql-log-rotate /etc/logrotate.d/mysql.server
 
-cat /etc/mysql/my.cnf
+sudo nano /etc/mysql/my.cnf
 
 	[client]
 	port            = 3306
@@ -100,7 +100,6 @@ cat /etc/mysql/my.cnf
 	
 	sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 	!includedir /etc/mysql/conf.d/
-	erichan@erichan-OptiPlex-790:~$	
 
 #####启动#####
 	sudo service mysql.server start
