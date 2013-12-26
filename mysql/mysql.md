@@ -116,14 +116,72 @@ sudo nano /etc/mysql/my.cnf
 
 #####单进程多线程#####
 
-查看线程
-	mysql> show engine innodb status \G;
+- 查看线程
+	- IO线程
+	- 主线程
+	- 锁监控线程
+	- 错误监控线程
+	 
+	`mysql> show engine innodb status \G;`
 
-查看引擎版本
-	mysql> show variables like 'innodb_version' \G;
-	*************************** 1. row ***************************
-	Variable_name: innodb_version
-        	Value: 5.6.15
+- 查看引擎版本
+
+	`mysql> show variables like 'innodb_version' \G;`
+
+> 	Variable_name: innodb_version
+> 	Value: 5.6.15
+
+- 内存
+	- 缓冲池
+	- 重做日志缓冲池
+	- 额外内存池
+ 
+	`mysql> show engine innodb status \G;`
+	> BUFFER POOL AND MEMORY
+> 	Total memory allocated 137363456; in additional pool allocated 0
+> 	Dictionary memory allocated 43128
+> 	Buffer pool size   8191
+> 	Free buffers       8043
+> 	Database pages     148
+> 	Old database pages 0
+> 	Modified db pages  0
+> 	Pending reads 0
+> 	Pending writes: LRU 0, flush list 0, single page 0
+> 	Pages made young 0, not young 0
+> 	0.00 youngs/s, 0.00 non-youngs/s
+> 	Pages read 148, created 0, written 1
+> 	0.00 reads/s, 0.00 creates/s, 0.00 writes/s
+> 	No buffer pool page gets since the last printout
+> 	Pages read ahead 0.00/s, evicted without access 0.00/s, Random read ahead 0.00/s
+> 	LRU len: 148, unzip_LRU len: 0
+> 	I/O sum[0]:cur[0], unzip sum[0]:cur[0]
+
+	- Buffer pool size 缓冲池共多少缓存帧 每帧16K
+	- Free buffers 缓冲池空闲帧
+	- Database pages 缓冲池已用帧
+	- Modified db pages 脏页数量
+
+- 文件
+	- 表结构 frm
+	- InnoDB表 ibd
+	- InnoDB表空间 ibdata1...
+	- 重做日志 ib\_logfile0 ib\_logfile1
+
+
+- 表空间
+	- 段 数据段：B+树页节点 索引段：B+树非页节点 回滚段
+	- 区：64个连续页组成 1M
+	- 页：即块 16K
+
+**支持水平分区 行分 不支持垂直分区 列分**
+
+- 索引
+	- B+树：高扇出的平衡查找树
+	- 聚集索引：数据按照主键顺序存放 非物理连续 数据页通过双向链表链接
+	- 非聚集索引/辅助索引：
+	- 自适应哈希索引
+
+
 
 ####Benchmarking####
 #####What to Measure#####
