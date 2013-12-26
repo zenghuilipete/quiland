@@ -6,6 +6,7 @@
 [http://dev.mysql.com/doc/refman/5.6/en/linux-installation-debian.html](http://dev.mysql.com/doc/refman/5.6/en/linux-installation-debian.html)
 
 #####监控旧版本#####
+	ps -ef |grep mysqld
 	sudo netstat -tap | grep mysql
 
 	whereis mysql
@@ -105,9 +106,27 @@ sudo nano /etc/mysql/my.cnf
 
 	mysqladmin -u root password 'root'
 
+####机制####
+#####配置加载#####
+启动时，查找配置文件顺序，相同配置优先级：后面的配置覆盖前面的
+
+	erichan@erichan-OptiPlex-790:/opt/mysql/server-5.6/bin$ ./mysql --help | grep my.cnf
+	                      order of preference, my.cnf, $MYSQL_TCP_PORT,
+	/etc/my.cnf /etc/mysql/my.cnf /opt/mysql/server-5.6/etc/my.cnf ~/.my.cnf 
+
+#####单进程多线程#####
+
+查看线程
+	mysql> show engine innodb status \G;
+
+查看引擎版本
+	mysql> show variables like 'innodb_version' \G;
+	*************************** 1. row ***************************
+	Variable_name: innodb_version
+        	Value: 5.6.15
+
 ####Benchmarking####
 #####What to Measure#####
-
 - Throughput
 
 	TPC，事務處理性能委員會，其成員由 Acer，Bull，Compaq，EMC，HP，IBM, MS, NCR, SCO, Siemens, Sun, Unisys 構成。目前擁有的測試基準包括：TPC-C （線上交易處理 OLTP）；TPC-H （決策支援系統 DSS）；TPC-W（電子商務e-Commerce）；TPC-R（決策支援系統 DSS（商務報表））；我們所討論的 TPC-C，其測試模型定義為模擬一個訂貨系統的處理過程，輸出為測試系統每分鐘能夠處理的新訂單數。（同時還要處理另外四種交易：支付、訂單狀態、配送、庫存狀態)
