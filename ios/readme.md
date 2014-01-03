@@ -11,11 +11,9 @@
 - **[Lecture 5-6 ](5-6.md)**
 - **[Lecture 7-9 ](7-9.md)**
 - **[Lecture 10-11 ](10-11.md)**
-- **[Lecture 11-12 ]**
-- **[Lecture 13-14 ]**
-- **[Lecture 15-16 ]**
-- **[Lecture 17-18 ]**
-
+- **[Lecture 12-13 ](12-13.md)**
+- **[Lecture 14-15 ](14-15.md)**
+- **[Lecture 16-17 ](16-17.md)**
 #### DOWNLOAD ####
 #### - [course video&slide](https://itunes.apple.com/us/course/developing-ios-7-apps-for/id733644550) ####
 #### - [course code](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/) ####
