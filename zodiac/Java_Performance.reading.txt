@@ -1,0 +1,94 @@
+2013.1.7
+2 Operating System Performance Monitoring
+
+Performance monitoring
+Performance profiling
+Performance tuning
+
+CPU Utilization
+	Windows7
+	The commonly used CPU utilization monitoring tool on Windows is Task Manager and Performance Monitor
+	
+	Task Manager
+	Note that to view system or kernel CPU utilization in Window¡¯s Task Manager, the Show Kernel Utilization option must be enabled in the View 7 Show Kernel Utilization menu.
+	
+	Performance Monitor (perfmon)
+	Performance objects are categorized into areas such as network, memory, processor, thread, process, network interface, logical disk, and many others. Within each of these categories are specific performance attributes, or counters, that can be selected as performance statistics to monitor.
+	right-clicking in the Performance Monitor¡¯s display area and selecting the Add Counters option from the context sensitive menu.
+	
+	typeperf "\Processor(_Total)\% Privileged Time" "\Processor(_Total)\% User
+	typeperf -cf cpu-util.txt
+
+	Linux
+	gnome-system-monitor
+		Runtime.availableProcessors()
+	xosview
+	xosview_1.9.1-1_amd64.deb
+
+	vmstat
+	procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
+	 r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa
+	 1  0      0 4647016 200744 1733572    0    0    40    31   92  169  1  0 97  1
+	vmstat (virtual memory statistics) is a computer system monitoring tool that collects and displays summary information about operating system memory, processes, interrupts, paging and block I/O. 
+
+CPU Scheduler Run Queue
+	Windows7
+	typeperf -si 5 "\System\Processor Queue Length"
+	
+	Linux
+	vmstat
+	¡°r" label
+
+Memory Utilization
+	Windows7
+	typeperf -si 5 "\Memory\Available Mbytes" "\Memory\Pages/sec"
+		"(PDH-CSV 4.0)","\\BJNGDTCT02339\Memory\Available Mbytes","\\BJNGDTCT02339\Memory\Pages/sec"
+		"01/07/2013 16:40:43.151","1639.000000","2.199714"
+		"01/07/2013 16:40:48.151","1642.000000","76.788682"
+		"01/07/2013 16:40:53.151","1640.000000","4.199111"
+		"01/07/2013 16:40:58.151","1639.000000","0.000000"
+		"01/07/2013 16:41:03.151","1639.000000","7.398855"
+	The first column of data is the date and time stamp. 
+	The second column is the available memory, 
+	and the third column is the pages per second.
+
+	Linux
+	vmstat to monitor are the ¡°si¡± and ¡°so¡± columns, which represent the amount of memory paged-in and the amount of memory paged-out
+	
+	free
+				total       used       free     shared    buffers     cached
+	Mem:       8055700    3730792    4324908          0     207888    1766344
+	-/+ buffers/cache:    1756560    6299140
+	Swap:      8265724          0    8265724
+
+	sudo apt-get install sysstat
+	sysstat_10.0.3-1_amd64.deb
+	pidstat -w
+
+Network I/O Utilization
+	netstat -antup
+
+	Windows7
+	NEED TO VERIFY:
+	typeperf \Network Interface(*)\Bytes Total/sec
+	network utilization % = Bytes Total/sec/(Current Bandwidth / 8) x 100
+	network utilization % = (Bytes Total/sec * 8) / Current Bandwidth x 100
+
+	Linux
+	nicstat
+	http://ie.archive.ubuntu.com/disk1/download.sourceforge.net/pub/sourceforge/n/project/ni/nicstat/
+	https://github.com/gmarler/nicstat
+
+Disk I/O Utilization
+	Linux
+	iostat -xm 5
+	Linux 3.2.0-35-generic (hanl-ubuntu1204) 	01/07/2013 	_x86_64_	(2 CPU)
+
+	avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+		   0.94    0.19    0.25    0.77    0.00   97.84
+
+	Device:         rrqm/s   wrqm/s     r/s     w/s    rMB/s    wMB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+	sda               0.73     2.39    2.35    1.75     0.05     0.04    44.45     0.10   25.44   19.25   33.74   3.99   1.64
+	dm-0              0.00     0.00    0.01    0.00     0.00     0.00     7.98     0.00   24.54   23.85  152.00   3.82   0.01
+
+

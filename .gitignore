@@ -15,3 +15,7 @@ Desktop.ini
 *.*~
 .idea/
 *.iml
+/java/air-j7j8/.gradle
+/java/air-j7j8/build
+/java/air-j7j8/classes
+/java/air-j7j8/me.xml

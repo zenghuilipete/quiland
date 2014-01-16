@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<java version="1.7.0_21" class="java.beans.XMLDecoder">
- <object class="creative.air.java7.javabeans.AirJavaBeans">
-  <void property="name">
-   <string>test</string>
-  </void>
- </object>
-</java>
