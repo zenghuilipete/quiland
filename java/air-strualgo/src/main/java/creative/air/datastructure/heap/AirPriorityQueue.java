@@ -71,7 +71,7 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
      *                                  less than 1
      */
     public AirPriorityQueue(int initialCapacity,
-                         Comparator<? super E> comparator) {
+                            Comparator<? super E> comparator) {
         // Note: This restriction of at least one is not actually needed,
         // but continues for 1.5 compatibility
         if (initialCapacity < 1)
@@ -192,6 +192,42 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
         heapify();
     }
 
+    private void siftUpComparable(int k, E x) {
+        Comparable<? super E> key = (Comparable<? super E>) x;
+        while (k > 0) {
+            int parent = (k - 1) >>> 1;
+            Object e = queue[parent];
+            if (key.compareTo((E) e) >= 0)
+                break;
+            queue[k] = e;
+            System.out.printf("queue[k]=e :%s e:%s parent:%s%n", sout(queue), e, parent);
+            k = parent;
+        }
+        queue[k] = key;
+        System.out.printf("queue[k]=key :%s k:%s,key:%s%n", sout(queue), k, key);
+    }
+
+    private void siftDownComparable(int k, E x) {
+        Comparable<? super E> key = (Comparable<? super E>) x;
+        int half = size >>> 1;        // loop while a non-leaf
+        System.out.printf("half=size>>>1 :%s,size:%s%n", half, size);
+        while (k < half) {
+            int child = (k << 1) + 1; // assume left child is least
+            Object c = queue[child];
+            int right = child + 1;
+            if (right < size &&
+                    ((Comparable<? super E>) c).compareTo((E) queue[right]) > 0)
+                c = queue[child = right];
+            if (key.compareTo((E) c) <= 0)
+                break;
+            queue[k] = c;
+            System.out.printf("queue[k]=c :%s c:%s child:%s%n", sout(queue), c, child);
+            k = child;
+        }
+        queue[k] = key;
+        System.out.printf("queue[k]=key :%s k:%s,key:%s%n", sout(queue), k, key);
+    }
+
     /**
      * Increases the capacity of the array.
      *
@@ -212,19 +248,6 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
     /**
      * Inserts the specified element into this priority queue.
      *
-     * @return {@code true} (as specified by {@link Collection#add})
-     * @throws ClassCastException   if the specified element cannot be
-     *                              compared with elements currently in this priority queue
-     *                              according to the priority queue's ordering
-     * @throws NullPointerException if the specified element is null
-     */
-    public boolean add(E e) {
-        return offer(e);
-    }
-
-    /**
-     * Inserts the specified element into this priority queue.
-     *
      * @return {@code true} (as specified by {@link Queue#offer})
      * @throws ClassCastException   if the specified element cannot be
      *                              compared with elements currently in this priority queue
@@ -232,6 +255,7 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
      * @throws NullPointerException if the specified element is null
      */
     public boolean offer(E e) {
+        System.out.println("\n+::");
         if (e == null)
             throw new NullPointerException();
         modCount++;
@@ -243,6 +267,7 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
             queue[0] = e;
         else
             siftUp(i, e);
+        System.out.println("::+");
         return true;
     }
 
@@ -297,18 +322,6 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
             }
         }
         return false;
-    }
-
-    /**
-     * Returns {@code true} if this queue contains the specified element.
-     * More formally, returns {@code true} if and only if this queue contains
-     * at least one element {@code e} such that {@code o.equals(e)}.
-     *
-     * @param o object to be checked for containment in this queue
-     * @return {@code true} if this queue contains the specified element
-     */
-    public boolean contains(Object o) {
-        return indexOf(o) != -1;
     }
 
     /**
@@ -401,6 +414,7 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
     }
 
     public E poll() {
+        System.out.println("\n-::");
         if (size == 0)
             return null;
         int s = --size;
@@ -410,6 +424,7 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
         queue[s] = null;
         if (s != 0)
             siftDown(0, x);
+        System.out.println("::-");
         return result;
     }
 
@@ -463,17 +478,18 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
             siftUpComparable(k, x);
     }
 
-    private void siftUpComparable(int k, E x) {
-        Comparable<? super E> key = (Comparable<? super E>) x;
-        while (k > 0) {
-            int parent = (k - 1) >>> 1;
-            Object e = queue[parent];
-            if (key.compareTo((E) e) >= 0)
-                break;
-            queue[k] = e;
-            k = parent;
+
+    private String sout(Object[] queue) {
+        StringBuilder s = new StringBuilder("[");
+        for (int i = 0; i < queue.length; i++) {
+            Object obj = queue[i];
+            String o = obj == null ? "nil" : obj.toString();
+            if (i == queue.length - 1)
+                s.append(o).append("]");
+            else
+                s.append(o).append(" ");
         }
-        queue[k] = key;
+        return s.toString();
     }
 
     private void siftUpUsingComparator(int k, E x) {
@@ -503,23 +519,6 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
             siftDownComparable(k, x);
     }
 
-    private void siftDownComparable(int k, E x) {
-        Comparable<? super E> key = (Comparable<? super E>) x;
-        int half = size >>> 1;        // loop while a non-leaf
-        while (k < half) {
-            int child = (k << 1) + 1; // assume left child is least
-            Object c = queue[child];
-            int right = child + 1;
-            if (right < size &&
-                    ((Comparable<? super E>) c).compareTo((E) queue[right]) > 0)
-                c = queue[child = right];
-            if (key.compareTo((E) c) <= 0)
-                break;
-            queue[k] = c;
-            k = child;
-        }
-        queue[k] = key;
-    }
 
     private void siftDownUsingComparator(int k, E x) {
         int half = size >>> 1;
@@ -553,8 +552,8 @@ public class AirPriorityQueue<E> extends AbstractQueue<E>
      * the {@linkplain Comparable natural ordering} of its elements.
      *
      * @return the comparator used to order this queue, or
-     * {@code null} if this queue is sorted according to the
-     * natural ordering of its elements
+     *         {@code null} if this queue is sorted according to the
+     *         natural ordering of its elements
      */
     public Comparator<? super E> comparator() {
         return comparator;
