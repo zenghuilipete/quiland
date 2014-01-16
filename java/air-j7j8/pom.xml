@@ -5,12 +5,14 @@
 
 	<groupId>creative.air</groupId>
 	<version>0.0.1-SNAPSHOT</version>
-	<artifactId>air-j7</artifactId>
+	<artifactId>air-j7j8</artifactId>
 	<packaging>jar</packaging>
-	<name>Air JDK7 Project</name>
+	<name>Air JDK7 And JDK8 Learning Project</name>
 	<properties>
+        <jdk.version>1.8</jdk.version>
+        <compiler.encoding>utf-8</compiler.encoding>
 		<junit.version>4.10</junit.version>
-	</properties>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.mina</groupId>
@@ -31,13 +33,12 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
-						<encoding>utf-8</encoding>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+						<encoding>${compiler.encoding}</encoding>
 					</configuration>
 				</plugin>
 			</plugins>
-
 		</pluginManagement>
 	</build>
 </project>
