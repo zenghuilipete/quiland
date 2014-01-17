@@ -1,5 +1,9 @@
 package creative.air.java8.common;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -81,6 +85,19 @@ public class FirstApp {
 
             IntStream range = IntStream.range(101, 150);
             range.parallel().filter(i -> i % 10 == 0).sequential().forEach(System.out::println);
+        }
+
+        /*JSR 310*/
+        {
+            Period period = Period.between(LocalDate.parse("1979-03-03"), LocalDate.now());
+            System.out.printf("my age is:%d%n", period.getYears());
+
+            System.out.printf("Touch JSR310 %s.%n", LocalDate.of(2014, 1, 16));
+
+            LocalDate bjDate = LocalDate.of(2004, 8, 26);
+            System.out.println(bjDate.plus(9, ChronoUnit.YEARS)
+              .plus(6, ChronoUnit.MONTHS)
+              .plus(5, ChronoUnit.DAYS).format(DateTimeFormatter.ofPattern("E MM/dd/yyyy")));
         }
     }
 }

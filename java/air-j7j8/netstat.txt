@@ -124,4 +124,191 @@ Active Connections
   TCP    10.11.72.56:51628      10.41.255.9:http       TIME_WAIT
   TCP    10.11.72.56:51629      10.41.255.9:http       TIME_WAIT
   TCP    10.11.72.56:51630      10.41.255.9:http       TIME_WAIT
-  
+  TCP    10.11.72.56:51631      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51633      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51634      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51635      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51636      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51637      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51638      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51639      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51640      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51641      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51642      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51643      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51644      10.41.255.9:http       ESTABLISHED
+  TCP    10.11.72.56:51645      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51646      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51647      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51648      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51649      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51650      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51651      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51652      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51653      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51654      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51655      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51656      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51657      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51658      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51659      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51660      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51661      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51662      bjngsdcap03:epmap      TIME_WAIT
+  TCP    10.11.72.56:51663      bjngsdcap03:49156      ESTABLISHED
+  TCP    10.11.72.56:51667      bjngsdcap02:ldap       TIME_WAIT
+  TCP    10.11.72.56:51668      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51669      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51670      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51672      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51682      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51683      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51684      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51686      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51688      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51691      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51693      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51695      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51696      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51697      10.41.255.9:http       TIME_WAIT
+  TCP    10.11.72.56:51699      10.41.255.9:http       ESTABLISHED
+  TCP    10.11.72.56:53007      10.41.255.9:http       ESTABLISHED
+  TCP    10.11.72.56:55752      bjngsfile02:microsoft-ds  ESTABLISHED
+  TCP    10.11.72.56:55762      10.41.255.9:http       ESTABLISHED
+  TCP    10.11.72.56:55764      MOPESLYNCFE01:5061     ESTABLISHED
+  TCP    10.11.72.56:55869      bjngsmailhc01:61639    ESTABLISHED
+  TCP    10.11.72.56:55871      bjngsmailhc01:61679    ESTABLISHED
+  TCP    10.11.72.56:55998      bjngsmailhc01:61679    ESTABLISHED
+  TCP    10.11.72.56:55999      bjngsmailhc01:61679    ESTABLISHED
+  TCP    10.11.72.56:56001      bjngsmailhc01:61639    ESTABLISHED
+  TCP    10.11.72.56:56003      bjngsmbx02:42298       ESTABLISHED
+  TCP    10.11.72.56:56240      10.41.255.9:http       CLOSE_WAIT
+  TCP    10.11.72.56:64352      10.41.255.9:http       ESTABLISHED
+  TCP    10.11.72.56:64390      10.41.255.9:http       ESTABLISHED
+  TCP    10.11.72.56:64740      10.41.255.9:http       ESTABLISHED
+  TCP    127.0.0.1:5354         BJNGDHKZMB3X:0         LISTENING
+  TCP    127.0.0.1:5354         BJNGDHKZMB3X:49155     ESTABLISHED
+  TCP    127.0.0.1:5354         BJNGDHKZMB3X:49156     ESTABLISHED
+  TCP    127.0.0.1:6942         BJNGDHKZMB3X:0         LISTENING
+  TCP    127.0.0.1:9899         BJNGDHKZMB3X:0         LISTENING
+  TCP    127.0.0.1:27015        BJNGDHKZMB3X:0         LISTENING
+  TCP    127.0.0.1:27015        BJNGDHKZMB3X:55765     ESTABLISHED
+  TCP    127.0.0.1:49155        BJNGDHKZMB3X:5354      ESTABLISHED
+  TCP    127.0.0.1:49156        BJNGDHKZMB3X:5354      ESTABLISHED
+  TCP    127.0.0.1:49158        BJNGDHKZMB3X:49159     ESTABLISHED
+  TCP    127.0.0.1:49159        BJNGDHKZMB3X:49158     ESTABLISHED
+  TCP    127.0.0.1:50000        BJNGDHKZMB3X:0         LISTENING
+  TCP    127.0.0.1:50381        BJNGDHKZMB3X:50382     ESTABLISHED
+  TCP    127.0.0.1:50382        BJNGDHKZMB3X:50381     ESTABLISHED
+  TCP    127.0.0.1:51488        BJNGDHKZMB3X:63342     ESTABLISHED
+  TCP    127.0.0.1:51632        BJNGDHKZMB3X:50399     TIME_WAIT
+  TCP    127.0.0.1:51671        BJNGDHKZMB3X:51673     ESTABLISHED
+  TCP    127.0.0.1:51673        BJNGDHKZMB3X:51671     ESTABLISHED
+  TCP    127.0.0.1:51674        BJNGDHKZMB3X:51675     ESTABLISHED
+  TCP    127.0.0.1:51675        BJNGDHKZMB3X:51674     ESTABLISHED
+  TCP    127.0.0.1:51676        BJNGDHKZMB3X:51677     ESTABLISHED
+  TCP    127.0.0.1:51677        BJNGDHKZMB3X:51676     ESTABLISHED
+  TCP    127.0.0.1:51678        BJNGDHKZMB3X:51679     ESTABLISHED
+  TCP    127.0.0.1:51679        BJNGDHKZMB3X:51678     ESTABLISHED
+  TCP    127.0.0.1:51680        BJNGDHKZMB3X:51681     ESTABLISHED
+  TCP    127.0.0.1:51681        BJNGDHKZMB3X:51680     ESTABLISHED
+  TCP    127.0.0.1:51698        BJNGDHKZMB3X:51700     ESTABLISHED
+  TCP    127.0.0.1:51700        BJNGDHKZMB3X:51698     ESTABLISHED
+  TCP    127.0.0.1:51701        BJNGDHKZMB3X:51702     ESTABLISHED
+  TCP    127.0.0.1:51702        BJNGDHKZMB3X:51701     ESTABLISHED
+  TCP    127.0.0.1:51703        BJNGDHKZMB3X:51704     ESTABLISHED
+  TCP    127.0.0.1:51704        BJNGDHKZMB3X:51703     ESTABLISHED
+  TCP    127.0.0.1:51705        BJNGDHKZMB3X:51706     ESTABLISHED
+  TCP    127.0.0.1:51706        BJNGDHKZMB3X:51705     ESTABLISHED
+  TCP    127.0.0.1:51707        BJNGDHKZMB3X:51708     ESTABLISHED
+  TCP    127.0.0.1:51708        BJNGDHKZMB3X:51707     ESTABLISHED
+  TCP    127.0.0.1:55602        BJNGDHKZMB3X:55603     ESTABLISHED
+  TCP    127.0.0.1:55603        BJNGDHKZMB3X:55602     ESTABLISHED
+  TCP    127.0.0.1:55604        BJNGDHKZMB3X:55605     ESTABLISHED
+  TCP    127.0.0.1:55605        BJNGDHKZMB3X:55604     ESTABLISHED
+  TCP    127.0.0.1:55606        BJNGDHKZMB3X:55607     ESTABLISHED
+  TCP    127.0.0.1:55607        BJNGDHKZMB3X:55606     ESTABLISHED
+  TCP    127.0.0.1:55608        BJNGDHKZMB3X:55609     ESTABLISHED
+  TCP    127.0.0.1:55609        BJNGDHKZMB3X:55608     ESTABLISHED
+  TCP    127.0.0.1:55610        BJNGDHKZMB3X:55611     ESTABLISHED
+  TCP    127.0.0.1:55611        BJNGDHKZMB3X:55610     ESTABLISHED
+  TCP    127.0.0.1:55612        BJNGDHKZMB3X:55613     ESTABLISHED
+  TCP    127.0.0.1:55613        BJNGDHKZMB3X:55612     ESTABLISHED
+  TCP    127.0.0.1:55765        BJNGDHKZMB3X:27015     ESTABLISHED
+  TCP    127.0.0.1:63342        BJNGDHKZMB3X:0         LISTENING
+  TCP    127.0.0.1:63342        BJNGDHKZMB3X:51488     ESTABLISHED
+  TCP    192.168.56.1:139       BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:135               BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:445               BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:3306              BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:3389              BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:8888              BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:12225             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:49152             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:49153             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:49154             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:49157             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:50398             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:51671             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:55600             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:55614             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:55615             BJNGDHKZMB3X:0         LISTENING
+  TCP    [::]:55616             BJNGDHKZMB3X:0         LISTENING
+  UDP    0.0.0.0:123            *:*                    
+  UDP    0.0.0.0:500            *:*                    
+  UDP    0.0.0.0:1043           *:*                    
+  UDP    0.0.0.0:1063           *:*                    
+  UDP    0.0.0.0:1900           *:*                    
+  UDP    0.0.0.0:4169           *:*                    
+  UDP    0.0.0.0:4500           *:*                    
+  UDP    0.0.0.0:5353           *:*                    
+  UDP    0.0.0.0:5355           *:*                    
+  UDP    0.0.0.0:7091           *:*                    
+  UDP    0.0.0.0:11875          *:*                    
+  UDP    0.0.0.0:14398          *:*                    
+  UDP    0.0.0.0:33848          *:*                    
+  UDP    0.0.0.0:52488          *:*                    
+  UDP    0.0.0.0:53375          *:*                    
+  UDP    0.0.0.0:56781          *:*                    
+  UDP    0.0.0.0:62191          *:*                    
+  UDP    0.0.0.0:62192          *:*                    
+  UDP    10.11.72.56:137        *:*                    
+  UDP    10.11.72.56:138        *:*                    
+  UDP    10.11.72.56:1900       *:*                    
+  UDP    10.11.72.56:5353       *:*                    
+  UDP    10.11.72.56:57738      *:*                    
+  UDP    127.0.0.1:1900         *:*                    
+  UDP    127.0.0.1:50006        *:*                    
+  UDP    127.0.0.1:51445        *:*                    
+  UDP    127.0.0.1:52136        *:*                    
+  UDP    127.0.0.1:52486        *:*                    
+  UDP    127.0.0.1:52487        *:*                    
+  UDP    127.0.0.1:52490        *:*                    
+  UDP    127.0.0.1:53035        *:*                    
+  UDP    127.0.0.1:55715        *:*                    
+  UDP    127.0.0.1:55716        *:*                    
+  UDP    127.0.0.1:56710        *:*                    
+  UDP    127.0.0.1:57740        *:*                    
+  UDP    127.0.0.1:64244        *:*                    
+  UDP    127.0.0.1:64969        *:*                    
+  UDP    192.168.56.1:137       *:*                    
+  UDP    192.168.56.1:138       *:*                    
+  UDP    192.168.56.1:1900      *:*                    
+  UDP    192.168.56.1:5353      *:*                    
+  UDP    192.168.56.1:57739     *:*                    
+  UDP    [::]:123               *:*                    
+  UDP    [::]:500               *:*                    
+  UDP    [::]:4500              *:*                    
+  UDP    [::]:5353              *:*                    
+  UDP    [::]:5355              *:*                    
+  UDP    [::]:33848             *:*                    
+  UDP    [::]:52489             *:*                    
+  UDP    [::]:53375             *:*                    
+  UDP    [::1]:1900             *:*                    
+  UDP    [::1]:5353             *:*                    
+  UDP    [::1]:57737            *:*                    
+  UDP    [fe80::5973:ad3c:2316:e090%18]:546  *:*                    
+  UDP    [fe80::5973:ad3c:2316:e090%18]:1900  *:*                    
+  UDP    [fe80::5973:ad3c:2316:e090%18]:57736  *:*                    
+  UDP    [fe80::a5e8:cc37:9e50:fe2b%11]:1900  *:*                    
+  UDP    [fe80::a5e8:cc37:9e50:fe2b%11]:57735  *:*                    
