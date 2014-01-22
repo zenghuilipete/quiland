@@ -5,16 +5,16 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>864498EC-FC13-4DF9-A109-9027C22278F0</string>
+	<string>B9FE86B9-BB8F-491F-A3AD-8DD091CD0527</string>
 	<key>IDESourceControlProjectName</key>
-	<string>FirstSingleViewApp</string>
+	<string>RestFoto</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>6E7753AD-DA92-49ED-AE0A-48266AE104C3</key>
 		<string>ssh://github.com/feuyeux/quiland.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ios/learning/FirstSingleViewApp/FirstSingleViewApp.xcodeproj/project.xcworkspace</string>
+	<string>ios/learning/RestFoto/RestFoto.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>6E7753AD-DA92-49ED-AE0A-48266AE104C3</key>
