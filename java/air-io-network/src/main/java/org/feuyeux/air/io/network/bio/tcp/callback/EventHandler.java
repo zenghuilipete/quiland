@@ -1,8 +1,8 @@
 package org.feuyeux.air.io.network.bio.tcp.callback;
 
-import java.io.IOException;
-
 import org.feuyeux.air.io.network.SystemInReadThread;
+
+import java.io.IOException;
 
 public class EventHandler {
 	private String connectName;

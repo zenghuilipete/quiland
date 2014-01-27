@@ -1,8 +1,8 @@
 package org.feuyeux.air.io.network.bio.tcp.callback;
 
-import java.net.Socket;
-
 import org.feuyeux.air.io.network.AirIO;
+
+import java.net.Socket;
 
 public class TCPClient {
 	public void startClient(String remoteIP, int remotePort) {

@@ -1,5 +1,8 @@
 package org.feuyeux.air.io.network.nio.tcp;
 
+import org.apache.logging.log4j.Logger;
+import org.feuyeux.air.io.network.AirIO;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -10,11 +13,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
-import org.apache.log4j.Logger;
-import org.feuyeux.air.io.network.AirIO;
-
 public class NIOServer {
-	private final static Logger logger = Logger.getLogger(NIOServer.class);
+	private final static Logger logger = org.apache.logging.log4j.LogManager.getLogger(NIOServer.class);
 	final Selector selector;
 	final ServerSocket serverSocket;
 	final int port;

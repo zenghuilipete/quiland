@@ -1,11 +1,11 @@
 package org.feuyeux.air.io.network.bio.tcp.callback;
 
+import org.feuyeux.air.io.network.AirIO;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-
-import org.feuyeux.air.io.network.AirIO;
 
 public class TCPConnection {
 	protected Socket socket;

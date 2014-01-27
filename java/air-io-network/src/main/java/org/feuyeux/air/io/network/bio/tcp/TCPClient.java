@@ -1,16 +1,17 @@
 package org.feuyeux.air.io.network.bio.tcp;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.feuyeux.air.io.network.AirIO;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import org.apache.log4j.Logger;
-import org.feuyeux.air.io.network.AirIO;
-
 public class TCPClient {
-	private final static Logger logger = Logger.getLogger(TCPClient.class);
+	private final static Logger logger = LogManager.getLogger(TCPClient.class);
 	final Socket socket;
 	final String host;
 	final int port;

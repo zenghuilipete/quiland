@@ -1,10 +1,10 @@
 package org.feuyeux.air.io.network.bio.tcp.callback;
 
+import org.feuyeux.air.io.network.AirIO;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import org.feuyeux.air.io.network.AirIO;
 
 public class TCPServer {
 	public void startServer(int localPort) {
