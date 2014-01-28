@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author feuyeux@gmail.com
  * 2010-12-31
  */
-public class SortTaster {
+public class SortingTest {
 	private ISort sorter;
 	private int[] finalArray;
 	private int[] initialArray;

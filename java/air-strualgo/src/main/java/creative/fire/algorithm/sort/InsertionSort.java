@@ -13,7 +13,7 @@ public class InsertionSort extends Sort {
 	@Override
 	public int[] sort(int[] number) {
 		roundEcho("Insertion Sort:\n\t", number);
-		int sentinel = 0;
+		int sentinel;
 		int j;
 		for (int i = 1; i < number.length; i++) {
 			sentinel = number[i];

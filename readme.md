@@ -5,3 +5,10 @@
 1. [IOS开发](ios/readme.md)
 1. [JAVA开发](java/readme.md)
 1. [PYTHON开发](python/readme.md)
+
+
+### 2014计划 ###
+
+- 算法 Java Delphi Python
+- iOS开发
+- Emacs24

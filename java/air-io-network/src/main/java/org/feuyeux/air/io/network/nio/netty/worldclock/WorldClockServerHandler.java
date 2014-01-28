@@ -17,31 +17,22 @@ package org.feuyeux.air.io.network.nio.netty.worldclock;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.feuyeux.air.io.network.nio.netty.worldclock.WorldClockProtocol.Continent;
-import org.feuyeux.air.io.network.nio.netty.worldclock.WorldClockProtocol.DayOfWeek;
-import org.feuyeux.air.io.network.nio.netty.worldclock.WorldClockProtocol.LocalTime;
-import org.feuyeux.air.io.network.nio.netty.worldclock.WorldClockProtocol.LocalTimes;
-import org.feuyeux.air.io.network.nio.netty.worldclock.WorldClockProtocol.Location;
-import org.feuyeux.air.io.network.nio.netty.worldclock.WorldClockProtocol.Locations;
+import org.feuyeux.air.io.network.nio.netty.worldclock.WorldClockProtocol.*;
 
 import java.util.Calendar;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.util.Calendar.*;
 
 public class WorldClockServerHandler extends SimpleChannelInboundHandler<Locations> {
-
-    private static final Logger logger = Logger.getLogger(
-            WorldClockServerHandler.class.getName());
+    private final static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(WorldClockServerHandler.class);
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, Locations locations) throws Exception {
         long currentTime = System.currentTimeMillis();
 
         LocalTimes.Builder builder = LocalTimes.newBuilder();
-        for (Location l: locations.getLocationList()) {
+        for (Location l : locations.getLocationList()) {
             TimeZone tz = TimeZone.getTimeZone(
                     toString(l.getContinent()) + '/' + l.getCity());
             Calendar calendar = getInstance(tz);
@@ -66,9 +57,7 @@ public class WorldClockServerHandler extends SimpleChannelInboundHandler<Locatio
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.log(
-                Level.WARNING,
-                "Unexpected exception from downstream.", cause);
+        logger.warn("Unexpected exception from downstream.", cause);
         ctx.close();
     }
 
