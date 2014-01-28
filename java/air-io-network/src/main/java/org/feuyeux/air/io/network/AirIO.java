@@ -19,4 +19,5 @@ public interface AirIO {
 	final int FixThreadNumber = 5;
 	final String CHAR_SET = "UTF-8";
 	final int BYTES_SIZE = 1024;
+    final long CONNECT_TIMEOUT = 30*1000L; // 30 seconds
 }
