@@ -15,7 +15,7 @@
 ### MINA组件 ###
 ![Mina Components](http://mina.apache.org/staticresources/images/mina/mina_app_arch.png)
 
-#### MINA3层组件 ####
+#### MINA 3层组件 ####
 
 ##### - I/O Service：处理I/O操作 #####
 
@@ -31,6 +31,9 @@
 - exceptionCaught
 - messageReceived
 - messageSent
+
+#### MINA 工作流 ####
+![](../img/mina_workflow.png)
 
 ### IoService ###
 #### IoAcceptor ####
@@ -52,19 +55,39 @@
 ![](http://mina.apache.org/staticresources/images/mina/IoServiceConnector.png)
 
 ### Session ###
+- Connected : the session has been created and is available
+- Idle : the session hasn't processed any request for at least a period of time (this period is configurable)
+	- Idle for read : no read has actually been made for a period of time
+	- Idle for write : no write has actually been made for a period of time
+	- Idle for both : no read nor write for a period of time
+- Closing : the session is being closed (the remaining messages are being flushed, cleaning up is not terminated)
+- Closed : The session is now closed, nothing else can be done to revive it.
 ![](http://mina.apache.org/staticresources/images/mina/session-state.png)
 
 ### Filters ###
-
+- Blacklist	**BlacklistFilter**	Blocks connections from blacklisted remote addresses
+- Buffered Write	 **BufferedWriteFilter**	Buffers outgoing requests like the BufferedOutputStream does
+- Compression	**CompressionFilter**	 
+- ConnectionThrottle	 **ConnectionThrottleFilter**	 
+- ErrorGenerating	**ErrorGeneratingFilter**	 
+- Executor	**ExecutorFilter**	 
+- FileRegionWrite	**FileRegionWriteFilter**	 
+- KeepAlive	**KeepAliveFilter**	 
+- Logging	**LoggingFilter**	Logs event messages, like MessageReceived, MessageSent, SessionOpened, ...
+- MDC Injection	**MdcInjectionFilter**	Inject key IoSession properties into the MDC
+- Noop	**NoopFilter**	A filter that does nothing. Useful for tests.
+- Profiler	**ProfilerTimerFilter**	Profile event messages, like MessageReceived, MessageSent, SessionOpened, ...
+- ProtocolCodec	**ProtocolCodecFilter**	A filter in charge of encoding and decoding messages
+- Proxy	**ProxyFilter**	 
+- Reference counting	 **ReferenceCountingFilter**	Keeps track of the number of usages of this filter
+- RequestResponse	**RequestResponseFilter**	 
+- SessionAttributeInitializing	**SessionAttributeInitializingFilter**	 
+- StreamWrite	**StreamWriteFilter**	 
+- SslFilter	**SslFilter**	 
+- WriteRequest	**WriteRequestFilter**
 ### Transports ###
 - APR Transport
 - Serial Transport
-
-### IoBuffer ###
-
-### Codec Filter ###
-
-### Logging Filter ###
 
 ### State Machine ###
 ![](http://mina.apache.org/staticresources/images/mina/state-diagram.png)
