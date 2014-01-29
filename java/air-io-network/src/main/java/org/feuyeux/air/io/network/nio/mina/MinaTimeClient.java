@@ -8,8 +8,6 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.filter.logging.LoggingFilter;
-import org.apache.mina.transport.socket.SocketConnector;
-import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.feuyeux.air.io.network.AirIO;
 
 import java.net.InetSocketAddress;
@@ -17,11 +15,13 @@ import java.nio.charset.Charset;
 
 public class MinaTimeClient {
     protected static Logger logger;
+    protected IoConnector connector;
 
-    protected static void connect(IoConnector connector) throws InterruptedException {
+    protected void connect() throws InterruptedException {
         connector.setConnectTimeoutMillis(AirIO.CONNECT_TIMEOUT);
-        connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory(Charset.forName("UTF-8"))));
-        connector.getFilterChain().addLast("logger", new LoggingFilter());
+        connector.getFilterChain().addLast(AirIO.MINA_CODEC,
+          new ProtocolCodecFilter(new TextLineCodecFactory(Charset.forName(AirIO.CHAR_SET))));
+        connector.getFilterChain().addLast(AirIO.MINA_LOGGER, new LoggingFilter());
         connector.setHandler(new TimeClientHandler());
         IoSession session;
 

@@ -6,9 +6,12 @@ import org.feuyeux.air.io.network.nio.mina.MinaTimeClient;
 import org.feuyeux.air.io.network.nio.mina.TimeServerHandler;
 
 public class MinaUDPTimeClient extends MinaTimeClient {
-    public static void main(String[] args) throws Throwable {
+    public MinaUDPTimeClient() {
         logger = LogManager.getLogger(TimeServerHandler.class);
-        NioDatagramConnector connector = new NioDatagramConnector();
-        connect(connector);
+        connector = new NioDatagramConnector();
+    }
+
+    public static void main(String[] args) throws Throwable {
+        new MinaUDPTimeClient().connect();
     }
 }
