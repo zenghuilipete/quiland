@@ -15,8 +15,8 @@ Desktop.ini
 *.*~
 .idea/
 *.iml
-*.gradle
 build/
 classes/
 me.xml
 *.log
+.gradle/
