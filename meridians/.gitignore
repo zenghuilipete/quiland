@@ -1,7 +1,6 @@
 .project
 .metadata
 bin/
-target/
 tmp/
 *.tmp
 *.bak
@@ -11,13 +10,6 @@ tmp/
 Thumbs.db
 Desktop.ini
 .DS_Store
-*.*~
-.idea/
-*.iml
-build/
-classes/
-me.xml
-*.log
-.gradle/
 *.7z
 *.zip
+*.*~
