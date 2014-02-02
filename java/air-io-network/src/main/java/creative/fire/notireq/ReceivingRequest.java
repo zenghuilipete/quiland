@@ -28,7 +28,7 @@ public class ReceivingRequest extends Thread {
 				socket.close();
 				finished = true;
 			} catch (Exception e) {
-				System.out.println("receive fails to run.");
+				System.out.println("receive fails to connect.");
 			}
 		}
 	}

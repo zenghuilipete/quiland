@@ -1,0 +1,19 @@
+apply plugin: 'java'
+
+group = 'creative.air'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral();
+}
+dependencies {
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '${log4j2.version}'
+    compile 'org.apache.logging.log4j:log4j-core:${log4j2.version}'
+    compile ('log4j:log4j:${log4j.version}')
+    compile 'org.slf4j:slf4j-log4j12:${slf4j.version}'
+    compile 'org.apache.mina:mina-core:${mina.version}'
+    compile 'io.netty:netty-all:${netty.version}'
+    compile 'com.google.protobuf:protobuf-java:2.5.0'
+    testCompile 'junit:junit:${junit.version}'
+}

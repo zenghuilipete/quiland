@@ -131,7 +131,7 @@ public class TestWatch {
 							//store the thread and the path
 							threads.put(worker, path.resolve(filename));
 
-							//start the thread, never call method run() direct
+							//start the thread, never call method connect() direct
 							worker.start();
 						}
 
