@@ -1,7 +1,9 @@
 package creative.fire.pattern.callback4.observer;
 
 public interface ExecuteObservable {
-	void registerObserver(CallbackObserver observer);
+    void registerObserver(CallbackObserver observer);
 
-	String getInfo();
+    String getInfo();
+
+    void notifyObservers();
 }

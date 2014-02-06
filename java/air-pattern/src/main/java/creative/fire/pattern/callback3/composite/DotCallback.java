@@ -1,9 +1,13 @@
 package creative.fire.pattern.callback3.composite;
 
-public class DotCallback implements ICallback {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-	@Override
-	public void invoke(String info) {
-		System.out.println("...\t" + info);
-	}
+public class DotCallback implements ICallback {
+    private Logger logger = LogManager.getLogger(DotCallback.class);
+
+    @Override
+    public void invoke(String info) {
+        logger.info("...\t" + info);
+    }
 }
