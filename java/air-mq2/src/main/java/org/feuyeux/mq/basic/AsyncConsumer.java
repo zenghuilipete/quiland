@@ -1,10 +1,10 @@
 package org.feuyeux.mq.basic;
 
 import org.feuyeux.mq.AirJMS2Env;
+import org.hornetq.jms.server.embedded.EmbeddedJMS;
 
 import javax.annotation.Resource;
 import javax.jms.*;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class AsyncConsumer {
@@ -15,7 +15,14 @@ public class AsyncConsumer {
     @Resource(lookup = AirJMS2Env.AIR_TOPIC)
     private static Topic topic;
 
-    public static void go(String... args) {
+    public AsyncConsumer(EmbeddedJMS jmsServer) throws Exception {
+        connectionFactory = (ConnectionFactory) jmsServer.lookup(AirJMS2Env.AIR_JMS_CF);
+        queue = (Queue) jmsServer.lookup(AirJMS2Env.AIR_QUEUE);
+        topic = (Topic) jmsServer.lookup(AirJMS2Env.AIR_TOPIC);
+    }
+
+    public void go(String... args) {
+        System.out.println("==== AsyncConsumer go ====");
         String destType;
         Destination dest = null;
         JMSConsumer consumer;
@@ -25,26 +32,26 @@ public class AsyncConsumer {
 
         if (args.length != 1) {
             System.err.println("Program takes one argument: <dest_type>");
-            System.exit(1);
+            return;
         }
 
         destType = args[0];
         System.out.println("Destination type is " + destType);
 
-        if (!(destType.equals("queue") || destType.equals("topic"))) {
+        if (!(destType.equals(AirJMS2Env.QUEUE) || destType.equals(AirJMS2Env.TOPIC))) {
             System.err.println("Argument must be \"queue\" or \"topic\"");
-            System.exit(1);
+            return;
         }
 
         try {
-            if (destType.equals("queue")) {
+            if (destType.equals(AirJMS2Env.QUEUE)) {
                 dest = (Destination) queue;
             } else {
                 dest = (Destination) topic;
             }
         } catch (JMSRuntimeException e) {
             System.err.println("Error setting destination: " + e.toString());
-            System.exit(1);
+            return;
         }
 
         /*
@@ -58,20 +65,10 @@ public class AsyncConsumer {
             consumer = context.createConsumer(dest);
             listener = new TextListener();
             consumer.setMessageListener(listener);
-            System.out.println("To end program, type Q or q, then <return>");
-            inputStreamReader = new InputStreamReader(System.in);
-
-            while (!((answer == 'q') || (answer == 'Q'))) {
-                try {
-                    answer = (char) inputStreamReader.read();
-                } catch (IOException e) {
-                    System.err.println("I/O exception: " + e.toString());
-                }
-            }
-        } catch (JMSRuntimeException e) {
+            Thread.sleep(5000);
+            System.out.println("AsyncConsumer leave.");
+        } catch (JMSRuntimeException | InterruptedException e) {
             System.err.println("Exception occurred: " + e.toString());
-            System.exit(1);
         }
-        System.exit(0);
     }
 }
