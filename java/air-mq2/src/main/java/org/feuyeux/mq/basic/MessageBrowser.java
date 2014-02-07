@@ -1,5 +1,7 @@
 package org.feuyeux.mq.basic;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.feuyeux.mq.AirJMS2Env;
 import org.hornetq.jms.server.embedded.EmbeddedJMS;
 
@@ -8,6 +10,8 @@ import javax.jms.*;
 import java.util.Enumeration;
 
 public class MessageBrowser {
+    Logger log= LogManager.getLogger();
+
     @Resource(lookup = AirJMS2Env.AIR_JMS_CF)
     private static ConnectionFactory connectionFactory;
     @Resource(lookup = AirJMS2Env.AIR_QUEUE)
@@ -19,22 +23,22 @@ public class MessageBrowser {
     }
 
     public void go() {
-        System.out.println("==== MessageBrowser go ====");
+        log.info("==== MessageBrowser go ====");
         QueueBrowser browser;
         try (JMSContext context = connectionFactory.createContext();) {
             browser = context.createBrowser(queue);
             Enumeration msgs = browser.getEnumeration();
 
             if (!msgs.hasMoreElements()) {
-                System.out.println("No messages in queue");
+                log.info("No messages in queue");
             } else {
                 while (msgs.hasMoreElements()) {
                     Message tempMsg = (Message) msgs.nextElement();
-                    System.out.println("Message: " + tempMsg.getJMSMessageID() + " : " + tempMsg.getBody(String.class));
+                    log.info("Message: " + tempMsg.getJMSMessageID() + " : " + tempMsg.getBody(String.class));
                 }
             }
         } catch (JMSException e) {
-            System.err.println("Exception occurred: " + e.toString());
+            log.error("Exception occurred: " + e.toString());
         }
     }
 }

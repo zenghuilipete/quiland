@@ -10,16 +10,11 @@
 
     <properties>
         <hornetq.version>2.4.1.Final</hornetq.version>
-        <netty.version>4.0.13.Final</netty.version>
         <junit.version>4.11</junit.version>
+        <log4j2.version>2.0-beta9</log4j2.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.hornetq</groupId>
-            <artifactId>hornetq-server</artifactId>
-            <version>${hornetq.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.hornetq</groupId>
             <artifactId>hornetq-jms-server</artifactId>
@@ -36,6 +31,12 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j2.version}</version>
         </dependency>
     </dependencies>
 

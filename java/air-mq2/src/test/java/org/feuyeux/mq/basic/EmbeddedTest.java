@@ -1,5 +1,7 @@
 package org.feuyeux.mq.basic;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.feuyeux.mq.AirJMS2Env;
 import org.hornetq.jms.server.embedded.EmbeddedJMS;
 import org.junit.After;
@@ -11,13 +13,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 
+
 public class EmbeddedTest {
+    Logger log= LogManager.getLogger();
+
     EmbeddedJMS jmsServer = null;
 
     @Before
     public void tearUp() throws Exception {
         jmsServer = buildServer();
-        System.out.println("Started Embedded JMS Server");
+        log.info("Started Embedded JMS Server");
     }
 
     @Test
@@ -56,6 +61,7 @@ public class EmbeddedTest {
             });
 
             Thread t = new Thread(f);
+            t.setName("SyncConsumer Thread");
             t.start();
 
             FutureTask<Boolean> af = new FutureTask<Boolean>(new Runnable() {
@@ -66,6 +72,7 @@ public class EmbeddedTest {
             }, Boolean.TRUE);
 
             Thread at = new Thread(af);
+            at.setName("AsyncConsumer Thread");
             at.start();
 
             p.go(AirJMS2Env.TOPIC, 3);
@@ -85,7 +92,7 @@ public class EmbeddedTest {
     public void tearDown() throws Exception {
         if (jmsServer != null) {
             jmsServer.stop();
-            System.out.println("Stopped Embedded JMS Server");
+            log.info("Stopped Embedded JMS Server");
         }
     }
 

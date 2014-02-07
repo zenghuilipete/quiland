@@ -1,5 +1,7 @@
 package org.feuyeux.mq.basic;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.feuyeux.mq.AirJMS2Env;
 import org.hornetq.jms.server.embedded.EmbeddedJMS;
 
@@ -7,6 +9,8 @@ import javax.annotation.Resource;
 import javax.jms.*;
 
 public class Producer {
+    Logger log= LogManager.getLogger();
+
     @Resource(lookup = AirJMS2Env.AIR_JMS_CF)
     private static ConnectionFactory connectionFactory;
     @Resource(lookup = AirJMS2Env.AIR_QUEUE)
@@ -25,13 +29,13 @@ public class Producer {
     }
 
     public void go(String style, final int number) {
-        System.out.println("==== Producer go ====");
+        log.info("==== Producer go ====");
         String message;
         if (!(style.equals(AirJMS2Env.QUEUE) || style.equals(AirJMS2Env.TOPIC))) {
-            System.err.println("Argument must be \"queue\" or " + "\"topic\"");
+            log.error("Argument must be \"queue\" or " + "\"topic\"");
             System.exit(1);
         } else {
-            System.out.println("Destination type is " + style);
+            log.info("Destination type is " + style);
         }
 
         Destination dest = null;
@@ -42,7 +46,7 @@ public class Producer {
                 dest = (Destination) topic;
             }
         } catch (JMSRuntimeException e) {
-            System.err.println("Error setting destination: " + e.toString());
+            log.error("Error setting destination: " + e.toString());
             System.exit(1);
         }
 
@@ -57,12 +61,12 @@ public class Producer {
             for (int i = 0; i < number; i++) {
                 message = "This is " + style + " message " + (i + 1) + " from producer";
                 // Comment out the following line to send many messages
-                System.out.println("Sending message: " + message);
+                log.info("Sending message: " + message);
                 JMSProducer producer = context.createProducer();
                 producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT).send(dest, message);
                 count += 1;
             }
-            System.out.println("Messages sent: " + count);
+            log.info("Messages sent: " + count);
             
             /*
              * Send a non-text control message indicating end of
@@ -73,7 +77,7 @@ public class Producer {
             // to two synchronous consumers
             // context.createProducer().send(dest, context.createMessage());
         } catch (JMSRuntimeException e) {
-            System.err.println("Exception occurred: " + e.toString());
+            log.error("Exception occurred: " + e.toString());
         }
     }
 }

@@ -1,5 +1,7 @@
 package org.feuyeux.mq.basic;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.feuyeux.mq.AirJMS2Env;
 import org.hornetq.jms.server.embedded.EmbeddedJMS;
 
@@ -8,6 +10,8 @@ import javax.jms.*;
 import java.io.InputStreamReader;
 
 public class AsyncConsumer {
+    Logger log = LogManager.getLogger();
+
     @Resource(lookup = AirJMS2Env.AIR_JMS_CF)
     private static ConnectionFactory connectionFactory;
     @Resource(lookup = AirJMS2Env.AIR_QUEUE)
@@ -22,7 +26,7 @@ public class AsyncConsumer {
     }
 
     public void go(String... args) {
-        System.out.println("==== AsyncConsumer go ====");
+        log.info("==== AsyncConsumer go ====");
         String destType;
         Destination dest = null;
         JMSConsumer consumer;
@@ -31,15 +35,15 @@ public class AsyncConsumer {
         char answer = '\0';
 
         if (args.length != 1) {
-            System.err.println("Program takes one argument: <dest_type>");
+            log.error("Program takes one argument: <dest_type>");
             return;
         }
 
         destType = args[0];
-        System.out.println("Destination type is " + destType);
+        log.info("Destination type is " + destType);
 
         if (!(destType.equals(AirJMS2Env.QUEUE) || destType.equals(AirJMS2Env.TOPIC))) {
-            System.err.println("Argument must be \"queue\" or \"topic\"");
+            log.error("Argument must be \"queue\" or \"topic\"");
             return;
         }
 
@@ -50,7 +54,7 @@ public class AsyncConsumer {
                 dest = (Destination) topic;
             }
         } catch (JMSRuntimeException e) {
-            System.err.println("Error setting destination: " + e.toString());
+            log.error("Error setting destination: " + e.toString());
             return;
         }
 
@@ -66,9 +70,9 @@ public class AsyncConsumer {
             listener = new TextListener();
             consumer.setMessageListener(listener);
             Thread.sleep(5000);
-            System.out.println("AsyncConsumer leave.");
+            log.info("AsyncConsumer leave.");
         } catch (JMSRuntimeException | InterruptedException e) {
-            System.err.println("Exception occurred: " + e.toString());
+            log.error("Exception occurred: " + e.toString());
         }
     }
 }

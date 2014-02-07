@@ -1,5 +1,7 @@
 package org.feuyeux.mq.basic;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.feuyeux.mq.AirJMS2Env;
 import org.hornetq.jms.server.embedded.EmbeddedJMS;
 
@@ -7,6 +9,8 @@ import javax.annotation.Resource;
 import javax.jms.*;
 
 public class SyncConsumer {
+    Logger log= LogManager.getLogger();
+
     @Resource(lookup = AirJMS2Env.AIR_JMS_CF)
     private static ConnectionFactory connectionFactory;
     @Resource(lookup = AirJMS2Env.AIR_QUEUE)
@@ -21,20 +25,20 @@ public class SyncConsumer {
     }
 
     public boolean go(String... args) {
-        System.out.println("==== SyncConsumer go ====");
+        log.info("==== SyncConsumer go ====");
         String destType = args[0];
         Destination dest = null;
         JMSConsumer consumer;
 
         if (args.length != 1) {
-            System.err.println("Program takes one argument: <dest_type>");
+            log.info("Program takes one argument: <dest_type>");
             return false;
         }
 
-        System.out.println("Destination type is " + destType);
+        log.info("Destination type is " + destType);
 
         if (!(destType.equals(AirJMS2Env.QUEUE) || destType.equals(AirJMS2Env.TOPIC))) {
-            System.err.println("Argument must be \"queue\" or \"topic\"");
+            log.info("Argument must be \"queue\" or \"topic\"");
             return false;
         }
 
@@ -45,7 +49,7 @@ public class SyncConsumer {
                 dest = (Destination) topic;
             }
         } catch (JMSRuntimeException e) {
-            System.err.println("Error setting destination: " + e.toString());
+            log.info("Error setting destination: " + e.toString());
             return false;
         }
 
@@ -58,20 +62,20 @@ public class SyncConsumer {
                 m = consumer.receive(1000);
                 if (m != null) {
                     if (m instanceof TextMessage) {
-                        System.out.println("Reading message: " + m.getBody(String.class));
+                        log.info("Reading message: " + m.getBody(String.class));
                         count += 1;
                     } else {
                         break;
                     }
                 }
             }
-            System.out.println("Messages received: " + count);
+            log.info("Messages received: " + count);
         } catch (MessageFormatException e) {
-            System.err.println("Message : " + m);
-            System.err.println("Exception= " + e.toString());
+            log.error("Message : " + m);
+            log.error("Exception= " + e.toString());
         } catch (JMSException e) {
-            System.err.println("Message : " + m);
-            System.err.println("Exception= " + e.toString());
+            log.error("Message : " + m);
+            log.error("Exception= " + e.toString());
         }
         return true;
     }
