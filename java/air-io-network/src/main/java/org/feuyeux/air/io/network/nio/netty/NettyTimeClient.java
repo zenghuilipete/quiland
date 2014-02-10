@@ -22,7 +22,7 @@ public class NettyTimeClient {
             Bootstrap b = new Bootstrap();
             b.group(group)
               .channel(channelClass)
-              .option(ChannelOption.TCP_NODELAY, true)
+              .option(ChannelOption.SO_BROADCAST, true)
               .handler(new ChannelInitializer<SocketChannel>() {
                   @Override
                   public void initChannel(SocketChannel ch) throws Exception {
