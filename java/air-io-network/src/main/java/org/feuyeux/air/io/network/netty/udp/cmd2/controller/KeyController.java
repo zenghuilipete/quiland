@@ -19,5 +19,6 @@ public class KeyController implements Controller {
     public void process(ControlInfo controlInfo) {
         KeyControlInfo keyControlInfo = (KeyControlInfo) controlInfo;
         logger.debug("KEY Press is:{}", keyControlInfo.getKeyPress());
+        //......
     }
 }
