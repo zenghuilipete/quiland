@@ -1,19 +1,29 @@
-apply plugin: 'java'
+apply plugin: "java"
 
-group = 'creative.air'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+group = "creative.air"
+version = "0.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral();
 }
+sourceCompatibility = 1.7
+
+task showdv {
+    println "junitVersion=$junitVersion"
+    print "log4j2Version=" println log4j2Version
+    println "log4jVersion=$log4j2Version"
+    println "slf4jVersion=$slf4jVersion"
+    println "nettyVersion=$nettyVersion"
+    println "minaVersion = $minaVersion"
+    println "."
+}
+
 dependencies {
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '${log4j2.version}'
-    compile 'org.apache.logging.log4j:log4j-core:${log4j2.version}'
-    compile ('log4j:log4j:${log4j.version}')
-    compile 'org.slf4j:slf4j-log4j12:${slf4j.version}'
-    compile 'org.apache.mina:mina-core:${mina.version}'
-    compile 'io.netty:netty-all:${netty.version}'
-    compile 'com.google.protobuf:protobuf-java:2.5.0'
-    testCompile 'junit:junit:${junit.version}'
+    compile "org.apache.logging.log4j:log4j-core:${log4j2Version}"
+    compile("log4j:log4j:${log4jVersion}")
+    compile "org.slf4j:slf4j-log4j12:${slf4jVersion}"
+    compile "org.apache.mina:mina-core:${minaVersion}"
+    compile "io.netty:netty-all:${nettyVersion}"
+    compile "com.google.protobuf:protobuf-java:2.5.0"
+    testCompile "junit:junit:${junitVersion}"
 }

@@ -1,15 +1,6 @@
 package creative.air.nio2;
 
-import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -19,260 +10,262 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
 
+import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
+
 /**
  *
  * @author feuyeux@gmail.com 2012-06-06
  */
 public class TestChannelCopy {
-	final Path copy_from = Paths.get("C:/rafaelnadal/tournaments/2009/videos/Rafa Best Shots.mp4");
-	final Path copy_to = Paths.get("C:/Rafa Best Shots.mp4");
-	long startTime, elapsedTime;
-	int bufferSizeKB = 4;
-	int bufferSize = bufferSizeKB * 1024;
-	File inFileStr = copy_from.toFile();
-	File outFileStr = copy_to.toFile();
+    final Path copy_from = Paths.get("C:/rafaelnadal/tournaments/2009/videos/Rafa Best Shots.mp4");
+    final Path copy_to = Paths.get("C:/Rafa Best Shots.mp4");
+    long startTime, elapsedTime;
+    int bufferSizeKB = 4;
+    int bufferSize = bufferSizeKB * 1024;
+    File inFileStr = copy_from.toFile();
+    File outFileStr = copy_to.toFile();
 
-	public static void main(String[] args) {
-		TestChannelCopy test = new TestChannelCopy();
-		test.copy();
-	}
+    public static void main(String[] args) {
+        TestChannelCopy test = new TestChannelCopy();
+        test.copy();
+    }
 
-	public void copy() {
-		deleteCopied(copy_to);
-		//FileChannel and indirect buffer
-		copy1();
-		deleteCopied(copy_to);
-		//FileChannel and direct buffer
-		copy2();
+    public void copy() {
+        deleteCopied(copy_to);
+        //FileChannel and indirect buffer
+        copy1();
+        deleteCopied(copy_to);
+        //FileChannel and direct buffer
+        copy2();
 
-		deleteCopied(copy_to);
+        deleteCopied(copy_to);
 
-		//FileChannel and transferTo
-		copy3();
+        //FileChannel and transferTo
+        copy3();
 
-		deleteCopied(copy_to);
+        deleteCopied(copy_to);
 
-		//FileChannel and transfer from
-		copy4();
+        //FileChannel and transfer from
+        copy4();
 
-		deleteCopied(copy_to);
+        deleteCopied(copy_to);
 
-		//FileChannel.map
-		copy5();
+        //FileChannel.map
+        copy5();
 
-		deleteCopied(copy_to);
+        deleteCopied(copy_to);
 
-		//Buffered Stream I/O 
-		copy6();
+        //Buffered Stream I/O
+        copy6();
 
-		deleteCopied(copy_to);
+        deleteCopied(copy_to);
 
-		copy7();
+        copy7();
 
-		deleteCopied(copy_to);
+        deleteCopied(copy_to);
 
-		copy8();
+        copy8();
 
-		deleteCopied(copy_to);
+        deleteCopied(copy_to);
 
-		copy9();
+        copy9();
 
-		deleteCopied(copy_to);
+        deleteCopied(copy_to);
 
-		copy10();
-	}
+        copy10();
+    }
 
-	public static void deleteCopied(Path path) {
-		try {
-			Files.deleteIfExists(path);
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
+    public static void deleteCopied(Path path) {
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
 
-	}
+    }
 
-	public void copy1() {
-		System.out.println("Using FileChannel and non-direct buffer ...");
-		try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
-				FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
+    public void copy1() {
+        System.out.println("Using FileChannel and non-direct buffer ...");
+        try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
+                FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			// Allocate an non-direct ByteBuffer
-			ByteBuffer bytebuffer = ByteBuffer.allocate(bufferSize);
+            // Allocate an non-direct ByteBuffer
+            ByteBuffer bytebuffer = ByteBuffer.allocate(bufferSize);
 
-			while (fileChannel_from.read(bytebuffer) > 0) {
-				//flip the buffer which set the limit to current position, and position to 0             
-				bytebuffer.flip();
-				//write data from ByteBuffer to file
-				fileChannel_to.write(bytebuffer);
-				//for the next read
-				bytebuffer.clear();
-			}
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
-	}
+            while (fileChannel_from.read(bytebuffer) > 0) {
+                //flip the buffer which set the limit to current position, and position to 0
+                bytebuffer.flip();
+                //write data from ByteBuffer to file
+                fileChannel_to.write(bytebuffer);
+                //for the next read
+                bytebuffer.clear();
+            }
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 
-	public void copy2() {
-		System.out.println("Using FileChannel and direct buffer ...");
-		try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
-				FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
+    public void copy2() {
+        System.out.println("Using FileChannel and direct buffer ...");
+        try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
+                FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			// Allocate an direct ByteBuffer
-			ByteBuffer bytebuffer = ByteBuffer.allocateDirect(bufferSize);
+            // Allocate an direct ByteBuffer
+            ByteBuffer bytebuffer = ByteBuffer.allocateDirect(bufferSize);
 
-			while (fileChannel_from.read(bytebuffer) > 0) {
-				//flip the buffer which set the limit to current position, and position to 0             
-				bytebuffer.flip();
-				//write data from ByteBuffer to file
-				fileChannel_to.write(bytebuffer);
-				//for the next read
-				bytebuffer.clear();
-			}
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
-	}
+            while (fileChannel_from.read(bytebuffer) > 0) {
+                //flip the buffer which set the limit to current position, and position to 0
+                bytebuffer.flip();
+                //write data from ByteBuffer to file
+                fileChannel_to.write(bytebuffer);
+                //for the next read
+                bytebuffer.clear();
+            }
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 
-	public void copy3() {
-		System.out.println("Using FileChannel.transferTo method ...");
-		try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
-				FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
+    public void copy3() {
+        System.out.println("Using FileChannel.transferTo method ...");
+        try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
+                FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			fileChannel_from.transferTo(0L, fileChannel_from.size(), fileChannel_to);
+            fileChannel_from.transferTo(0L, fileChannel_from.size(), fileChannel_to);
 
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
-	}
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 
-	public void copy4() {
-		System.out.println("Using FileChannel.transferFrom method ...");
-		try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
-				FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
+    public void copy4() {
+        System.out.println("Using FileChannel.transferFrom method ...");
+        try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
+                FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			fileChannel_to.transferFrom(fileChannel_from, 0L, (int) fileChannel_from.size());
+            fileChannel_to.transferFrom(fileChannel_from, 0L, (int) fileChannel_from.size());
 
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
-	}
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 
-	public void copy5() {
-		System.out.println("Using FileChannel.map method ...");
-		try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
-				FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
+    public void copy5() {
+        System.out.println("Using FileChannel.map method ...");
+        try (FileChannel fileChannel_from = FileChannel.open(copy_from, EnumSet.of(StandardOpenOption.READ));
+                FileChannel fileChannel_to = FileChannel.open(copy_to, EnumSet.of(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE))) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			MappedByteBuffer buffer = fileChannel_from.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel_from.size());
+            MappedByteBuffer buffer = fileChannel_from.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel_from.size());
 
-			fileChannel_to.write(buffer);
-			buffer.clear();
+            fileChannel_to.write(buffer);
+            buffer.clear();
 
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
-	}
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 
-	public void copy6() {
-		System.out.println("Using buffered streams and byte array ...");
+    public void copy6() {
+        System.out.println("Using buffered streams and byte array ...");
 
-		try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(inFileStr));
-				BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outFileStr))) {
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(inFileStr));
+                BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outFileStr))) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			byte[] byteArray = new byte[bufferSize];
-			int bytesCount;
-			while ((bytesCount = in.read(byteArray)) != -1) {
-				out.write(byteArray, 0, bytesCount);
-			}
+            byte[] byteArray = new byte[bufferSize];
+            int bytesCount;
+            while ((bytesCount = in.read(byteArray)) != -1) {
+                out.write(byteArray, 0, bytesCount);
+            }
 
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
-	}
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 
-	public void copy7() {
-		System.out.println("Using un-buffered streams and byte array ...");
-		try (FileInputStream in = new FileInputStream(inFileStr); FileOutputStream out = new FileOutputStream(outFileStr)) {
+    public void copy7() {
+        System.out.println("Using un-buffered streams and byte array ...");
+        try (FileInputStream in = new FileInputStream(inFileStr); FileOutputStream out = new FileOutputStream(outFileStr)) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			byte[] byteArray = new byte[bufferSize];
-			int bytesCount;
-			while ((bytesCount = in.read(byteArray)) != -1) {
-				out.write(byteArray, 0, bytesCount);
-			}
+            byte[] byteArray = new byte[bufferSize];
+            int bytesCount;
+            while ((bytesCount = in.read(byteArray)) != -1) {
+                out.write(byteArray, 0, bytesCount);
+            }
 
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
-	}
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 
-	public void copy8() {
-		System.out.println("Using Files.copy (Path to Path) method ...");
-		try {
-			startTime = System.nanoTime();
+    public void copy8() {
+        System.out.println("Using Files.copy (Path to Path) method ...");
+        try {
+            startTime = System.nanoTime();
 
-			Files.copy(copy_from, copy_to, NOFOLLOW_LINKS);
+            Files.copy(copy_from, copy_to, NOFOLLOW_LINKS);
 
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException e) {
-			System.err.println(e);
-		}
-	}
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+    }
 
-	public void copy9() {
-		System.out.println("Using Files.copy (InputStream to Path) ...");
-		try (InputStream is = new FileInputStream(copy_from.toFile())) {
+    public void copy9() {
+        System.out.println("Using Files.copy (InputStream to Path) ...");
+        try (InputStream is = new FileInputStream(copy_from.toFile())) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			Files.copy(is, copy_to);
+            Files.copy(is, copy_to);
 
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException e) {
-			System.err.println(e);
-		}
-	}
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+    }
 
-	public void copy10() {
-		System.out.println("Using Files.copy (Path to OutputStream) ...");
-		try (OutputStream os = new FileOutputStream(copy_to.toFile())) {
+    public void copy10() {
+        System.out.println("Using Files.copy (Path to OutputStream) ...");
+        try (OutputStream os = new FileOutputStream(copy_to.toFile())) {
 
-			startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
-			Files.copy(copy_from, os);
+            Files.copy(copy_from, os);
 
-			elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
-		} catch (IOException e) {
-			System.err.println(e);
-		}
-	}
+            elapsedTime = System.nanoTime() - startTime;
+            System.out.println("Elapsed Time is " + elapsedTime / 1000000000.0 + " seconds");
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+    }
 }

@@ -1,40 +1,36 @@
 package creative.air.nio2.recursive;
 
+import org.feuyeux.air.io.network.common.ENV;
+
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
+import java.nio.file.*;
 import java.util.EnumSet;
 
-import org.feuyeux.air.io.network.AirIO;
-
 /**
-*
-* @author feuyeux@gmail.com 2012-06-06
-*/
+ *
+ * @author feuyeux@gmail.com 2012-06-06
+ */
 class ListTree extends SimpleFileVisitor<Path> {
 
-	@Override
-	public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
+    @Override
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
 
-		System.out.println("Visited directory: " + dir.toString());
+        System.out.println("Visited directory: " + dir.toString());
 
-		return FileVisitResult.CONTINUE;
-	}
+        return FileVisitResult.CONTINUE;
+    }
 
-	@Override
-	public FileVisitResult visitFileFailed(Path file, IOException exc) {
+    @Override
+    public FileVisitResult visitFileFailed(Path file, IOException exc) {
 
-		System.out.println(exc);
+        System.out.println(exc);
 
-		return FileVisitResult.CONTINUE;
-	}
+        return FileVisitResult.CONTINUE;
+    }
 
-	public static void main(String[] args) throws IOException {
-		ListTree walk = new ListTree();
-		EnumSet<FileVisitOption> opts = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
-		Files.walkFileTree(AirIO.FROM, opts, Integer.MAX_VALUE, walk);
-	}
+    public static void main(String[] args) throws IOException {
+        ListTree walk = new ListTree();
+        EnumSet<FileVisitOption> opts = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
+        Files.walkFileTree(ENV.FROM, opts, Integer.MAX_VALUE, walk);
+    }
 }

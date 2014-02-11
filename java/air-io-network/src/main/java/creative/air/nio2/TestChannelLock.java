@@ -14,48 +14,48 @@ import java.util.EnumSet;
  * @author luh
  */
 public class TestChannelLock {
-	public static void main(String[] args) {
-		Path path = Paths.get("C:/rafaelnadal/email", "vamos.txt");
-		ByteBuffer buffer = ByteBuffer.wrap("Vamos Rafa!".getBytes());
+    public static void main(String[] args) {
+        Path path = Paths.get("C:/rafaelnadal/email", "vamos.txt");
+        ByteBuffer buffer = ByteBuffer.wrap("Vamos Rafa!".getBytes());
 
-		try (FileChannel fileChannel = FileChannel.open(path, EnumSet.of(StandardOpenOption.READ, StandardOpenOption.WRITE))) {
+        try (FileChannel fileChannel = FileChannel.open(path, EnumSet.of(StandardOpenOption.READ, StandardOpenOption.WRITE))) {
 
-			// Use the file channel to create a lock on the file.
-			// This method blocks until it can retrieve the lock.
-			FileLock lock = fileChannel.lock();
+            // Use the file channel to create a lock on the file.
+            // This method blocks until it can retrieve the lock.
+            FileLock lock = fileChannel.lock();
 
-			// Try acquiring the lock without blocking. This method returns
-			// null or throws an exception if the file is already locked.
-			//try {
-			//    lock = fileChannel.tryLock();
-			//} catch (OverlappingFileLockException e) {
-			// File is already locked in this thread or virtual machine
-			//}
+            // Try acquiring the lock without blocking. This method returns
+            // null or throws an exception if the file is already locked.
+            //try {
+            //    lock = fileChannel.tryLock();
+            //} catch (OverlappingFileLockException e) {
+            // File is already locked in this thread or virtual machine
+            //}
 
-			if (lock.isValid()) {
+            if (lock.isValid()) {
 
-				System.out.println("Writing to a locked file ...");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException ex) {
-					System.err.println(ex);
-				}
-				fileChannel.position(0);
-				fileChannel.write(buffer);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException ex) {
-					System.err.println(ex);
-				}
-			}
+                System.out.println("Writing to a locked file ...");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    System.err.println(ex);
+                }
+                fileChannel.position(0);
+                fileChannel.write(buffer);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    System.err.println(ex);
+                }
+            }
 
-			// Release the lock
-			lock.release();
+            // Release the lock
+            lock.release();
 
-			System.out.println("\nLock released!");
+            System.out.println("\nLock released!");
 
-		} catch (IOException ex) {
-			System.err.println(ex);
-		}
-	}
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 }
