@@ -3,7 +3,6 @@ package org.feuyeux.air.io.network.netty.udp.cmd2.core;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
@@ -24,7 +23,6 @@ public class UdpCmdServer {
             Bootstrap b = new Bootstrap();
             b.group(group)
                     .channel(NioDatagramChannel.class)
-                    .option(ChannelOption.SO_BROADCAST, true)
                     .handler(new ChannelInitializer<DatagramChannel>() {
                         @Override
                         protected void initChannel(DatagramChannel ch) throws Exception {

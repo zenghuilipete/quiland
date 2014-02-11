@@ -1,5 +1,6 @@
 package org.feuyeux.air.io.network.netty.udp.cmd2.core;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -24,9 +25,8 @@ public class UdpCmdServerHandler extends SimpleChannelInboundHandler<DatagramPac
         logger.debug("UDP Command Client response:{}", udpCommand);
         Controller controller = ControllerFactory.getInstance(udpCommand.getType());
         controller.process(udpCommand.getControlInfo());
-
-        ctx.write(new DatagramPacket(
-                Unpooled.copiedBuffer("handled:" + udpCommand, CharsetUtil.UTF_8), datagramPacket.sender()));
+        ByteBuf responseMessage = Unpooled.copiedBuffer("handled:" + udpCommand, CharsetUtil.UTF_8);
+        ctx.write(new DatagramPacket(responseMessage, datagramPacket.sender()));
     }
 
     @Override

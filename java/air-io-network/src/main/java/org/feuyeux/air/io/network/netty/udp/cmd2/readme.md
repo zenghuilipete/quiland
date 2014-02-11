@@ -3,7 +3,7 @@
 - dependency:netty5.0.0.Alpha1
 
 ### network topology ###
-One UDP Command Server receiving Clients' broadcast via UDP nio Channel.
+One UDP Command Server receiving Clients' sending or broadcasting message via UDP nio Channel.
 When UDP Command Server receives command, it will choose a related controller to process this command.
  
 ![topology.png](topology.png)

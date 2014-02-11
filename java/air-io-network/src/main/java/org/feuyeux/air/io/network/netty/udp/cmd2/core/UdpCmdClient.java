@@ -25,20 +25,51 @@ public class UdpCmdClient {
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
-                    .channel(NioDatagramChannel.class)
-                    .option(ChannelOption.SO_BROADCAST, true)
-                    .handler(new ChannelInitializer<DatagramChannel>() {
-                        @Override
-                        public void initChannel(DatagramChannel ch) throws Exception {
-                            ch.pipeline().addLast(
-                                    //new LoggingHandler(LogLevel.INFO),
-                                    new UdpCmdClientHandler());
-                        }
-                    });
+              .channel(NioDatagramChannel.class)
+              .handler(new ChannelInitializer<DatagramChannel>() {
+                  @Override
+                  public void initChannel(DatagramChannel ch) throws Exception {
+                      ch.pipeline().addLast(
+                        //new LoggingHandler(LogLevel.INFO),
+                        new UdpCmdClientHandler());
+                  }
+              });
+            ChannelFuture f = b.connect(ENV.SERVER_IP, ENV.NETTY_PORT).sync();
+            Channel channel = f.channel();
+            ByteBuf data = UdpCmdCodec.encode(udpCommand);
+            DatagramPacket udpPacket = new DatagramPacket(data,
+              new InetSocketAddress(ENV.SERVER_IP, ENV.NETTY_PORT));
+            ChannelFuture cf = channel.writeAndFlush(udpPacket).sync();
+            cf.get(ENV.READ_TIMEOUT, TimeUnit.SECONDS);
+            logger.debug("UDP Command has been send.");
+            if (!cf.channel().closeFuture().await(ENV.CONNECT_TIMEOUT)) {
+                logger.info("UDP Command channel closed.");
+            }
+        } finally {
+            // Shut down the event loop to terminate all threads.
+            group.shutdownGracefully();
+        }
+    }
+
+    public void broadcast(UdpCommand udpCommand) throws InterruptedException, TimeoutException, ExecutionException {
+        EventLoopGroup group = new NioEventLoopGroup();
+        try {
+            Bootstrap b = new Bootstrap();
+            b.group(group)
+              .channel(NioDatagramChannel.class)
+              .option(ChannelOption.SO_BROADCAST, true)
+              .handler(new ChannelInitializer<DatagramChannel>() {
+                  @Override
+                  public void initChannel(DatagramChannel ch) throws Exception {
+                      ch.pipeline().addLast(
+                        //new LoggingHandler(LogLevel.INFO),
+                        new UdpCmdClientHandler());
+                  }
+              });
             Channel channel = b.bind(new InetSocketAddress(0)).sync().channel();
             ByteBuf data = UdpCmdCodec.encode(udpCommand);
             DatagramPacket udpPacket = new DatagramPacket(data,
-                    new InetSocketAddress(ENV.BROAD_CAST_IP, ENV.NETTY_PORT));
+              new InetSocketAddress(ENV.BROAD_CAST_IP, ENV.NETTY_PORT));
             ChannelFuture cf = channel.writeAndFlush(udpPacket).sync();
             cf.get(ENV.READ_TIMEOUT, TimeUnit.SECONDS);
             logger.debug("UDP Command has been send.");

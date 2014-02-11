@@ -23,8 +23,8 @@ public interface ENV {
     int BYTE_SIZE_1K = 1024;
     int BYTE_SIZE_2K = 2048;
     int IDLE_TIME = 10;
-    long CONNECT_TIMEOUT = 15 * 1000L; // 15 seconds
-    long READ_TIMEOUT = 10;//10 seconds
+    long CONNECT_TIMEOUT = 8 * 1000L; // 15 seconds
+    long READ_TIMEOUT = 5;//10 seconds
     String MINA_LOGGER = "logger";
     String MINA_CODEC = "codec";
 }

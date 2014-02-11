@@ -18,8 +18,9 @@ import java.util.concurrent.*;
 public class KeyCommandTest {
     private final static Logger logger = LogManager.getLogger(KeyCommandTest.class);
 
-    @Test
-    public void testTcpCommunication() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    @Test(timeout = 30L)
+    public void testSend() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+        logger.debug("Test Send Command");
         final UdpCmdServer server = new UdpCmdServer();
         final UdpCmdClient client = new UdpCmdClient();
 
@@ -31,6 +32,7 @@ public class KeyCommandTest {
             public String call() throws Exception {
                 UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
                 client.send(keyCommand);
+                client.send(keyCommand);
                 return "Client test DONE";
             }
         });
@@ -39,7 +41,7 @@ public class KeyCommandTest {
             @Override
             public String call() throws Exception {
                 try {
-                    server.init(false);
+                    server.init(true);
                 } catch (Exception e) {
                     logger.error(e);
                     return "Server test Failed.";
@@ -52,6 +54,47 @@ public class KeyCommandTest {
 
         for (int i = 0; i < futures.size(); i++) {
             String result = futures.get(i).get(20, TimeUnit.SECONDS);
+            logger.debug(result);
+        }
+        e.shutdown();
+    }
+
+    @Test(timeout = 30L)
+    public void testBroadcast() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+        logger.debug("Test Broadcast Command");
+        final UdpCmdServer server = new UdpCmdServer();
+        final UdpCmdClient client = new UdpCmdClient();
+
+        ExecutorService e = Executors.newFixedThreadPool(2);
+
+        Collection<Callable<String>> tasks = new ArrayList<>();
+        tasks.add(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
+                client.broadcast(keyCommand);
+                client.broadcast(keyCommand);
+                return "Client test DONE";
+            }
+        });
+
+        tasks.add(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                try {
+                    server.init(true);
+                } catch (Exception e) {
+                    logger.error(e);
+                    return "Server test Failed.";
+                }
+                return "Server test DONE";
+            }
+        });
+
+        List<Future<String>> futures = e.invokeAll(tasks);
+
+        for (int i = 0; i < futures.size(); i++) {
+            String result = futures.get(i).get();
             logger.debug(result);
         }
         e.shutdown();
