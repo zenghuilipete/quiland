@@ -7,7 +7,7 @@
             </PatternLayout>
         </File>
         <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%c{1.} %m%n"/>
+            <PatternLayout pattern="%d [%c{1.}] %m%n"/>
         </Console>
     </Appenders>
     <Loggers>

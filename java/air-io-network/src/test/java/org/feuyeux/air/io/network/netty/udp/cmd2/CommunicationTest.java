@@ -31,4 +31,13 @@ public class CommunicationTest {
         keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
         client.send(keyCommand);
     }
+
+    @Test
+    public void testBroadcast() throws InterruptedException, TimeoutException, ExecutionException {
+        final UdpCmdClient client = new UdpCmdClient("10.11.72.69", 9876);
+        UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
+        client.broadcast(keyCommand);
+        keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
+        client.broadcast(keyCommand);
+    }
 }
