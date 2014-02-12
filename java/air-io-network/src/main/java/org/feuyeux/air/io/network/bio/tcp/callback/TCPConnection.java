@@ -10,8 +10,8 @@ import java.util.concurrent.BlockingQueue;
 public class TCPConnection {
     protected Socket socket;
 
-    protected BlockingQueue<EventHandler> messageListeners = new ArrayBlockingQueue<EventHandler>(10);
-    protected BlockingQueue<EventHandler> connectionListeners = new ArrayBlockingQueue<EventHandler>(10);
+    protected BlockingQueue<EventHandler> messageListeners = new ArrayBlockingQueue<>(10);
+    protected BlockingQueue<EventHandler> connectionListeners = new ArrayBlockingQueue<>(10);
 
     public TCPConnection(Socket socket) {
         this.socket = socket;
@@ -48,7 +48,7 @@ public class TCPConnection {
     public void receiveMessage() {
         try {
             /*
-			BufferedReader bReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedReader bReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String line;
 			while ((line = bReader.readLine()) != null) {
 				handleReceivedMessage(line);

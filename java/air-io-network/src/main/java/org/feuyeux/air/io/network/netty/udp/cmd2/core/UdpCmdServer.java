@@ -32,15 +32,15 @@ public class UdpCmdServer {
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
-              .channel(NioDatagramChannel.class)
-              .handler(new ChannelInitializer<DatagramChannel>() {
-                  @Override
-                  protected void initChannel(DatagramChannel ch) throws Exception {
-                      ch.pipeline().addLast(
-                        // new LoggingHandler(LogLevel.INFO),
-                        new UdpCmdServerHandler());
-                  }
-              });
+                    .channel(NioDatagramChannel.class)
+                    .handler(new ChannelInitializer<DatagramChannel>() {
+                        @Override
+                        protected void initChannel(DatagramChannel ch) throws Exception {
+                            ch.pipeline().addLast(
+                                    // new LoggingHandler(LogLevel.INFO),
+                                    new UdpCmdServerHandler());
+                        }
+                    });
             ChannelFuture f = b.bind(nettyPort).sync();
             logger.debug("UDP Command Server launched.");
 

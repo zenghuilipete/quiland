@@ -40,4 +40,14 @@ public class CommunicationTest {
         keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
         client.broadcast(keyCommand);
     }
+
+    @Test
+    public void testSendPerformance() throws InterruptedException, TimeoutException, ExecutionException {
+        for (int i = 0; i < 10000; i++) {
+            final UdpCmdClient client = new UdpCmdClient("10.11.72.69", 9876);
+            UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:" + i));
+            client.send(keyCommand);
+            Thread.sleep(50);
+        }
+    }
 }

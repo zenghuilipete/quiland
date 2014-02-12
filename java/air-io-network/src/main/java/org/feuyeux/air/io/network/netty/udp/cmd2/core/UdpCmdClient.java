@@ -21,6 +21,7 @@ public class UdpCmdClient {
     private static final Logger logger = LogManager.getLogger(UdpCmdClient.class.getName());
     final String serverIp;
     final int nettyPort;
+    private final long CLOSE_TIMEOUT_MILLIS = 500;
 
     public UdpCmdClient() {
         this.serverIp = ENV.SERVER_IP;
@@ -37,26 +38,24 @@ public class UdpCmdClient {
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
-              .channel(NioDatagramChannel.class)
-              .handler(new ChannelInitializer<DatagramChannel>() {
-                  @Override
-                  public void initChannel(DatagramChannel ch) throws Exception {
-                      ch.pipeline().addLast(
-                        //new LoggingHandler(LogLevel.INFO),
-                        new UdpCmdClientHandler());
-                  }
-              });
-            ChannelFuture f = b.connect(serverIp, nettyPort).sync();
-            Channel channel = f.channel();
+                    .channel(NioDatagramChannel.class)
+                    .handler(new ChannelInitializer<DatagramChannel>() {
+                        @Override
+                        public void initChannel(DatagramChannel ch) throws Exception {
+                            ch.pipeline().addLast(
+                                    //new LoggingHandler(LogLevel.INFO),
+                                    new UdpCmdClientHandler()
+                            );
+                        }
+                    });
+            Channel channel = b.connect(serverIp, nettyPort).sync().channel();
             ByteBuf data = UdpCmdCodec.encode(udpCommand);
-            DatagramPacket udpPacket = new DatagramPacket(data,
-              new InetSocketAddress(serverIp, nettyPort));
+            DatagramPacket udpPacket = new DatagramPacket(data, new InetSocketAddress(serverIp, nettyPort));
             ChannelFuture cf = channel.writeAndFlush(udpPacket).sync();
-            cf.get(ENV.READ_TIMEOUT, TimeUnit.SECONDS);
-            logger.debug("UDP Command has been send.");
-            if (!cf.channel().closeFuture().await(ENV.CONNECT_TIMEOUT)) {
-                logger.info("UDP Command channel closed.");
-            }
+            Object o = cf.get(ENV.READ_TIMEOUT, TimeUnit.SECONDS);
+            logger.debug("UDP Command[{}] has been send.", udpCommand);
+            cf.channel().close();
+            logger.info("UDP Command[{}] channel closed.", udpCommand);
         } finally {
             // Shut down the event loop to terminate all threads.
             group.shutdownGracefully();
@@ -68,25 +67,25 @@ public class UdpCmdClient {
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
-              .channel(NioDatagramChannel.class)
-              .option(ChannelOption.SO_BROADCAST, true)
-              .handler(new ChannelInitializer<DatagramChannel>() {
-                  @Override
-                  public void initChannel(DatagramChannel ch) throws Exception {
-                      ch.pipeline().addLast(
-                        //new LoggingHandler(LogLevel.INFO),
-                        new UdpCmdClientHandler());
-                  }
-              });
+                    .channel(NioDatagramChannel.class)
+                    .option(ChannelOption.SO_BROADCAST, true)
+                    .handler(new ChannelInitializer<DatagramChannel>() {
+                        @Override
+                        public void initChannel(DatagramChannel ch) throws Exception {
+                            ch.pipeline().addLast(
+                                    //new LoggingHandler(LogLevel.INFO),
+                                    new UdpCmdClientHandler()
+                            );
+                        }
+                    });
             Channel channel = b.bind(new InetSocketAddress(0)).sync().channel();
             ByteBuf data = UdpCmdCodec.encode(udpCommand);
-            DatagramPacket udpPacket = new DatagramPacket(data,
-              new InetSocketAddress(ENV.BROAD_CAST_IP, ENV.NETTY_PORT));
+            DatagramPacket udpPacket = new DatagramPacket(data, new InetSocketAddress(serverIp, nettyPort));
             ChannelFuture cf = channel.writeAndFlush(udpPacket).sync();
             cf.get(ENV.READ_TIMEOUT, TimeUnit.SECONDS);
-            logger.debug("UDP Command has been send.");
-            if (!cf.channel().closeFuture().await(ENV.CONNECT_TIMEOUT)) {
-                logger.info("UDP Command channel closed.");
+            logger.debug("UDP Command[{}] has been send.", udpCommand);
+            if (!cf.channel().closeFuture().await(CLOSE_TIMEOUT_MILLIS)) {
+                logger.info("UDP Command[{}] channel closed.", udpCommand);
             }
         } finally {
             // Shut down the event loop to terminate all threads.
