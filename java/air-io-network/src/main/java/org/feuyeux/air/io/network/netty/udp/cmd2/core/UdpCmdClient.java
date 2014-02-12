@@ -19,6 +19,18 @@ import java.util.concurrent.TimeoutException;
 
 public class UdpCmdClient {
     private static final Logger logger = LogManager.getLogger(UdpCmdClient.class.getName());
+    final String serverIp;
+    final int nettyPort;
+
+    public UdpCmdClient() {
+        this.serverIp = ENV.SERVER_IP;
+        this.nettyPort = ENV.NETTY_PORT;
+    }
+
+    public UdpCmdClient(String serverIp, int nettyPort) {
+        this.serverIp = serverIp;
+        this.nettyPort = nettyPort;
+    }
 
     public void send(UdpCommand udpCommand) throws InterruptedException, TimeoutException, ExecutionException {
         EventLoopGroup group = new NioEventLoopGroup();
@@ -34,11 +46,11 @@ public class UdpCmdClient {
                         new UdpCmdClientHandler());
                   }
               });
-            ChannelFuture f = b.connect(ENV.SERVER_IP, ENV.NETTY_PORT).sync();
+            ChannelFuture f = b.connect(serverIp, nettyPort).sync();
             Channel channel = f.channel();
             ByteBuf data = UdpCmdCodec.encode(udpCommand);
             DatagramPacket udpPacket = new DatagramPacket(data,
-              new InetSocketAddress(ENV.SERVER_IP, ENV.NETTY_PORT));
+              new InetSocketAddress(serverIp, nettyPort));
             ChannelFuture cf = channel.writeAndFlush(udpPacket).sync();
             cf.get(ENV.READ_TIMEOUT, TimeUnit.SECONDS);
             logger.debug("UDP Command has been send.");

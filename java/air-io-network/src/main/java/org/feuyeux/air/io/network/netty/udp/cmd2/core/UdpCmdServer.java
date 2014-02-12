@@ -13,8 +13,18 @@ import org.feuyeux.air.io.network.common.ENV;
 
 public class UdpCmdServer {
     private static final Logger logger = LogManager.getLogger(UdpCmdServer.class.getName());
+    final int nettyPort;
 
     public UdpCmdServer() {
+        this.nettyPort = ENV.NETTY_PORT;
+    }
+
+    public UdpCmdServer(int nettyPort) {
+        this.nettyPort = nettyPort;
+    }
+
+    public void init() throws InterruptedException {
+        init(true);
     }
 
     public void init(boolean durable) throws InterruptedException {
@@ -22,16 +32,16 @@ public class UdpCmdServer {
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
-                    .channel(NioDatagramChannel.class)
-                    .handler(new ChannelInitializer<DatagramChannel>() {
-                        @Override
-                        protected void initChannel(DatagramChannel ch) throws Exception {
-                            ch.pipeline().addLast(
-                                    // new LoggingHandler(LogLevel.INFO),
-                                    new UdpCmdServerHandler());
-                        }
-                    });
-            ChannelFuture f = b.bind(ENV.NETTY_PORT).sync();
+              .channel(NioDatagramChannel.class)
+              .handler(new ChannelInitializer<DatagramChannel>() {
+                  @Override
+                  protected void initChannel(DatagramChannel ch) throws Exception {
+                      ch.pipeline().addLast(
+                        // new LoggingHandler(LogLevel.INFO),
+                        new UdpCmdServerHandler());
+                  }
+              });
+            ChannelFuture f = b.bind(nettyPort).sync();
             logger.debug("UDP Command Server launched.");
 
             if (durable) {
