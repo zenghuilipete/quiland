@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 public class KeyCommandTest {
     private final static Logger logger = LogManager.getLogger(KeyCommandTest.class);
 
-    @Test(timeout = 30L)
+    @Test(timeout = 30000L)
     public void testSend() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         logger.debug("Test Send Command");
         final UdpCmdServer server = new UdpCmdServer();
@@ -32,6 +32,7 @@ public class KeyCommandTest {
             public String call() throws Exception {
                 UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
                 client.send(keyCommand);
+                keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
                 client.send(keyCommand);
                 return "Client test DONE";
             }
@@ -59,7 +60,7 @@ public class KeyCommandTest {
         e.shutdown();
     }
 
-    @Test(timeout = 30L)
+    @Test(timeout = 30000L)
     public void testBroadcast() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         logger.debug("Test Broadcast Command");
         final UdpCmdServer server = new UdpCmdServer();
@@ -73,6 +74,7 @@ public class KeyCommandTest {
             public String call() throws Exception {
                 UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
                 client.broadcast(keyCommand);
+                keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
                 client.broadcast(keyCommand);
                 return "Client test DONE";
             }

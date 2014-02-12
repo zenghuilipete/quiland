@@ -92,16 +92,24 @@ UDP Command has two fields, the type is used to generate the codec and controlle
 
 ##Test##
 
-	o.f.a.i.n.n.u.c.c.UdpCmdServer UDP Command Server launched.
-	o.f.a.i.n.n.u.c.c.UdpCmdClient UDP Command has been send.
-	o.f.a.i.n.n.u.c.c.UdpCmdServerHandler DatagramPacket:DatagramPacket(/10.11.72.69:63596 => /0.0.0.0:9159, SimpleLeakAwareByteBuf(UnpooledUnsafeDirectByteBuf(ridx: 0, widx: 10, cap: 2048)))
-	o.f.a.i.n.n.u.c.c.UdpCmdServerHandler UDP Command Client response:KEY-KEY:13
-	o.f.a.i.n.n.u.c.c.KeyController KEY Press is:KEY:13
-	o.f.a.i.n.n.u.c.c.UdpCmdClientHandler DatagramPacket:DatagramPacket(/10.11.72.69:9159 => /0.0.0.0:63596, UnpooledUnsafeDirectByteBuf(ridx: 0, widx: 18, cap: 2048))
-	o.f.a.i.n.n.u.c.c.UdpCmdClientHandler UDP Command Server response:handled:KEY-KEY:13
-	o.f.a.i.n.n.u.c.c.UdpCmdServer UDP Command Server closed.
-	o.f.a.i.n.n.u.c.c.UdpCmdClient UDP Command channel closed.
-	o.f.a.i.n.n.u.c.KeyCommandTest Client test DONE
-	o.f.a.i.n.n.u.c.KeyCommandTest Server test DONE
-	
+    2014-02-12 11:55:46,938 [o.f.a.i.n.n.u.c.KeyCommandTest] Test Send Command
+    2014-02-12 11:55:47,231 [o.f.a.i.n.n.u.c.c.UdpCmdServer] UDP Command Server launched.
+    2014-02-12 11:55:47,246 [o.f.a.i.n.n.u.c.c.UdpCmdClient] UDP Command[KEY-KEY:13] has been send.
+    2014-02-12 11:55:47,246 [o.f.a.i.n.n.u.c.c.UdpCmdServerHandler] DatagramPacket:DatagramPacket(/127.0.0.1:64111 => /0.0.0.0:9159, SimpleLeakAwareByteBuf(UnpooledUnsafeDirectByteBuf(ridx: 0, widx: 10, cap: 2048)))
+    2014-02-12 11:55:47,247 [o.f.a.i.n.n.u.c.c.UdpCmdClient] UDP Command[KEY-KEY:13] channel closed.
+    2014-02-12 11:55:47,247 [o.f.a.i.n.n.u.c.c.UdpCmdServerHandler] UDP Command Client response:KEY-KEY:13
+    2014-02-12 11:55:47,249 [o.f.a.i.n.n.u.c.c.KeyController] KEY Press is:KEY:13
+    2014-02-12 11:55:47,260 [o.f.a.i.n.n.u.c.c.UdpCmdClient] UDP Command[KEY-KEY:10] has been send.
+    2014-02-12 11:55:47,260 [o.f.a.i.n.n.u.c.c.UdpCmdServerHandler] DatagramPacket:DatagramPacket(/127.0.0.1:64112 => /0.0.0.0:9159, UnpooledUnsafeDirectByteBuf(ridx: 0, widx: 10, cap: 2048))
+    2014-02-12 11:55:47,261 [o.f.a.i.n.n.u.c.c.UdpCmdServerHandler] UDP Command Client response:KEY-KEY:10
+    2014-02-12 11:55:47,261 [o.f.a.i.n.n.u.c.c.UdpCmdClient] UDP Command[KEY-KEY:10] channel closed.
+    2014-02-12 11:55:47,261 [o.f.a.i.n.n.u.c.c.KeyController] KEY Press is:KEY:10
+
 	Process finished with exit code 0
+
+##Remote Test##
+- **Server: 10.11.72.69**
+- **Client: 10.11.72.50**
+- **UDP port: 9876**
+
+![udp_send_testing](udp_send_testing.png)

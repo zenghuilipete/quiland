@@ -12,6 +12,8 @@ import org.feuyeux.air.io.network.netty.udp.cmd2.controller.Controller;
 import org.feuyeux.air.io.network.netty.udp.cmd2.controller.ControllerFactory;
 import org.feuyeux.air.io.network.netty.udp.cmd2.entity.UdpCommand;
 
+import java.net.InetSocketAddress;
+
 public class UdpCmdServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
     private static final Logger logger = LogManager.getLogger(UdpCmdServerHandler.class.getName());
 
@@ -26,7 +28,8 @@ public class UdpCmdServerHandler extends SimpleChannelInboundHandler<DatagramPac
         Controller controller = ControllerFactory.getInstance(udpCommand.getType());
         controller.process(udpCommand.getControlInfo());
         ByteBuf responseMessage = Unpooled.copiedBuffer("handled:" + udpCommand, CharsetUtil.UTF_8);
-        ctx.write(new DatagramPacket(responseMessage, datagramPacket.sender()));
+        InetSocketAddress sender = datagramPacket.sender();
+        ctx.write(new DatagramPacket(responseMessage, sender));
     }
 
     @Override
