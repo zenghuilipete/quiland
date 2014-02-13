@@ -14,7 +14,7 @@ import org.feuyeux.air.io.network.netty.udp.cmd2.entity.UdpCommand;
 
 import java.net.InetSocketAddress;
 
-public class UdpCmdServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
+public class UdpCmdServerHandler extends SimpleChannelInboundHandler<DatagramPacket>    {
     private static final Logger logger = LogManager.getLogger(UdpCmdServerHandler.class.getName());
 
     public UdpCmdServerHandler() {

@@ -22,7 +22,7 @@ public class KeyCommandTest {
     public void testSend() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         logger.debug("Test Send Command");
         final UdpCmdServer server = new UdpCmdServer();
-        final UdpCmdClient client = new UdpCmdClient();
+        final UdpCmdClient client = UdpCmdClient.getInstance();
 
         ExecutorService e = Executors.newFixedThreadPool(2);
 
@@ -64,7 +64,7 @@ public class KeyCommandTest {
     public void testBroadcast() throws IOException, InterruptedException, ExecutionException, TimeoutException {
         logger.debug("Test Broadcast Command");
         final UdpCmdServer server = new UdpCmdServer();
-        final UdpCmdClient client = new UdpCmdClient();
+        final UdpCmdClient client = UdpCmdClient.getInstance();
 
         ExecutorService e = Executors.newFixedThreadPool(2);
 
