@@ -2,6 +2,7 @@ package org.feuyeux.air.io.network.netty.udp.cmd2;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.feuyeux.air.io.network.common.ENV;
 import org.feuyeux.air.io.network.netty.udp.cmd2.core.UdpCmdClient;
 import org.feuyeux.air.io.network.netty.udp.cmd2.core.UdpCmdServer;
 import org.feuyeux.air.io.network.netty.udp.cmd2.entity.CommandType;
@@ -9,96 +10,123 @@ import org.feuyeux.air.io.network.netty.udp.cmd2.entity.UdpCommand;
 import org.feuyeux.air.io.network.netty.udp.cmd2.info.KeyControlInfo;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class KeyCommandTest {
-    private final static Logger logger = LogManager.getLogger(KeyCommandTest.class);
+    private static final Logger logger = LogManager.getLogger(KeyCommandTest.class);
 
-    @Test(timeout = 30000L)
-    public void testSend() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    @Test
+    public void testSend() throws Exception {
         logger.debug("Test Send Command");
-        final UdpCmdServer server = new UdpCmdServer();
-        final UdpCmdClient client = UdpCmdClient.getInstance();
-
-        ExecutorService e = Executors.newFixedThreadPool(2);
-
-        Collection<Callable<String>> tasks = new ArrayList<>();
-        tasks.add(new Callable<String>() {
+        final CountDownLatch startGate = new CountDownLatch(1);
+        final CountDownLatch endGate = new CountDownLatch(2);
+        new Thread() {
             @Override
-            public String call() throws Exception {
-                UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
-                client.send(keyCommand);
-                keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
-                client.send(keyCommand);
-                return "Client test DONE";
-            }
-        });
-
-        tasks.add(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
+            public void run() {
                 try {
-                    server.init(true);
-                } catch (Exception e) {
+                    final UdpCmdClient client = UdpCmdClient.getUdpClient(ENV.SERVER_IP, ENV.NETTY_PORT);
+                    logger.debug("**** client task Waiting for server ****");
+                    startGate.await();
+                    logger.debug("**** client task Start! ****");
+                    for (int i = 0; i < 5; i++) {
+                        UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo(String.valueOf(i)));
+                        client.send(keyCommand);
+                        Thread.sleep(100);
+                    }
+                    logger.debug("**** client task Done! ****");
+                } catch (InterruptedException e) {
                     logger.error(e);
-                    return "Server test Failed.";
+                } finally {
+                    endGate.countDown();
+                    logger.debug("**** client task countDown! ****");
                 }
-                return "Server test DONE";
             }
-        });
+        }.start();
 
-        List<Future<String>> futures = e.invokeAll(tasks);
-
-        for (int i = 0; i < futures.size(); i++) {
-            String result = futures.get(i).get(20, TimeUnit.SECONDS);
-            logger.debug(result);
-        }
-        e.shutdown();
+        final Thread serverTask = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    final UdpCmdServer server = new UdpCmdServer(ENV.NETTY_PORT);
+                    server.init();
+                } catch (InterruptedException e) {
+                    logger.error(e);
+                }
+            }
+        };
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    serverTask.start();
+                    logger.debug("**** server task Done! ****");
+                    Thread.sleep(500);
+                    startGate.countDown();
+                } catch (InterruptedException e) {
+                    logger.error(e);
+                } finally {
+                    endGate.countDown();
+                    logger.debug("**** server task countDown! ****");
+                }
+            }
+        }.start();
+        endGate.await();
     }
 
-    @Test(timeout = 30000L)
-    public void testBroadcast() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+
+    @Test
+    public void testBroadcast() throws Exception {
         logger.debug("Test Broadcast Command");
+        final CountDownLatch startGate = new CountDownLatch(1);
+        final CountDownLatch endGate = new CountDownLatch(2);
+
         final UdpCmdServer server = new UdpCmdServer();
-        final UdpCmdClient client = UdpCmdClient.getInstance();
+        final UdpCmdClient client = UdpCmdClient.getBroadcastClient(ENV.NETTY_PORT);
 
-        ExecutorService e = Executors.newFixedThreadPool(2);
-
-        Collection<Callable<String>> tasks = new ArrayList<>();
-        tasks.add(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
-                client.broadcast(keyCommand);
-                keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
-                client.broadcast(keyCommand);
-                return "Client test DONE";
-            }
-        });
-
-        tasks.add(new Callable<String>() {
+        new Callable<String>() {
             @Override
             public String call() throws Exception {
                 try {
-                    server.init(true);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                server.init();
+                            } catch (Exception e) {
+                                logger.error(e);
+                            }
+                        }
+                    }).start();
+                    startGate.countDown();
                 } catch (Exception e) {
                     logger.error(e);
                     return "Server test Failed.";
+                } finally {
+                    endGate.countDown();
                 }
                 return "Server test DONE";
             }
-        });
+        }.call();
 
-        List<Future<String>> futures = e.invokeAll(tasks);
-
-        for (int i = 0; i < futures.size(); i++) {
-            String result = futures.get(i).get();
-            logger.debug(result);
-        }
-        e.shutdown();
+        new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                try {
+                    startGate.await();
+                    client.broadcast("hello.");
+                    String[] servers = client.getServers(1, TimeUnit.SECONDS);
+                    client.stop();
+                    for (int i = 0; i < servers.length; i++) {
+                        logger.debug(">>>" + servers[i]);
+                    }
+                    return "Client test DONE";
+                } finally {
+                    endGate.countDown();
+                }
+            }
+        }.call();
+        endGate.await();
     }
 }

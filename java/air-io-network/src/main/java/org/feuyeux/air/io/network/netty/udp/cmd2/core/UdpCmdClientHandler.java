@@ -9,17 +9,24 @@ import io.netty.util.CharsetUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class UdpCmdClientHandler extends SimpleChannelInboundHandler<DatagramPacket> {
-    private final static Logger logger = LogManager.getLogger(UdpCmdClientHandler.class);
+import java.net.InetSocketAddress;
 
-    public UdpCmdClientHandler() {
+public class UdpCmdClientHandler extends SimpleChannelInboundHandler<DatagramPacket> {
+    private static final Logger logger = LogManager.getLogger(UdpCmdClientHandler.class);
+    private final UdpCmdClientContext context;
+
+    public UdpCmdClientHandler(UdpCmdClientContext context) {
+        this.context = context;
     }
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket datagramPacket) throws Exception {
-        logger.debug("DatagramPacket:{}", datagramPacket);
+        //logger.debug("DatagramPacket:{}", datagramPacket);
         ByteBuf content = datagramPacket.content();
-        logger.debug("UDP Command Server response:{}", content.toString(CharsetUtil.UTF_8));
+        InetSocketAddress serverHost = datagramPacket.sender();
+        String serverIp = serverHost.getAddress().getHostAddress();
+        context.addServer(serverIp);
+        logger.debug("Server[{} {}] response:'{}'", serverHost.getHostName(), serverIp, content.toString(CharsetUtil.UTF_8));
     }
 
     @Override
@@ -29,8 +36,7 @@ public class UdpCmdClientHandler extends SimpleChannelInboundHandler<DatagramPac
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        // Close the connection when an exception is raised.
-        logger.warn("Unexpected exception from downstream.", cause);
-        ctx.close();
+        logger.error("Unexpected exception:", cause);
+        //ctx.close();
     }
 }

@@ -15,9 +15,6 @@ import org.feuyeux.air.io.network.common.ENV;
 public class UDPCommandServer {
     private static final Logger logger = LogManager.getLogger(UDPCommandServer.class.getName());
 
-    public UDPCommandServer() {
-    }
-
     public void init() throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {

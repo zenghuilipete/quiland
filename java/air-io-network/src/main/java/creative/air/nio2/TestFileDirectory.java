@@ -1,9 +1,25 @@
 package creative.air.nio2;
 
-import java.io.*;
+import org.apache.logging.log4j.LogManager;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.nio.file.*;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +27,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.LinkOption.*;
+import static java.nio.file.StandardCopyOption.*;
 
 /**
  *
  * @author feuyeux@gmail.com 2012-06-07
  */
 public class TestFileDirectory {
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(TestFileDirectory.class);
 
     public static void main(String[] args) {
         TestFileDirectory test = new TestFileDirectory();
@@ -39,13 +55,13 @@ public class TestFileDirectory {
         try {
             Files.createDirectory(newdir_1);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         try {
             Files.createDirectories(newdir_5);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         final Path basedir = FileSystems.getDefault().getPath("C:/rafaelnadal/tmp/");
@@ -58,7 +74,7 @@ public class TestFileDirectory {
 
                 @Override
                 public void run() {
-                    System.out.println("Deleting the temporary folder ...");
+                    logger.error("Deleting the temporary folder ...");
                     try (DirectoryStream<Path> ds = Files.newDirectoryStream(tmp_dir)) {
                         for (Path file : ds) {
                             Files.delete(file);
@@ -68,9 +84,9 @@ public class TestFileDirectory {
                         File asFile = tmp_dir.toFile();
                         asFile.deleteOnExit();
                     } catch (IOException e) {
-                        System.err.println(e);
+                        logger.error(e);
                     }
-                    System.out.println("Shutdown-hook completed...");
+                    logger.error("Shutdown-hook completed...");
                 }
             });
 
@@ -79,7 +95,7 @@ public class TestFileDirectory {
             //operations done
 
         } catch (IOException | InterruptedException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         String tmp_file_prefix = "rafa_";
@@ -87,35 +103,35 @@ public class TestFileDirectory {
 
         //get the default temporary folders path
         String default_tmp = System.getProperty("java.io.tmpdir");
-        System.out.println(default_tmp);
+        logger.error(default_tmp);
 
         try {
             //passing null prefix/sufix
             Path tmp_1 = Files.createTempFile(null, null);
-            System.out.println("TMP: " + tmp_1.toString());
+            logger.error("TMP: " + tmp_1);
             //set a prefix and a sufix
             Path tmp_2 = Files.createTempFile(tmp_file_prefix, tmp_file_sufix);
-            System.out.println("TMP: " + tmp_2.toString());
+            logger.error("TMP: " + tmp_2);
             //create a tmp file in a the base dir
             Path tmp_3 = Files.createTempFile(basedir, tmp_file_prefix, tmp_file_sufix);
-            System.out.println("TMP: " + tmp_3.toString());
+            logger.error("TMP: " + tmp_3);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
     }
 
     public void testRoots() {
-        System.out.println("java6:");
+        logger.error("java6:");
         //Java 6 solution
         File[] roots = File.listRoots();
         for (File root : roots) {
-            System.out.println(root);
+            logger.error(root);
         }
-        System.out.println("java7:");
+        logger.error("java7:");
         //Java 7 solution
         Iterable<Path> dirs = FileSystems.getDefault().getRootDirectories();
         for (Path name : dirs) {
-            System.out.println(name);
+            logger.error(name);
         }
     }
 
@@ -125,7 +141,7 @@ public class TestFileDirectory {
 
         try {
             boolean is_same_file_12 = Files.isSameFile(wiki_path, wiki_path);
-            System.out.println("is same file 1&2 ? " + is_same_file_12);
+            logger.error("is same file 1&2 ? " + is_same_file_12);
         } catch (IOException ex) {
             Logger.getLogger(TestFileDirectory.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -135,10 +151,10 @@ public class TestFileDirectory {
             byte[] wikiArray = Files.readAllBytes(wiki_path);
             //CHECK THE BYTE ARRAY CONTENT//
             String wikiString = new String(wikiArray, "ISO-8859-1");
-            System.out.println(wikiString);
+            logger.error(wikiString);
             ////////////////////////////////
         } catch (IOException e) {
-            System.out.println(e);
+            logger.error(e);
         }
 
         try {
@@ -149,7 +165,7 @@ public class TestFileDirectory {
             //ImageIO.write(bufferedImage, "png", (ball_path.resolveSibling("bytes_to_ball.png")).toFile());
             ////////////////////////////////
         } catch (IOException e) {
-            System.out.println(e);
+            logger.error(e);
         }
 
         //readAllLines
@@ -158,20 +174,20 @@ public class TestFileDirectory {
             List<String> lines = Files.readAllLines(wiki_path, charset);
             //CHECK THE LIST CONTENT//
             for (String line : lines) {
-                System.out.println(line);
+                logger.error(line);
             }
             //////////////////////////
         } catch (IOException e) {
-            System.out.println(e);
+            logger.error(e);
         }
 
         try (BufferedReader reader = Files.newBufferedReader(wiki_path, charset)) {
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                logger.error(line);
             }
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         Path rn_racquet = Paths.get("C:/rafaelnadal/equipment", "racquet.txt");
@@ -183,26 +199,26 @@ public class TestFileDirectory {
                 System.out.print((char) n);
             }
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         byte[] in_buffer = new byte[1024];
         try (InputStream in = Files.newInputStream(rn_racquet)) {
-            while ((n = in.read(in_buffer)) != -1) {
-                System.out.println(new String(in_buffer));
+            while (in.read(in_buffer) != -1) {
+                logger.error(new String(in_buffer));
             }
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //convert unbuffered stream to buffered stream by using java.io API
         try (InputStream in = Files.newInputStream(rn_racquet); BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                logger.error(line);
             }
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
     }
 
@@ -215,7 +231,7 @@ public class TestFileDirectory {
         try {
             Files.copy(copy_from_1, copy_to_1, REPLACE_EXISTING, COPY_ATTRIBUTES, NOFOLLOW_LINKS);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //InputStream to Path copy
@@ -225,7 +241,7 @@ public class TestFileDirectory {
         try (InputStream is = new FileInputStream(copy_from_2.toFile())) {
             Files.copy(is, copy_to_2, REPLACE_EXISTING);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         Path copy_to_3 = Paths.get("C:/rafaelnadal/photos/rafa_winner_2.png");
@@ -233,7 +249,7 @@ public class TestFileDirectory {
         try (InputStream in = u.toURL().openStream()) {
             Files.copy(in, copy_to_3);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //Path to OutputStream copy
@@ -242,7 +258,7 @@ public class TestFileDirectory {
         try (OutputStream os = new FileOutputStream(copy_to_4.toFile())) {
             Files.copy(copy_from_4, os);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
     }
 
@@ -253,25 +269,25 @@ public class TestFileDirectory {
         try {
             Files.delete(path);
         } catch (IOException | SecurityException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //delete if exists
         try {
             boolean success = Files.deleteIfExists(path);
-            System.out.println("Delete status: " + success);
+            logger.error("Delete status: " + success);
         } catch (IOException | SecurityException e) {
-            System.err.println(e);
+            logger.error(e);
         }
     }
 
     public void testExist() {
         Path path = FileSystems.getDefault().getPath("C:/rafaelnadal/tournaments/2009", "AEGON.txt");
 
-        boolean path_exists = Files.exists(path, new LinkOption[] { LinkOption.NOFOLLOW_LINKS });
-        boolean path_notexists = Files.notExists(path, new LinkOption[] { LinkOption.NOFOLLOW_LINKS });
+        boolean path_exists = Files.exists(path, NOFOLLOW_LINKS);
+        boolean path_notexists = Files.notExists(path, NOFOLLOW_LINKS);
 
-        System.out.println("Exists? " + path_exists + "  Not exists? " + path_notexists);
+        logger.error("Exists? " + path_exists + "  Not exists? " + path_notexists);
     }
 
     public void testAttrs() {
@@ -281,35 +297,35 @@ public class TestFileDirectory {
         boolean is_readable = Files.isReadable(path);
         boolean is_writable = Files.isWritable(path);
         boolean is_executable = Files.isExecutable(path);
-        boolean is_regular = Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS);
+        boolean is_regular = Files.isRegularFile(path, NOFOLLOW_LINKS);
         boolean is_regular2 = Files.isRegularFile(path);
 
-        System.out.println("is_readable: " + is_readable);
-        System.out.println("is_writable: " + is_writable);
-        System.out.println("is_executable: " + is_executable);
-        System.out.println("is_regular: " + is_regular);
-        System.out.println("is_regular2: " + is_regular2);
+        logger.error("is_readable: " + is_readable);
+        logger.error("is_writable: " + is_writable);
+        logger.error("is_executable: " + is_executable);
+        logger.error("is_regular: " + is_regular);
+        logger.error("is_regular2: " + is_regular2);
 
         //is hidden ?
         try {
             boolean is_hidden = Files.isHidden(path);
-            System.out.println("Is hidden ? " + is_hidden);
+            logger.error("Is hidden ? " + is_hidden);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         if (is_readable && is_writable && is_executable && is_regular) {
-            System.out.println("The checked file is accessible!");
+            logger.error("The checked file is accessible!");
         } else {
-            System.out.println("The checked file is not accessible!");
+            logger.error("The checked file is not accessible!");
         }
 
         //method 2
         boolean is_accessible = Files.isRegularFile(path) & Files.isReadable(path) & Files.isExecutable(path) & Files.isWritable(path);
         if (is_accessible) {
-            System.out.println("The checked file is accessible!");
+            logger.error("The checked file is accessible!");
         } else {
-            System.out.println("The checked file is not accessible!");
+            logger.error("The checked file is not accessible!");
         }
     }
 
@@ -317,23 +333,23 @@ public class TestFileDirectory {
         Path path = Paths.get("C:/rafaelnadal/tournaments/2009");
 
         //no filter applyied
-        System.out.println("\nNo filter applyied:");
+        logger.error("\nNo filter applyied:");
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(path)) {
             for (Path file : ds) {
-                System.out.println(file.getFileName());
+                logger.error(file.getFileName());
             }
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //glob pattern applyied
-        System.out.println("\nGlob pattern applyied:");
+        logger.error("\nGlob pattern applyied:");
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(path, "*.{png,jpg,bmp}")) {
             for (Path file : ds) {
-                System.out.println(file.getFileName());
+                logger.error(file.getFileName());
             }
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
     }
 
@@ -351,7 +367,7 @@ public class TestFileDirectory {
         DirectoryStream.Filter<Path> dir_filter = new DirectoryStream.Filter<Path>() {
 
             @Override
-            public boolean accept(Path path) throws IOException {
+            public boolean accept(Path path) {
                 return Files.isDirectory(path, NOFOLLOW_LINKS);
             }
         };
@@ -362,10 +378,7 @@ public class TestFileDirectory {
             public boolean accept(Path path) throws IOException {
                 long currentTime = FileTime.fromMillis(System.currentTimeMillis()).to(TimeUnit.DAYS);
                 long modifiedTime = ((FileTime) Files.getAttribute(path, "basic:lastModifiedTime", NOFOLLOW_LINKS)).to(TimeUnit.DAYS);
-                if (currentTime == modifiedTime) {
-                    return true;
-                }
-                return false;
+                return currentTime == modifiedTime;
             }
         };
 
@@ -378,13 +391,13 @@ public class TestFileDirectory {
         };
 
         //user defined filter applyied
-        System.out.println("\nUser defined filter applyied:");
+        logger.error("\nUser defined filter applyied:");
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(path, dir_filter)) {
             for (Path file : ds) {
-                System.out.println(file.getFileName());
+                logger.error(file.getFileName());
             }
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
     }
 
@@ -398,7 +411,7 @@ public class TestFileDirectory {
                 + "of all time; his success on clay has earned him the nickname \"The King of Clay\", and has prompted "
                 + "many experts to regard him as the greatest clay court player of all time. Some of his best wins are:";
 
-        byte[] ball_bytes = new byte[] { (byte) 0x89, (byte) 0x50, (byte) 0x4e, (byte) 0x47, (byte) 0x0d, (byte) 0x0a, (byte) 0x1a, (byte) 0x0a, (byte) 0x00,
+        byte[] ball_bytes = {(byte) 0x89, (byte) 0x50, (byte) 0x4e, (byte) 0x47, (byte) 0x0d, (byte) 0x0a, (byte) 0x1a, (byte) 0x0a, (byte) 0x00,
                 (byte) 0x00, (byte) 0x00, (byte) 0x0d, (byte) 0x49, (byte) 0x48, (byte) 0x44, (byte) 0x52, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x10,
                 (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x10, (byte) 0x08, (byte) 0x02, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x90, (byte) 0x91,
                 (byte) 0x68, (byte) 0x36, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x01, (byte) 0x73, (byte) 0x52, (byte) 0x47, (byte) 0x42, (byte) 0x00,
@@ -474,19 +487,19 @@ public class TestFileDirectory {
                 (byte) 0x51, (byte) 0x31, (byte) 0x09, (byte) 0x66, (byte) 0x49, (byte) 0x29, (byte) 0x7e, (byte) 0x7d, (byte) 0x03, (byte) 0x71, (byte) 0x03,
                 (byte) 0x63, (byte) 0x36, (byte) 0x05, (byte) 0x25, (byte) 0x76, (byte) 0x6e, (byte) 0x1e, (byte) 0x58, (byte) 0x82, (byte) 0x83, (byte) 0xe9,
                 (byte) 0x00, (byte) 0x00, (byte) 0x4e, (byte) 0xe0, (byte) 0x60, (byte) 0xcf, (byte) 0x75, (byte) 0xfc, (byte) 0x90, (byte) 0x67, (byte) 0x00,
-                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x49, (byte) 0x45, (byte) 0x4e, (byte) 0x44, (byte) 0xae, (byte) 0x42, (byte) 0x60, (byte) 0x82 };
+                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x49, (byte) 0x45, (byte) 0x4e, (byte) 0x44, (byte) 0xae, (byte) 0x42, (byte) 0x60, (byte) 0x82};
 
         try {
             Files.write(ball_path, ball_bytes);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         try {
             byte[] rf_wiki_byte = rf_wiki.getBytes("UTF-8");
             Files.write(rf_wiki_path, rf_wiki_byte);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         Charset charset = Charset.forName("UTF-8");
@@ -502,7 +515,7 @@ public class TestFileDirectory {
         try {
             Files.write(rf_wiki_path, lines, charset, StandardOpenOption.APPEND);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         Path wiki_path = Paths.get("C:/rafaelnadal/wiki", "wiki.txt");
@@ -510,7 +523,7 @@ public class TestFileDirectory {
         try (BufferedWriter writer = Files.newBufferedWriter(wiki_path, charset, StandardOpenOption.APPEND)) {
             writer.write(text);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         Path rn_racquet = Paths.get("C:/rafaelnadal/equipment", "racquet.txt");
@@ -518,19 +531,19 @@ public class TestFileDirectory {
         String string = "\nString: Babolat RPM Blast 16";
 
         //using NIO.2 unbuffered stream
-        byte data[] = racquet.getBytes();
+        byte[] data = racquet.getBytes();
         try (OutputStream outputStream = Files.newOutputStream(rn_racquet)) {
             outputStream.write(data);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //convert unbuffered stream to buffered stream by using java.io API
         try (OutputStream outputStream = Files.newOutputStream(rn_racquet, StandardOpenOption.APPEND);
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
             writer.write(string);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
     }
 
@@ -542,23 +555,23 @@ public class TestFileDirectory {
 
         //method 1
         try {
-            Files.move(movefrom, target, StandardCopyOption.REPLACE_EXISTING);
+            Files.move(movefrom, target, REPLACE_EXISTING);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //method 2 - using resolve
         try {
-            Files.move(movefrom, target_dir.resolve(movefrom.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(movefrom, target_dir.resolve(movefrom.getFileName()), REPLACE_EXISTING);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //method 3 - using resolve to move and rename
         try {
-            Files.move(target, target.resolveSibling("rafa_renamed_2.jpg"), StandardCopyOption.REPLACE_EXISTING);
+            Files.move(target, target.resolveSibling("rafa_renamed_2.jpg"), REPLACE_EXISTING);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
     }
 }

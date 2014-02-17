@@ -1,37 +1,41 @@
 package creative.air.nio2.recursive;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.feuyeux.air.io.network.common.ENV;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileSystemLoopException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.EnumSet;
 
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardCopyOption.*;
 
 /**
  *
  * @author feuyeux@gmail.com 2012-06-06
  */
 public class CopyTree implements FileVisitor<Path> {
+    private static final Logger logger = LogManager.getLogger(CopyTree.class);
+
     public static void main(String[] args) throws IOException {
         CopyTree walk = new CopyTree();
         EnumSet<FileVisitOption> opts = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
         Files.walkFileTree(ENV.FROM, opts, Integer.MAX_VALUE, walk);
     }
 
-    public CopyTree() {
-    }
-
-    static void copySubTree(Path copyFrom, Path copyTo) throws IOException {
+    static void copySubTree(Path copyFrom, Path copyTo) {
         try {
             Files.copy(copyFrom, copyTo, REPLACE_EXISTING, COPY_ATTRIBUTES);
         } catch (IOException e) {
-            System.err.println("Unable to copy " + copyFrom + " [" + e + "]");
+            logger.error("Unable to copy {} [{}]", copyFrom, e);
         }
-
     }
 
     @Override
@@ -42,7 +46,7 @@ public class CopyTree implements FileVisitor<Path> {
                 FileTime time = Files.getLastModifiedTime(dir);
                 Files.setLastModifiedTime(newdir, time);
             } catch (IOException e) {
-                System.err.println("Unable to copy all attributes to: " + newdir + " [" + e + "]");
+                logger.error("Unable to copy all attributes to: {} [{}]", newdir, e);
             }
         } else {
             throw exc;
@@ -58,7 +62,7 @@ public class CopyTree implements FileVisitor<Path> {
         try {
             Files.copy(dir, newdir, REPLACE_EXISTING, COPY_ATTRIBUTES);
         } catch (IOException e) {
-            System.err.println("Unable to create " + newdir + " [" + e + "]");
+            logger.error("Unable to create {} [{}]", newdir, e);
             return FileVisitResult.SKIP_SUBTREE;
         }
 
@@ -67,7 +71,7 @@ public class CopyTree implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        System.out.println("Copy file: " + file);
+        logger.debug("Copy file: {}", file);
         copySubTree(file, ENV.TO.resolve(ENV.FROM.relativize(file)));
         return FileVisitResult.CONTINUE;
     }
@@ -75,9 +79,9 @@ public class CopyTree implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
         if (exc instanceof FileSystemLoopException) {
-            System.err.println("Cycle was detected: " + file);
+            logger.error("Cycle was detected: " + file);
         } else {
-            System.err.println("Error occured, unable to copy:" + file + " [" + exc + "]");
+            logger.error("Error occured, unable to copy:{} [{}]", file, exc);
         }
 
         return FileVisitResult.CONTINUE;

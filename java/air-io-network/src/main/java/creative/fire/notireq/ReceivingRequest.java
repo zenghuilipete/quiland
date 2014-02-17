@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class ReceivingRequest extends Thread {
-    private Socket socket;
+    private final Socket socket;
 
     public ReceivingRequest(Socket socket) {
         this.socket = socket;
@@ -27,7 +27,7 @@ public class ReceivingRequest extends Thread {
                 in.close();
                 socket.close();
                 finished = true;
-            } catch (Exception e) {
+            } catch (Exception ignored) {
                 System.out.println("receive fails to connect.");
             }
         }

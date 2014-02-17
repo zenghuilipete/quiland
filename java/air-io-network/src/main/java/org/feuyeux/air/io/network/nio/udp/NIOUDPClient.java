@@ -13,7 +13,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.Charset;
 
-public class NIOUDPClient {
+public final class NIOUDPClient {
     public static void main(String[] args) throws Exception {
         DatagramChannel receiveChannel = DatagramChannel.open();
         receiveChannel.configureBlocking(false);
@@ -37,9 +37,8 @@ public class NIOUDPClient {
                 selector.close();
                 System.out.println("BIOUDPClient quit!");
                 System.exit(0);
-            } else {
-                sendChannel.write(Charset.forName("UTF-8").encode(command));
             }
+            sendChannel.write(Charset.forName("UTF-8").encode(command));
             int nKeys = selector.select(1000);
             if (nKeys > 0) {
                 for (SelectionKey key : selector.selectedKeys()) {
@@ -48,7 +47,7 @@ public class NIOUDPClient {
                         DatagramChannel dc = (DatagramChannel) key.channel();
                         dc.receive(buffer);
                         buffer.flip();
-                        System.out.println(Charset.forName("UTF-8").decode(buffer).toString());
+                        System.out.println(Charset.forName("UTF-8").decode(buffer));
                         buffer = null;
                     }
                 }

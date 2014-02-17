@@ -16,15 +16,14 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
 public class NIOTCPClient {
-    private final static Logger logger = LogManager.getLogger(NIOTCPClient.class);
+    private static final Logger logger = LogManager.getLogger(NIOTCPClient.class);
     final Selector selector;
     final SocketChannel channel;
     final String host;
     final int port;
-    boolean blocking = false;
+    static final boolean blocking = true;
 
     public NIOTCPClient(String host, int port) throws IOException {
-        super();
         this.host = host;
         this.port = port;
         channel = SocketChannel.open();
@@ -65,7 +64,7 @@ public class NIOTCPClient {
                         SocketChannel sc = (SocketChannel) key.channel();
                         int readBytes = 0;
                         try {
-                            int ret = 0;
+                            int ret;
                             try {
                                 while ((ret = sc.read(buffer)) > 0) {
                                     readBytes += ret;

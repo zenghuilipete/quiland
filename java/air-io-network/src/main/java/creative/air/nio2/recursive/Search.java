@@ -1,7 +1,13 @@
 package creative.air.nio2.recursive;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.EnumSet;
 
@@ -22,7 +28,7 @@ public class Search implements FileVisitor<Path> {
     void search(Path file) throws IOException {
         Path name = file.getFileName();
         if (name != null && name.equals(searchedFile)) {
-            System.out.println("Searched file was found: " + searchedFile + " in " + file.toRealPath().toString());
+            System.out.println("Searched file was found: " + searchedFile + " in " + file.toRealPath());
             found = true;
         }
     }
@@ -52,9 +58,6 @@ public class Search implements FileVisitor<Path> {
     public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
         return FileVisitResult.CONTINUE;
     }
-}
-
-class Main {
 
     public static void main(String[] args) throws IOException {
 

@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import org.feuyeux.air.io.network.common.ENV;
 
 public class UdpCmdServer {
-    ChannelFuture f;
     EventLoopGroup group;
 
     //scan and provide specific  capbility server
@@ -24,7 +23,7 @@ public class UdpCmdServer {
     final int nettyPort;
 
     public UdpCmdServer() {
-        this.nettyPort = ENV.NETTY_PORT;
+        nettyPort = ENV.NETTY_PORT;
     }
 
     public UdpCmdServer(int nettyPort) {
@@ -35,25 +34,26 @@ public class UdpCmdServer {
         init0(true);
     }
 
-    public void init(boolean durable) {
-        init(durable);
+    void init(boolean durable) throws InterruptedException {
+        init0(durable);
     }
 
-    public void init0(boolean durable) throws InterruptedException {
+    private void init0(boolean durable) throws InterruptedException {
         group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
-              .channel(NioDatagramChannel.class)
-              .handler(new ChannelInitializer<DatagramChannel>() {
-                  @Override
-                  protected void initChannel(DatagramChannel ch) throws Exception {
-                      ch.pipeline().addLast(
-                        // new LoggingHandler(LogLevel.INFO),
-                        new UdpCmdServerHandler());
-                  }
-              });
-            f = b.bind(nettyPort).sync();
+                    .channel(NioDatagramChannel.class)
+                            //.option(ChannelOption.SO_BROADCAST, true)
+                    .handler(new ChannelInitializer<DatagramChannel>() {
+                        @Override
+                        protected void initChannel(DatagramChannel ch) throws Exception {
+                            ch.pipeline().addLast(
+                                    // new LoggingHandler(LogLevel.INFO),
+                                    new UdpCmdServerHandler());
+                        }
+                    });
+            ChannelFuture f = b.bind(nettyPort).sync();
             logger.debug("UDP Command Server launched.");
 
             if (durable) {
@@ -69,9 +69,6 @@ public class UdpCmdServer {
     }
 
     public void close() {
-        if (f != null) {
-            f.channel().close();
-        }
         if (group != null) {
             group.shutdownGracefully();
         }

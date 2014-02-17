@@ -11,7 +11,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.charset.Charset;
 
-public class NIOUDPServer {
+public final class NIOUDPServer {
     public static void main(String[] args) throws Exception {
         DatagramChannel sendChannel = DatagramChannel.open();
         sendChannel.configureBlocking(false);

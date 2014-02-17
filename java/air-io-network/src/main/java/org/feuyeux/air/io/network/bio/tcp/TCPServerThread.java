@@ -11,11 +11,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class TCPServerThread implements Runnable {
-    private final static Logger logger = LogManager.getLogger(TCPServerThread.class);
+    private static final Logger logger = LogManager.getLogger(TCPServerThread.class);
 
-    private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+    private final Socket socket;
+    private final BufferedReader in;
+    private final PrintWriter out;
 
     TCPServerThread(Socket socket) throws IOException {
         this.socket = socket;
@@ -48,7 +48,7 @@ public class TCPServerThread implements Runnable {
         } finally {
             try {
                 socket.close();
-            } catch (Exception e2) {
+            } catch (Exception ignored) {
                 System.err.println("socket can not closed.");
             }
         }

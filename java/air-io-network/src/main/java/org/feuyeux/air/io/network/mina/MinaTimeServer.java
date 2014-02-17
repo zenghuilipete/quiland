@@ -12,7 +12,11 @@ import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 
 public class MinaTimeServer {
-    protected IoAcceptor acceptor;
+    protected final IoAcceptor acceptor;
+
+    public MinaTimeServer(IoAcceptor acceptor) {
+        this.acceptor = acceptor;
+    }
 
     protected void init() throws IOException {
         acceptor.getFilterChain().addLast(ENV.MINA_LOGGER, new LoggingFilter());

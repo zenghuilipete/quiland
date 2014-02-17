@@ -7,10 +7,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class TCPCommunicationTest {
-    private final static Logger logger = LogManager.getLogger(TCPCommunicationTest.class);
+    private static final Logger logger = LogManager.getLogger(TCPCommunicationTest.class);
 
     @Test
     public void testTcpCommunication() throws IOException, InterruptedException, ExecutionException {

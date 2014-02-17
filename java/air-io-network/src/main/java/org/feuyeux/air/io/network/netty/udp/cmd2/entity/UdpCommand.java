@@ -8,6 +8,7 @@ import java.io.Serializable;
  * Created by Administrator on 14-2-10.
  */
 public class UdpCommand implements Serializable {
+    private static final long serialVersionUID = 6349615867907081969L;
     private CommandType type;
     private ControlInfo controlInfo;
 

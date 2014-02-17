@@ -1,6 +1,7 @@
 package org.feuyeux.air.io.network.mina;
 
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.mina.core.RuntimeIoException;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoConnector;
@@ -14,8 +15,12 @@ import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 
 public class MinaTimeClient {
-    protected static Logger logger;
-    protected IoConnector connector;
+    protected static final Logger logger = LogManager.getLogger(MinaTimeClient.class);
+    protected final IoConnector connector;
+
+    public MinaTimeClient(IoConnector connector) {
+        this.connector = connector;
+    }
 
     protected void connect() throws InterruptedException {
         connector.setConnectTimeoutMillis(ENV.CONNECT_TIMEOUT);
@@ -33,7 +38,7 @@ public class MinaTimeClient {
                 break;
             } catch (RuntimeIoException e) {
                 logger.error("Failed to connect.");
-                e.printStackTrace();
+                logger.error(e);
                 Thread.sleep(5000);
             }
         }

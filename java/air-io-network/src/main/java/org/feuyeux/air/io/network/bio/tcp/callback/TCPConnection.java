@@ -1,5 +1,7 @@
 package org.feuyeux.air.io.network.bio.tcp.callback;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.feuyeux.air.io.network.common.ENV;
 
 import java.io.IOException;
@@ -8,10 +10,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class TCPConnection {
-    protected Socket socket;
+    private static final Logger logger = LogManager.getLogger(TCPConnection.class);
+    protected final Socket socket;
 
-    protected BlockingQueue<EventHandler> messageListeners = new ArrayBlockingQueue<>(10);
-    protected BlockingQueue<EventHandler> connectionListeners = new ArrayBlockingQueue<>(10);
+    protected final BlockingQueue<EventHandler> messageListeners = new ArrayBlockingQueue<>(10);
+    protected final BlockingQueue<EventHandler> connectionListeners = new ArrayBlockingQueue<>(10);
 
     public TCPConnection(Socket socket) {
         this.socket = socket;
@@ -47,8 +50,8 @@ public class TCPConnection {
 
     public void receiveMessage() {
         try {
-            /*
-            BufferedReader bReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+/*
+BufferedReader bReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String line;
 			while ((line = bReader.readLine()) != null) {
 				handleReceivedMessage(line);
@@ -62,12 +65,12 @@ public class TCPConnection {
                 handleReceivedMessage(msg);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         } finally {
             try {
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
         }
     }

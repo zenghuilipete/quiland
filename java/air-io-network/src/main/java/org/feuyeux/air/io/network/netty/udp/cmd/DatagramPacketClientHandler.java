@@ -10,10 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class DatagramPacketClientHandler extends SimpleChannelInboundHandler<DatagramPacket> {
-    private final static Logger logger = LogManager.getLogger(DatagramPacketClientHandler.class);
-
-    public DatagramPacketClientHandler() {
-    }
+    private static final Logger logger = LogManager.getLogger(DatagramPacketClientHandler.class);
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket datagramPacket) throws Exception {

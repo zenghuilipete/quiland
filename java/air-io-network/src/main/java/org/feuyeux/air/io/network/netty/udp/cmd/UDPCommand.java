@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by Administrator on 14-2-10.
  */
 public class UDPCommand implements Serializable {
+    private static final long serialVersionUID = -5491328979172843750L;
     private int type;
     private String pair;
 

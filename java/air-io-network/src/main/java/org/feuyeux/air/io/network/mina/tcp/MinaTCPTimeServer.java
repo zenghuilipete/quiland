@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class MinaTCPTimeServer extends MinaTimeServer {
     public MinaTCPTimeServer() {
-        acceptor = new NioSocketAcceptor();
+        super(new NioSocketAcceptor());
     }
 
     public static void main(String[] args) throws IOException {

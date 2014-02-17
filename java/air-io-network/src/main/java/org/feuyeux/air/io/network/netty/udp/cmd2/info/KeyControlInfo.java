@@ -4,6 +4,7 @@ package org.feuyeux.air.io.network.netty.udp.cmd2.info;
  * Created by erichan on 2/10/14.
  */
 public class KeyControlInfo implements ControlInfo {
+    private static final long serialVersionUID = -4730673760806254972L;
     private String keyPress;
 
     public KeyControlInfo() {

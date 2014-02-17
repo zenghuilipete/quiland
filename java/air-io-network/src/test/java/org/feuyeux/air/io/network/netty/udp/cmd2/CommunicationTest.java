@@ -10,6 +10,7 @@ import org.feuyeux.air.io.network.netty.udp.cmd2.info.KeyControlInfo;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -19,9 +20,10 @@ import java.util.concurrent.TimeoutException;
  * Time: 10:50 AM
  */
 public class CommunicationTest {
-    private final static Logger logger = LogManager.getLogger(CommunicationTest.class);
+    private static final Logger logger = LogManager.getLogger(CommunicationTest.class);
     public static final String SERVER_IP = "10.11.72.69";
     public static final int PORT = 9876;
+    public static final int LOOP = 10000;
     UdpCmdServer server;
 
     @Test
@@ -32,36 +34,58 @@ public class CommunicationTest {
         } catch (InterruptedException e) {
             logger.error(e);
         } finally {
-            if (server != null)
+            if (server != null) {
                 server.close();
+            }
         }
     }
 
     @Test
     public void testSend() throws InterruptedException, TimeoutException, ExecutionException {
-        final UdpCmdClient client = UdpCmdClient.getInstance(SERVER_IP, PORT);
+        final UdpCmdClient client = UdpCmdClient.getUdpClient(SERVER_IP, PORT);
         UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
         client.send(keyCommand);
         keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
         client.send(keyCommand);
+        Thread.sleep(3000l);
+        client.stop();
     }
 
     @Test
     public void testBroadcast() throws InterruptedException, TimeoutException, ExecutionException {
-        final UdpCmdClient client = UdpCmdClient.getInstance(SERVER_IP, PORT);
+        final UdpCmdClient client = UdpCmdClient.getBroadcastClient(PORT);
         UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:13"));
-        client.broadcast(keyCommand);
+        client.send(keyCommand);
         keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
-        client.broadcast(keyCommand);
+        client.send(keyCommand);
+        Thread.sleep(3000l);
+        client.stop();
     }
 
     @Test
     public void testSendPerformance() throws InterruptedException, TimeoutException, ExecutionException {
-        for (int i = 0; i < 10000; i++) {
-            final UdpCmdClient client = UdpCmdClient.getInstance(SERVER_IP, PORT);
+        final UdpCmdClient client = UdpCmdClient.getUdpClient(SERVER_IP, PORT);
+        for (int i = 0; i < LOOP; i++) {
             UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:" + i));
             client.send(keyCommand);
             Thread.sleep(50);
+        }
+        client.stop();
+    }
+
+    @Test
+    public void testBasicFlow() throws InterruptedException, TimeoutException, ExecutionException {
+        final UdpCmdClient client0 = UdpCmdClient.getBroadcastClient(PORT);
+        client0.broadcast("Hello");
+        String host = client0.getServers(1, TimeUnit.SECONDS)[0];
+        client0.stop();
+
+        final UdpCmdClient client = UdpCmdClient.getUdpClient(host, PORT);
+        if (client != null) {
+            UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:X"));
+            client.send(keyCommand);
+            Thread.sleep(3000l);
+            client.stop();
         }
     }
 }

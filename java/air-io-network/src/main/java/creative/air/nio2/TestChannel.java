@@ -1,5 +1,8 @@
 package creative.air.nio2;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -22,7 +25,8 @@ import java.util.EnumSet;
  * @author feuyeux@gmail.com 2012-06-06
  */
 public class TestChannel {
-    Path path = Paths.get("D:/", "123.csv");
+    private static final Logger logger = LogManager.getLogger(TestAttributes.class);
+    final Path path = Paths.get("D:/", "123.csv");
 
     public static void main(String[] args) {
         TestChannel test = new TestChannel();
@@ -40,27 +44,27 @@ public class TestChannel {
                     .getBytes());
 
             int write = seekableByteChannel.write(buffer);
-            System.out.println("Number of written bytes: " + write);
+            logger.debug("Number of written bytes: " + write);
 
             buffer.clear();
 
         } catch (IOException ex) {
-            System.err.println(ex);
+            logger.error(ex);
         }
 
-        System.out.println("\n");
+        logger.debug("\n");
         //write a file using WritableByteChannel
         try (WritableByteChannel writableByteChannel = Files.newByteChannel(path, EnumSet.of(StandardOpenOption.WRITE, StandardOpenOption.APPEND))) {
 
             ByteBuffer buffer = ByteBuffer.wrap("Vamos Rafa!".getBytes());
 
             int write = writableByteChannel.write(buffer);
-            System.out.println("Number of written bytes: " + write);
+            logger.debug("Number of written bytes: " + write);
 
             buffer.clear();
 
         } catch (IOException ex) {
-            System.err.println(ex);
+            logger.error(ex);
         }
     }
 
@@ -73,7 +77,7 @@ public class TestChannel {
             //the initial position should be 0 anyway
             seekableByteChannel.position(0);
 
-            System.out.println("Reading one character from position: " + seekableByteChannel.position());
+            logger.debug("Reading one character from position: " + seekableByteChannel.position());
             seekableByteChannel.read(buffer);
             buffer.flip();
             System.out.print(Charset.forName(encoding).decode(buffer));
@@ -82,7 +86,7 @@ public class TestChannel {
             //get into the middle
             seekableByteChannel.position(seekableByteChannel.size() / 2);
 
-            System.out.println("\nReading one character from position: " + seekableByteChannel.position());
+            logger.debug("\nReading one character from position: " + seekableByteChannel.position());
             seekableByteChannel.read(buffer);
             buffer.flip();
             System.out.print(Charset.forName(encoding).decode(buffer));
@@ -91,14 +95,14 @@ public class TestChannel {
             //get to the end
             seekableByteChannel.position(seekableByteChannel.size() - 1);
 
-            System.out.println("\nReading one character from position: " + seekableByteChannel.position());
+            logger.debug("\nReading one character from position: " + seekableByteChannel.position());
             seekableByteChannel.read(buffer);
             buffer.flip();
             System.out.print(Charset.forName(encoding).decode(buffer));
             buffer.clear();
 
         } catch (IOException ex) {
-            System.err.println(ex);
+            logger.error(ex);
         }
     }
 
@@ -118,10 +122,10 @@ public class TestChannel {
             }
 
         } catch (IOException ex) {
-            System.err.println(ex);
+            logger.error(ex);
         }
 
-        System.out.println("\n");
+        logger.debug("\n");
 
         //read a file using SeekableByteChannel
         try (SeekableByteChannel seekableByteChannel = Files.newByteChannel(path, EnumSet.of(StandardOpenOption.READ))) {
@@ -137,9 +141,9 @@ public class TestChannel {
             }
 
         } catch (IOException ex) {
-            System.err.println(ex);
+            logger.error(ex);
         }
-        System.out.println("\n");
+        logger.debug("\n");
         //
         MappedByteBuffer buffer = null;
 
@@ -148,7 +152,7 @@ public class TestChannel {
             buffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
 
         } catch (IOException ex) {
-            System.err.println(ex);
+            logger.error(ex);
         }
 
         if (buffer != null) {
@@ -157,11 +161,11 @@ public class TestChannel {
                 CharsetDecoder decoder = charset.newDecoder();
                 CharBuffer charBuffer = decoder.decode(buffer);
                 String content = charBuffer.toString();
-                System.out.println(content);
+                logger.debug(content);
 
                 buffer.clear();
             } catch (CharacterCodingException ex) {
-                System.err.println(ex);
+                logger.error(ex);
             }
         }
     }

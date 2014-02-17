@@ -14,22 +14,34 @@ import org.feuyeux.air.io.network.netty.udp.cmd2.entity.UdpCommand;
 
 import java.net.InetSocketAddress;
 
-public class UdpCmdServerHandler extends SimpleChannelInboundHandler<DatagramPacket>    {
+public class UdpCmdServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
     private static final Logger logger = LogManager.getLogger(UdpCmdServerHandler.class.getName());
-
-    public UdpCmdServerHandler() {
-    }
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket datagramPacket) throws Exception {
-        logger.debug("DatagramPacket:{}", datagramPacket);
-        UdpCommand udpCommand = UdpCmdCodec.decode(datagramPacket.content());
-        logger.debug("UDP Command Client response:{}", udpCommand);
-        Controller controller = ControllerFactory.getInstance(udpCommand.getType());
-        controller.process(udpCommand.getControlInfo());
-        ByteBuf responseMessage = Unpooled.copiedBuffer("handled:" + udpCommand, CharsetUtil.UTF_8);
+        ByteBuf content = datagramPacket.content();
         InetSocketAddress sender = datagramPacket.sender();
-        ctx.write(new DatagramPacket(responseMessage, sender));
+
+        UdpCommand udpCommand = null;
+
+        try {
+            udpCommand = UdpCmdCodec.decode(content);
+        } catch (Exception ignored) {
+        }
+        if (udpCommand != null) {
+            //logger.debug("DatagramPacket:{}", datagramPacket);
+            logger.debug("Client[{}] request:'{}'", sender, udpCommand);
+            Controller controller = ControllerFactory.getController(udpCommand.getType());
+            controller.process(udpCommand.getControlInfo());
+            ByteBuf responseMessage = Unpooled.copiedBuffer("handled:" + udpCommand, CharsetUtil.UTF_8);
+            ctx.write(new DatagramPacket(responseMessage, sender));
+        } else {
+            content.resetReaderIndex();
+            String message = content.toString(CharsetUtil.UTF_8);
+            logger.debug("Client[{}] request:'{}'", sender, message);
+            ByteBuf responseMessage = Unpooled.copiedBuffer("handled:" + message, CharsetUtil.UTF_8);
+            ctx.write(new DatagramPacket(responseMessage, sender));
+        }
     }
 
     @Override

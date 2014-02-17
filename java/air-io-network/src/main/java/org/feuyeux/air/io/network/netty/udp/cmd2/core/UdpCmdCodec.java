@@ -10,12 +10,15 @@ import org.feuyeux.air.io.network.netty.udp.cmd2.info.ControlInfo;
 /**
  * Created by Administrator on 14-2-10.
  */
-public class UdpCmdCodec {
+public final class UdpCmdCodec {
+    private UdpCmdCodec() {
+    }
+
     public static ByteBuf encode(UdpCommand udpCommand) {
         ByteBuf byteBuf = Unpooled.buffer();
         CommandType commandType = udpCommand.getType();
         byteBuf.writeInt(commandType.ordinal());
-        byteBuf.writeBytes(ControlInfoCodecFactory.getInstance(commandType).encode(udpCommand.getControlInfo()));
+        byteBuf.writeBytes(ControlInfoCodecFactory.getCodec(commandType).encode(udpCommand.getControlInfo()));
         return byteBuf;
     }
 
@@ -26,8 +29,7 @@ public class UdpCmdCodec {
 
         byte[] dst = new byte[endIndex - currentIndex];
         byteBuf.readBytes(dst);
-        ControlInfo controlInfo = ControlInfoCodecFactory.getInstance(type).decode(dst);
-        UdpCommand udpCommand = new UdpCommand(CommandType.getInstance(type), controlInfo);
-        return udpCommand;
+        ControlInfo controlInfo = ControlInfoCodecFactory.getCodec(type).decode(dst);
+        return new UdpCommand(CommandType.getInstance(type), controlInfo);
     }
 }

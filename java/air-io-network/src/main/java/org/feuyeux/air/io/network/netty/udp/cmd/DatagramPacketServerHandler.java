@@ -13,9 +13,6 @@ import java.util.Date;
 public class DatagramPacketServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
     private static final Logger logger = LogManager.getLogger(DatagramPacketServerHandler.class.getName());
 
-    public DatagramPacketServerHandler() {
-    }
-
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket datagramPacket) throws Exception {
         logger.debug("DatagramPacket:{}", datagramPacket);

@@ -1,11 +1,15 @@
 package creative.fire.notireq;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.OutputStream;
 import java.net.Socket;
 
 public class SendingNotification extends Thread {
-    private String id;
-    private Socket socket;
+    private static final Logger logger = LogManager.getLogger(SendingNotification.class);
+    private final String id;
+    private final Socket socket;
 
     public SendingNotification(String confId_sdId, Socket socket) {
         id = confId_sdId;
@@ -17,18 +21,19 @@ public class SendingNotification extends Thread {
         Helper.getInstance().add(id);
 
         OutputStream outputStream = null;
-        byte[] buffer = new byte[1024];
+        byte[] buffer;
         try {
             outputStream = socket.getOutputStream();
-            buffer = (id + "\n").getBytes();
+            buffer = (id + '\n').getBytes();
             outputStream.write(buffer);
             outputStream.flush();
-        } catch (Exception e) {
-            System.out.println("don't send success");
+        } catch (Exception ignored) {
+            logger.error("Send failed.");
             try {
                 outputStream.close();
                 socket.close();
-            } catch (Exception e1) {
+            } catch (Exception e) {
+                logger.error(e);
             }
         }
     }

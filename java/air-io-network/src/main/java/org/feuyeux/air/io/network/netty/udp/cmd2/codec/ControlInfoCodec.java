@@ -7,7 +7,7 @@ import org.feuyeux.air.io.network.netty.udp.cmd2.info.ControlInfo;
  */
 public interface ControlInfoCodec {
 
-    public byte[] encode(ControlInfo controlInfo);
+    byte[] encode(ControlInfo controlInfo);
 
-    public ControlInfo decode(byte[] buf);
+    ControlInfo decode(byte[] buf);
 }

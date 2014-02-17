@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class MinaUDPTimeServer extends MinaTimeServer {
     public MinaUDPTimeServer() {
-        acceptor = new NioDatagramAcceptor();
+        super(new NioDatagramAcceptor());
         ((NioDatagramAcceptor) acceptor).getSessionConfig().setReuseAddress(true);
     }
 

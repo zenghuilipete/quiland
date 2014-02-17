@@ -8,9 +8,9 @@ import java.util.Enumeration;
  *
  * @author feuyeux@gmail.com 2012-06-06
  */
-public class TestNetworkInterface {
+public final class TestNetworkInterface {
 
-    public static void main(String argv[]) throws Exception {
+    public static void main(String[] argv) throws Exception {
         Enumeration<NetworkInterface> enumInterfaces = NetworkInterface.getNetworkInterfaces();
         while (enumInterfaces.hasMoreElements()) {
             System.out.println("----");

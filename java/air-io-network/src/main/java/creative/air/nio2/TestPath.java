@@ -1,15 +1,23 @@
 package creative.air.nio2;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
  * @author feuyeux@gmail.com 2012-06-06
  */
 public class TestPath {
+    private static final Logger logger = LogManager.getLogger(TestPath.class);
 
     public static void main(String[] args) {
         TestPath test = new TestPath();
@@ -99,7 +107,7 @@ public class TestPath {
 
         //convert relative path to absolute path
         Path path_to_absolute_path = path.toAbsolutePath();
-        System.out.println("Path to absolute path: " + path_to_absolute_path.toString());
+        System.out.println("Path to absolute path: " + path_to_absolute_path);
 
         //convert path to "real" path
         /**
@@ -110,21 +118,21 @@ public class TestPath {
             Path real_path = path.toRealPath(LinkOption.NOFOLLOW_LINKS);
             System.out.println("Path to real path: " + real_path);
         } catch (IOException e) {
-            System.err.println(e);
+            logger.error(e);
         }
 
         //convert path to File object
         File path_to_file = path.toFile();
         Path file_to_path = path_to_file.toPath();
         System.out.println("Path to file name: " + path_to_file.getName());
-        System.out.println("File to path: " + file_to_path.toString());
+        System.out.println("File to path: " + file_to_path);
     }
 
     public void combinePathInfo(Path path, String name) {
         Path path_1 = path.resolve(name);
-        System.out.println(path_1.toString());
+        System.out.println(path_1);
         Path path_2 = path_1.resolveSibling("sibling-" + name);
-        System.out.println(path_2.toString());
+        System.out.println(path_2);
     }
 
     public void constructPathInfo(Path path03, Path path04) {
@@ -158,7 +166,7 @@ public class TestPath {
                 System.out.println("The paths does not locate the same file!");
             }
         } catch (IOException e) {
-            System.out.println(e);
+            logger.error(e);
         }
 
         //compare using Path.compareTo

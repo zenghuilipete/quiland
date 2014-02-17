@@ -2,123 +2,121 @@ package org.feuyeux.air.io.network.netty.udp.cmd2.core;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.*;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
+import io.netty.util.CharsetUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.feuyeux.air.io.network.common.ENV;
 import org.feuyeux.air.io.network.netty.udp.cmd2.entity.UdpCommand;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class UdpCmdClient {
     private static final Logger logger = LogManager.getLogger(UdpCmdClient.class.getName());
+    private static UdpCmdClient instance;
+    private static UdpCmdClientContext context;
+
     final String serverIp;
     final int nettyPort;
-    private final long CLOSE_TIMEOUT_MILLIS = 500;
-    private ChannelFuture channelFuture;
-    private static UdpCmdClient instance;
-
-    private static final int IDLE = 0;
-    private static final int CONNECTED = 1;
-    private static final int ERROR = 2;
-    private volatile int state = IDLE;
+    private EventLoopGroup group;
+    private Channel channel;
 
     UdpCmdClient() {
-        this.serverIp = ENV.SERVER_IP;
-        this.nettyPort = ENV.NETTY_PORT;
+        serverIp = ENV.SERVER_IP;
+        nettyPort = ENV.NETTY_PORT;
     }
 
-    UdpCmdClient(String serverIp, int nettyPort) {
+    UdpCmdClient(String serverIp, int nettyPort, int type) throws InterruptedException {
         this.serverIp = serverIp;
         this.nettyPort = nettyPort;
-    }
-
-    public synchronized static UdpCmdClient getInstance() {
-        if (instance != null) {
-            return instance;
+        group = new NioEventLoopGroup();
+        Bootstrap b = new Bootstrap();
+        final UdpCmdClientHandler clientHandler = new UdpCmdClientHandler(context);
+        b.group(group)
+                .channel(NioDatagramChannel.class)
+                .handler(new ChannelInitializer<DatagramChannel>() {
+                    @Override
+                    public void initChannel(DatagramChannel ch) throws Exception {
+                        ch.pipeline().addLast(
+                                //new LoggingHandler(LogLevel.INFO),
+                                clientHandler
+                        );
+                    }
+                });
+        if (type > 0) {
+            channel = b.connect(serverIp, nettyPort).sync().channel();
+        } else {
+            channel = b.bind(new InetSocketAddress(0)).sync().channel();
         }
-        return instance = new UdpCmdClient();
     }
 
-    public synchronized static UdpCmdClient getInstance(String serverIp, int nettyPort) {
+    public static synchronized UdpCmdClient getUdpClient(String serverIp, int nettyPort) throws InterruptedException {
+        if (serverIp == null || serverIp.isEmpty()) {
+            return null;
+        }
         if (instance == null) {
-            instance = new UdpCmdClient(serverIp, nettyPort);
+            if (context == null) {
+                context = new UdpCmdClientContext();
+            }
+            instance = new UdpCmdClient(serverIp, nettyPort, 1);
         }
         return instance;
     }
 
-    public void send(UdpCommand udpCommand) throws InterruptedException, TimeoutException, ExecutionException {
-        EventLoopGroup group = new NioEventLoopGroup();
-        try {
-            Bootstrap b = new Bootstrap();
-            final UdpCmdClientHandler clientHandler = new UdpCmdClientHandler();
-            b.group(group)
-              .channel(NioDatagramChannel.class)
-              .handler(new ChannelInitializer<DatagramChannel>() {
-                  @Override
-                  public void initChannel(DatagramChannel ch) throws Exception {
-                      ch.pipeline().addLast(
-                        //new LoggingHandler(LogLevel.INFO),
-                        clientHandler
-                      );
-                  }
-              });
-            Channel channel = b.connect(serverIp, nettyPort).sync().channel();
-            ByteBuf data = UdpCmdCodec.encode(udpCommand);
-            DatagramPacket udpPacket = new DatagramPacket(data, new InetSocketAddress(serverIp, nettyPort));
-            ChannelFuture cf = channel.writeAndFlush(udpPacket);
-            logger.debug("UDP Command[{}] has been send.", udpCommand);
-            cf.addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    if (future.isSuccess()) {
-                        logger.debug("UDP Command has been received on Server.");
-                    } else {
-                        logger.error("UDP Command failed during the transports", future.cause());
-                    }
+    public static synchronized UdpCmdClient getBroadcastClient(int nettyPort) throws InterruptedException {
+        if (instance == null) {
+            context = new UdpCmdClientContext();
+            instance = new UdpCmdClient(null, nettyPort, 0);
+        }
+        return instance;
+    }
+
+    public void broadcast(String message) {
+        write(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8), message);
+    }
+
+    public void send(UdpCommand udpCommand) {
+        ByteBuf data = UdpCmdCodec.encode(udpCommand);
+        write(data, udpCommand.toString());
+    }
+
+    private void write(ByteBuf data, String descrption) {
+        String receiver = serverIp == null ? "255.255.255.255" : serverIp;
+        DatagramPacket udpPacket = new DatagramPacket(data, new InetSocketAddress(receiver, nettyPort));
+        ChannelFuture cf = channel.writeAndFlush(udpPacket);
+        logger.debug("UDP Command[{}] has been send.", descrption);
+        cf.addListener(new ChannelFutureListener() {
+            @Override
+            public void operationComplete(ChannelFuture future) throws Exception {
+                if (future.isSuccess()) {
+                    logger.debug("UDP Command has been received on Server.");
+                } else {
+                    logger.error("UDP Command failed during the transports", future.cause());
                 }
-            });
-        } finally {
-            // Shut down the event loop to terminate all threads.
-            group.shutdownGracefully();
+            }
+        });
+    }
+
+    public String[] getServers(long timeout, TimeUnit unit) throws InterruptedException {
+        String[] servers = context.getServers(timeout, unit);
+        if (servers == null) {
+            return new String[]{""};
+        } else {
+            return servers;
         }
     }
 
-    public void broadcast(UdpCommand udpCommand) throws InterruptedException, TimeoutException, ExecutionException {
-        EventLoopGroup group = new NioEventLoopGroup();
-        try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-              .channel(NioDatagramChannel.class)
-              .option(ChannelOption.SO_BROADCAST, true)
-              .handler(new ChannelInitializer<DatagramChannel>() {
-                  @Override
-                  public void initChannel(DatagramChannel ch) throws Exception {
-                      ch.pipeline().addLast(
-                        //new LoggingHandler(LogLevel.INFO),
-                        new UdpCmdClientHandler()
-                      );
-                  }
-              });
-            Channel channel = b.bind(new InetSocketAddress(0)).sync().channel();
-            ByteBuf data = UdpCmdCodec.encode(udpCommand);
-            DatagramPacket udpPacket = new DatagramPacket(data, new InetSocketAddress(serverIp, nettyPort));
-            ChannelFuture cf = channel.writeAndFlush(udpPacket).sync();
-            cf.get(ENV.READ_TIMEOUT, TimeUnit.SECONDS);
-            logger.debug("UDP Command[{}] has been send.", udpCommand);
-            if (!cf.channel().closeFuture().await(CLOSE_TIMEOUT_MILLIS)) {
-                logger.info("UDP Command[{}] channel closed.", udpCommand);
-            }
-        } finally {
-            // Shut down the event loop to terminate all threads.
-            group.shutdownGracefully();
-        }
+    public void stop() {
+        group.shutdownGracefully();
     }
 }

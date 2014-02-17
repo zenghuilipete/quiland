@@ -1,5 +1,8 @@
 package creative.air.nio2;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -13,7 +16,9 @@ import java.util.EnumSet;
  *
  * @author luh
  */
-public class TestChannelLock {
+public final class TestChannelLock {
+    private static final Logger logger = LogManager.getLogger(TestChannelLock.class);
+
     public static void main(String[] args) {
         Path path = Paths.get("C:/rafaelnadal/email", "vamos.txt");
         ByteBuffer buffer = ByteBuffer.wrap("Vamos Rafa!".getBytes());
@@ -38,14 +43,14 @@ public class TestChannelLock {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
-                    System.err.println(ex);
+                    logger.error(ex);
                 }
                 fileChannel.position(0);
                 fileChannel.write(buffer);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
-                    System.err.println(ex);
+                    logger.error(ex);
                 }
             }
 
@@ -55,7 +60,7 @@ public class TestChannelLock {
             System.out.println("\nLock released!");
 
         } catch (IOException ex) {
-            System.err.println(ex);
+            logger.error(ex);
         }
     }
 }

@@ -6,7 +6,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-public class BIOUDPServer {
+public final class BIOUDPServer {
     private static DatagramSocket client;
 
     public static void main(String[] args) throws Exception {

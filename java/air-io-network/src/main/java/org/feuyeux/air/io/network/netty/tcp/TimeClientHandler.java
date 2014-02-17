@@ -9,11 +9,8 @@ import org.feuyeux.air.io.network.common.ENV;
 
 public class TimeClientHandler extends ChannelHandlerAdapter {
     public static final String TELL_ME_THE_TIME = "tell me the time.";
-    private final static Logger logger = LogManager.getLogger(TimeClientHandler.class);
-    private static int TIMES = 5;
-
-    public TimeClientHandler() {
-    }
+    private static final Logger logger = LogManager.getLogger(TimeClientHandler.class);
+    private static int times = 5;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -27,7 +24,7 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
             return;
         }
         logger.debug("BIOUDPServer response:{}", message);
-        if (TIMES-- > 0) {
+        if (times-- > 0) {
             ctx.write(TELL_ME_THE_TIME);
         } else {
             ctx.write(ENV.QUIT);

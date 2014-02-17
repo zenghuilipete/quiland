@@ -12,11 +12,11 @@ import org.junit.Test;
  * Time: 12:07 PM
  */
 public class TestNio {
-    private final static Logger logger = LogManager.getLogger(TestNio.class);
-    final int OP_READ = 1 << 0;
-    final int OP_WRITE = 1 << 2;
-    final int OP_CONNECT = 1 << 3;
-    final int OP_ACCEPT = 1 << 4;
+    private static final Logger logger = LogManager.getLogger(TestNio.class);
+    static final int OP_READ = 1;//1 << 0;
+    static final int OP_WRITE = 1 << 2;
+    static final int OP_CONNECT = 1 << 3;
+    static final int OP_ACCEPT = 1 << 4;
 
     @Test
     public void testBitOp() {
@@ -25,7 +25,7 @@ public class TestNio {
         int interestingKey = OP_ACCEPT | OP_CONNECT | OP_WRITE | OP_READ;
         Assert.assertEquals((byte) 0B0001_1101, interestingKey);
         logger.debug(interestingKey);
-        interestingKey = interestingKey & (~OP_READ);
+        interestingKey &= ~OP_READ;
         Assert.assertEquals((byte) 0B0001_1100, interestingKey);
         logger.debug(interestingKey);
     }

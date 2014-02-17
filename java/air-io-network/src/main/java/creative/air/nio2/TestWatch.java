@@ -1,7 +1,17 @@
 package creative.air.nio2;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @author feuyeux@gmail.com 2012-06-06
  */
 public class TestWatch {
+    private static final Logger logger = LogManager.getLogger(TestWatch.class);
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Path path = Paths.get("C:/printertray");
@@ -65,9 +76,9 @@ public class TestWatch {
 
     private final Map<Thread, Path> threads = new HashMap<>();
 
-    class PrintThread implements Runnable {
+    static class PrintThread implements Runnable {
 
-        private Path doc;
+        private final Path doc;
 
         PrintThread(Path doc) {
             this.doc = doc;
@@ -80,7 +91,7 @@ public class TestWatch {
                 Thread.sleep(20000 + new Random().nextInt(30000));
                 System.out.println("Printing: " + doc);
             } catch (InterruptedException ex) {
-                System.err.println(ex);
+                logger.error(ex);
             }
         }
     }

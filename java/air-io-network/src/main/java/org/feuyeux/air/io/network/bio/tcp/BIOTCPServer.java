@@ -11,14 +11,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class BIOTCPServer {
-    private final static Logger logger = LogManager.getLogger(BIOTCPServer.class);
+    private static final Logger logger = LogManager.getLogger(BIOTCPServer.class);
 
     final ServerSocket serverSocket;
     final int port;
-    private ExecutorService e;
+    private final ExecutorService e;
 
     public BIOTCPServer(int port) throws IOException {
-        super();
         this.port = port;
         serverSocket = new ServerSocket(this.port);
         e = Executors.newFixedThreadPool(ENV.FIX_THREAD_NUMBER);
@@ -33,7 +32,7 @@ public class BIOTCPServer {
                 try {
                     Runnable r = new TCPServerThread(socket);
                     e.execute(r);
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                     socket.close();
                 }
             }

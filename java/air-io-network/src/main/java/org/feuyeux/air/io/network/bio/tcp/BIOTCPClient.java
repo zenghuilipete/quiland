@@ -11,15 +11,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class BIOTCPClient {
-    private final static Logger logger = LogManager.getLogger(BIOTCPClient.class);
+    private static final Logger logger = LogManager.getLogger(BIOTCPClient.class);
     final Socket socket;
     final String host;
     final int port;
     final BufferedReader reader;
     final PrintWriter writer;
 
-    public BIOTCPClient(String host, int port) throws IOException, InterruptedException {
-        super();
+    public BIOTCPClient(String host, int port) throws IOException {
         this.host = host;
         this.port = port;
         socket = new Socket(this.host, this.port);

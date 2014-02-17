@@ -10,7 +10,7 @@ import org.feuyeux.air.io.network.common.ENV;
 import java.util.Date;
 
 public class TimeServerHandler extends IoHandlerAdapter {
-    private final static Logger logger = LogManager.getLogger(TimeServerHandler.class);
+    private static final Logger logger = LogManager.getLogger(TimeServerHandler.class);
 
     @Override
     public void sessionCreated(IoSession session) throws Exception {
@@ -18,8 +18,8 @@ public class TimeServerHandler extends IoHandlerAdapter {
     }
 
     @Override
-    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
-        cause.printStackTrace();
+    public void exceptionCaught(IoSession session, Throwable c) throws Exception {
+        logger.error(c);
     }
 
     @Override

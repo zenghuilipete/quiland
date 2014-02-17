@@ -2,12 +2,12 @@ package creative.fire.notireq;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.*;
 
 public class Helper {
-    private static Helper instance = new Helper();
-    private ConcurrentHashMap<String, Schedule> cache = new ConcurrentHashMap<String, Schedule>();
-    private int timeout = 10;
+    private static final Helper instance = new Helper();
+    private final ConcurrentHashMap<String, Schedule> cache = new ConcurrentHashMap<String, Schedule>();
+    private static final int timeout = 10;
 
     public static Helper getInstance() {
         return instance;

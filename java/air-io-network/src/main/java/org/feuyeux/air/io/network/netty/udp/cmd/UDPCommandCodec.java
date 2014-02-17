@@ -6,7 +6,10 @@ import io.netty.buffer.Unpooled;
 /**
  * Created by Administrator on 14-2-10.
  */
-public class UDPCommandCodec {
+public final class UDPCommandCodec {
+    private UDPCommandCodec() {
+    }
+
     public static ByteBuf encode(UDPCommand udpCommand) throws Exception {
         ByteBuf byteBuf = Unpooled.buffer();
         byteBuf.writeInt(udpCommand.getType());
@@ -22,7 +25,6 @@ public class UDPCommandCodec {
         byte[] dst = new byte[endIndex - currentIndex];
         byteBuf.readBytes(dst);
         String pair = new String(dst);
-        UDPCommand udpCommand = new UDPCommand(type, pair);
-        return udpCommand;
+        return new UDPCommand(type, pair);
     }
 }

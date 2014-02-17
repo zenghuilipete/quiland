@@ -5,8 +5,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Schedule {
-    ScheduledExecutorService excutor;
-    private long startTime;
+    final ScheduledExecutorService excutor;
+    private final long startTime;
 
     public Schedule() {
         excutor = Executors.newSingleThreadScheduledExecutor();

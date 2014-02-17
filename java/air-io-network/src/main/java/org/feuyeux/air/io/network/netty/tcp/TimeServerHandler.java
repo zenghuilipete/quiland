@@ -11,9 +11,6 @@ import java.util.Date;
 public class TimeServerHandler extends ChannelHandlerAdapter {
     private static final Logger logger = LogManager.getLogger(TimeServerHandler.class.getName());
 
-    public TimeServerHandler() {
-    }
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object message) throws Exception {
         String str = message.toString();
