@@ -69,6 +69,11 @@ public class UdpCmdClient {
                 context = new UdpCmdClientContext();
             }
             instance = new UdpCmdClient(serverIp, nettyPort, 1);
+        } else {
+            if (!instance.serverIp.equals(serverIp) || instance.nettyPort != nettyPort) {
+                instance.stop();
+                instance = new UdpCmdClient(serverIp, nettyPort, 1);
+            }
         }
         return instance;
     }
@@ -81,6 +86,11 @@ public class UdpCmdClient {
         return instance;
     }
 
+    public static synchronized void clean() {
+        instance.stop();
+        instance = null;
+    }
+
     public void broadcast(String message) {
         write(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8), message);
     }
@@ -91,7 +101,7 @@ public class UdpCmdClient {
     }
 
     private void write(ByteBuf data, String descrption) {
-        String receiver = serverIp == null ? "255.255.255.255" : serverIp;
+        final String receiver = serverIp == null ? "255.255.255.255" : serverIp;
         DatagramPacket udpPacket = new DatagramPacket(data, new InetSocketAddress(receiver, nettyPort));
         ChannelFuture cf = channel.writeAndFlush(udpPacket);
         logger.debug("UDP Command[{}] has been send.", descrption);
@@ -99,9 +109,9 @@ public class UdpCmdClient {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    logger.debug("UDP Command has been received on Server.");
+                    logger.debug("UDP Command has been received on {}.", receiver);
                 } else {
-                    logger.error("UDP Command failed during the transports", future.cause());
+                    logger.warn("UDP Command send to {} during the transports", receiver, future.cause());
                 }
             }
         });
@@ -116,7 +126,7 @@ public class UdpCmdClient {
         }
     }
 
-    public void stop() {
+    void stop() {
         group.shutdownGracefully();
     }
 }

@@ -48,7 +48,6 @@ public class CommunicationTest {
         keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
         client.send(keyCommand);
         Thread.sleep(3000l);
-        client.stop();
     }
 
     @Test
@@ -59,7 +58,6 @@ public class CommunicationTest {
         keyCommand.setControlInfo(new KeyControlInfo("KEY:10"));
         client.send(keyCommand);
         Thread.sleep(3000l);
-        client.stop();
     }
 
     @Test
@@ -70,22 +68,24 @@ public class CommunicationTest {
             client.send(keyCommand);
             Thread.sleep(50);
         }
-        client.stop();
     }
 
     @Test
     public void testBasicFlow() throws InterruptedException, TimeoutException, ExecutionException {
         final UdpCmdClient client0 = UdpCmdClient.getBroadcastClient(PORT);
         client0.broadcast("Hello");
-        String host = client0.getServers(1, TimeUnit.SECONDS)[0];
-        client0.stop();
+        String[] hosts = client0.getServers(1, TimeUnit.SECONDS);
+        UdpCmdClient.clean();
 
-        final UdpCmdClient client = UdpCmdClient.getUdpClient(host, PORT);
-        if (client != null) {
-            UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:X"));
-            client.send(keyCommand);
-            Thread.sleep(3000l);
-            client.stop();
+        for (String host : hosts) {
+            logger.debug("**** {} ****", host);
+            final UdpCmdClient client = UdpCmdClient.getUdpClient(host, PORT);
+            if (client != null) {
+                UdpCommand keyCommand = new UdpCommand(CommandType.KEY, new KeyControlInfo("KEY:X"));
+                client.send(keyCommand);
+            }
+            Thread.sleep(2000l);
         }
+        UdpCmdClient.clean();
     }
 }

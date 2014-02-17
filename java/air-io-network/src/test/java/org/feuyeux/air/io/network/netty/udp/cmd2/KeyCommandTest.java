@@ -117,7 +117,6 @@ public class KeyCommandTest {
                     startGate.await();
                     client.broadcast("hello.");
                     String[] servers = client.getServers(1, TimeUnit.SECONDS);
-                    client.stop();
                     for (int i = 0; i < servers.length; i++) {
                         logger.debug(">>>" + servers[i]);
                     }
